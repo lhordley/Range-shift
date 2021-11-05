@@ -1,0 +1,15 @@
+Range shift R script info
+
+1_NMRS_data_cleaning: taking out unused columns, and scaling lat/lon and easting/northing to 10km scale at the bottom left hand corner of hectad. Returns: NMRS_hectad_cleaned
+
+2_upland_species_selection: using cleaned version made above and HadUK temperature data (1975-1991) - plot species median & 75th percentile temperature range. Richard Fox selected species classed as upland. Produces list of upland species & temperature at all NMRS hectads between 1975-1991 (NMRS_hectad_temperature_early).
+
+3_elevation: using cleaned version, extract elevation data for each 10km hectad to use in analysis. Returns NMRS_hectad_elevation (used in script no. 6). 
+
+4_recording_effort: using raw NMRS data, class each hectad as recorded, well-recorded or heavily recorded depending on regional species richness. Returns list of hectads with corresponding recording level for each time period (1975-1991 and 2012-2016)
+
+5_temperature_analysis: repeated script from 2 for recent time period. Also using hectad recording levels to look at changes in median & 75th percentile of upland species temperature range between time periods for different levels of recording effort
+
+6_range_shift_analysis: Low elevation & low latitude trailing edge shift over time. Mean too?
+
+7_centroid_shift_analysis: Direction and distance (km) centroid shift (using minimum convex hull) of upland species range between time periods
