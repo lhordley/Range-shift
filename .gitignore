@@ -15,5 +15,7 @@
 .Ruserdata
 *.docx
 *.rds
-*.tiff
+*.tif
 *.nc
+*.pptx
+*.JPG
