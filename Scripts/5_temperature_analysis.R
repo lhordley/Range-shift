@@ -11,15 +11,15 @@ library(lubridate)
 library(ggplot2)
 
 ## NMRS temperature data for each TP
-nmrsdata_temp_early <- readRDS("../../Range shift/Data/NMRS/NMRS_hectad_temperature_TP1.rds") ## NMRS data for TP1 with temperature 
-nmrsdata_temp_late <- readRDS("../../Range shift/Data/NMRS/NMRS_hectad_temperature_TP2.rds") ## NMRS data for TP2 with temperature 
+nmrsdata_temp_early <- readRDS("Data/NMRS/NMRS_hectad_temperature_TP1.rds") ## NMRS data for TP1 with temperature 
+nmrsdata_temp_late <- readRDS("Data/NMRS/NMRS_hectad_temperature_TP2.rds") ## NMRS data for TP2 with temperature 
 ## migrant hectads that need excluded
-migrant_hectads_early <- read.csv("../../Range shift/Data/NMRS/migrant_hectad_exclusion_TP1.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
-migrant_exclusion_late <- read.csv("../../Range shift/Data/NMRS/migrant_hectad_exclusion_TP2.csv", header=TRUE)
+migrant_hectads_early <- read.csv("Data/NMRS/migrant_hectad_exclusion_TP1.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
+migrant_exclusion_late <- read.csv("Data/NMRS/migrant_hectad_exclusion_TP2.csv", header=TRUE)
 ## upland species list to filter
-upland_species <- read.csv("../../Range shift/Data/NMRS/NMRS_temp_median_percentile_selection.csv", header=TRUE)
+upland_species <- read.csv("Data/NMRS/NMRS_temp_median_percentile_selection.csv", header=TRUE)
 ## hectad recording levels
-hec_records <- read.csv("../../Range shift/Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
+hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
 
 ### first exclude migrant hectads from each nmrs dataset
 migrant_hectads_early[is.na(migrant_hectads_early)] <- 0
@@ -62,7 +62,7 @@ nmrsdata_temp_final <- rbind(nmrsdata_temp_early, nmrsdata_temp_late)
 ## Recorded hectads (hectads recorded in both time periods)
 hectads <- unique(hec_records$HECTAD) ## 1782
 nmrsdata_temp_rec <- nmrsdata_temp_final[which(nmrsdata_temp_final$Hectad %in% hectads), ]
-length(unique(nmrsdata_temp_rec$Hectad)) ## 1433 hectads
+length(unique(nmrsdata_temp_rec$Hectad)) ## 1424 hectads
 length(unique(nmrsdata_temp_rec$Common_Name)) ## 72 species
 
 detach(package:plyr)
@@ -95,12 +95,13 @@ rec_hecs <- ggplot() +
                fill = 'gray90', color = 'black') + 
   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
   theme_void() + 
-  geom_point(data =nmrsdata_temp_rec[nmrsdata_temp_rec$groups==1,], 
+  geom_point(data =nmrsdata_temp_rec, 
              aes(x = lon, y=lat), size=1) +
   theme(title = element_text(size = 12))
 rec_hecs
+ggsave(rec_hecs, file="Maps/NMRS_cool_rec_hecs.png")
 
-ggplot(data = nmrsdata_temp_rec[nmrsdata_temp_rec$groups==1,], mapping = aes(x = reorder(Common_Name,-temperature, FUN=median), y = temperature, fill=forcats::fct_rev(time_period))) +
+ggplot(data = nmrsdata_temp_rec[nmrsdata_temp_rec$groups==2 & nmrsdata_temp_rec$time_period=="TP1",], mapping = aes(x = reorder(Common_Name,-temperature, FUN=median), y = temperature)) +
   geom_boxplot(outlier.shape = NA, coef = 0) +
   #geom_hline(yintercept=9, linetype="dotted") +
   coord_flip() +
@@ -128,7 +129,7 @@ well_heavy_hecs <- well_heavy_hecs[which(well_heavy_hecs$n_row > 1), ]
 well_heavy_hecs$n_row <- NULL ## 747 hectads
 ## merge into nmrs data and filter by years so only have years within time periods
 nmrsdata_temp_wh <- nmrsdata_temp_final[which(nmrsdata_temp_final$Hectad %in% well_heavy_hecs$HECTAD), ]
-length(unique(nmrsdata_temp_wh$Hectad)) ## 640 hectads
+length(unique(nmrsdata_temp_wh$Hectad)) ## 639 hectads
 length(unique(nmrsdata_temp_wh$Common_Name)) ## 69 species
 
 detach(package:plyr)
@@ -157,10 +158,11 @@ wh_hecs <- ggplot() +
                fill = 'gray90', color = 'black') + 
   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
   theme_void() + 
-  geom_point(data =nmrsdata_temp_wh[nmrsdata_temp_wh$groups==1,], 
+  geom_point(data =nmrsdata_temp_wh, 
              aes(x = lon, y=lat), size=1) +
   theme(title = element_text(size = 12))
 wh_hecs
+ggsave(wh_hecs, file="Maps/NMRS_cool_well_hecs.png")
 
 ggplot(data = nmrsdata_temp_wh[nmrsdata_temp_wh$groups==1,], mapping = aes(x = reorder(Common_Name,-temperature, FUN=median), y = temperature, fill=forcats::fct_rev(time_period))) +
   geom_boxplot(outlier.shape = NA, coef = 0) +
