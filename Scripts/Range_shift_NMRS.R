@@ -16,17 +16,17 @@ library(ggpubr)
 library(Rmisc)
 
 ## NMRS elevation data for each TP
-nmrsdata <- readRDS("../../Range shift/Data/NMRS/NMRS_hectad_elevation.rds") ## NMRS data for all hectads and all years with elevation
+nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_elevation.rds") ## NMRS data for all hectads and all years with elevation
 ## migrant hectads that need excluded
-migrant_hectads_early <- read.csv("../../Range shift/Data/NMRS/migrant_hectad_exclusion_TP1.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
-migrant_exclusion_late <- read.csv("../../Range shift/Data/NMRS/migrant_hectad_exclusion_TP2.csv", header=TRUE)
+migrant_hectads_early <- read.csv("Data/NMRS/migrant_hectad_exclusion_TP1.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
+migrant_exclusion_late <- read.csv("Data/NMRS/migrant_hectad_exclusion_TP2.csv", header=TRUE)
 ## upland species list to filter
-upland_species <- read.csv("../../Range shift/Data/NMRS/NMRS_temp_median_percentile_selection.csv", header=TRUE)
+upland_species <- read.csv("Data/NMRS/NMRS_temp_median_percentile_selection.csv", header=TRUE)
 ## hectad recording levels
-hec_records <- read.csv("../../Range shift/Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
+hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
 ## temperature at all UK hectads in early & late TP
-mean_temp_early <- read.csv("../../Range shift/Data/UKCP_tas_annual/Early_TP_75_91/mean_temp_75_91.csv", header=TRUE)
-mean_temp_late <- read.csv("../../Range shift/Data/UKCP_tas_annual/Late_TP_12_16/mean_temp_12_16.csv", header=TRUE)
+mean_temp_early <- read.csv("Data/UKCP_tas_annual/Early_TP_75_91/mean_temp_75_91.csv", header=TRUE)
+mean_temp_late <- read.csv("Data/UKCP_tas_annual/Late_TP_12_16/mean_temp_12_16.csv", header=TRUE)
 
 ## subset nmrsdata by years of interest
 early_years <- 1975:1991 
@@ -130,6 +130,56 @@ length(unique(nmrsdata_rec$Common_Name)) ## 72 species
 #                  y = as.numeric(lat)), size=2) +
 #   theme(title = element_text(size = 12))
 
+##### Mean elevation shift
+mean_elev_rec <- nmrsdata_rec %>% group_by(Common_Name, time_period) %>%
+  dplyr::summarise(mean_elev=mean(elevation10x10km))
+## change orientation
+mean_elev_rec2 <- mean_elev_rec %>%
+  gather(key, value, -Common_Name, -time_period) %>%
+  unite(col, key, time_period) %>%
+  spread(col, value)
+mean_elev_rec2$elev_shift <- mean_elev_rec2$mean_elev_TP2 - mean_elev_rec2$mean_elev_TP1 ## TP2 - TP1
+hist(mean_elev_rec2$elev_shift) ## looks good
+
+mean(mean_elev_rec2$elev_shift) ## 47.8m uphill
+sd(mean_elev_rec2$elev_shift) ## 114.2m 
+
+# Shapiro-Wilk normality test for the differences
+shapiro.test(mean_elev_rec2$elev_shift) # => p-value = 0.02 - distribution is NOT normal
+qqnorm(mean_elev_rec2$elev_shift)
+qqline(mean_elev_rec2$elev_shift) ## looks ok
+
+## one sample t-test to test whether elevation shifts differ significantly from 0
+t.test(mean_elev_rec2$elev_shift) ## significant
+wilcox.test(mean_elev_rec2$elev_shift) ## significant
+
+## check for normality 
+# compute the difference
+d <- with(mean_elev_rec, 
+          mean_elev[time_period == "TP1"] - mean_elev[time_period == "TP2"])
+# Shapiro-Wilk normality test for the differences
+shapiro.test(d) # => p-value = <0.001 - distribution is NOT normal
+qqnorm(d)
+qqline(d) ## not good
+
+## wilcoxon signed-rank test instead
+elev_rec <- wilcox.test(mean_elev ~ time_period, data = mean_elev_rec, paired = TRUE)
+elev_rec ## significant
+
+## plot result
+elev_rec_plot <- ggpaired(mean_elev_rec, x = "time_period", y = "mean_elev",
+                           color = "time_period", line.color = "gray", line.size = 0.4,
+                           palette = "jco", id="Common_Name")+
+  xlab("Time period")+
+  ylab("Mean elevation")+
+  stat_compare_means(method="wilcox.test", paired = TRUE)
+elev_rec_plot
+ggsave(elev_rec_plot, file="Graphs/Mean_elevation_shift_rec_hecs.png")
+
+length(which(mean_elev_rec2$elev_shift>0)) ## 48 species moving uphill (66%)
+length(which(mean_elev_rec2$elev_shift<0)) ## 24 species moving downhill (33%)
+
+mean_elev_rec2$shift_direction <- ifelse(mean_elev_rec2$elev_shift>0, "Uphill", "Downhill")
 
 ##### Multidirectional centroid range shift
 # take mean easting and northing and lat and lon across each species occupied hectads for each time period = range centroid
@@ -155,9 +205,26 @@ library(geosphere)
 range_centroid_rec2$bearing <- bearing(range_centroid_rec2[,c(6,4)], range_centroid_rec2[,c(7,5)])
 range_centroid_rec2$direction <- (range_centroid_rec2$bearing + 360) %% 360 # add full circle, i.e. +360, and determine modulo for 360
 
+## add in elevation results
+centroid_elev_rec <- merge(mean_elev_rec2, range_centroid_rec2, by="Common_Name")
+
 ## plot result
-rec_centroid <- ggplot(data=range_centroid_rec2,
-                       aes(direction, distance)) +
+rec_centroid <- ggplot(data=centroid_elev_rec,
+                       aes(x=direction, y=distance)) +
+  geom_segment(aes(xend = direction, yend = 0.1)) +
+  geom_point() +
+  scale_x_continuous(limits = c(0,360),
+                     breaks = seq(0, 360, by = 45),
+                     minor_breaks = seq(0, 360, by = 15)) +
+  # scale_y_log10() +
+  coord_polar() +
+  theme_bw()
+rec_centroid
+ggsave(rec_centroid, file="Graphs/multidirectional_shifts_rec.png")
+
+## plot result coloured by elevational shift
+rec_centroid2 <- ggplot(data=centroid_elev_rec,
+                       aes(x=direction, y=distance, colour=shift_direction)) +
   geom_segment(aes(xend = direction, yend = 0.1)) +
   geom_point() +
   scale_x_continuous(limits = c(0,360),
@@ -167,7 +234,8 @@ rec_centroid <- ggplot(data=range_centroid_rec2,
   coord_polar() +
   ggtitle("Recorded hectads") +
   theme_bw()
-rec_centroid
+rec_centroid2
+ggsave(rec_centroid2, file="Graphs/multidirectional_elev_shifts_rec.png")
 
 # use circ.mean from the circstats package to find a mean direction & confidence limits across all species
 library(NISTunits)
@@ -519,13 +587,15 @@ low_elev_rec <- wilcox.test(elevation10x10km ~ time_period, data = low_elev_rec_
 low_elev_rec ## significant (p=0.02) - elevation is higher in TP1 compared to TP2
 
 ## plot result
-ggpaired(low_elev_rec_hecs, x = "time_period", y = "elevation10x10km",
+rec_low_elev <- ggpaired(low_elev_rec_hecs, x = "time_period", y = "elevation10x10km",
          color = "time_period", line.color = "gray", line.size = 0.4,
          palette = "jco", id="Common_Name")+
   xlab("Time period")+
   ylab("Low elevation boundary")+
   stat_compare_means(method="wilcox.test", paired = TRUE)
+rec_low_elev
 ## low elevation boundary moving downhill over time
+ggsave(rec_low_elev, file="Graphs/Low_elevation_shift_rec_hecs.png")
 
 ## method 2: accounting for status change using regression model
 # calculate average latitude of 10 lowest grid cells in each time period = range margin
@@ -626,12 +696,14 @@ low_lat_rec <- wilcox.test(lat ~ time_period, data = low_lat_rec_hecs, paired = 
 low_lat_rec ## non-significant
 
 ## plot anyway
-ggpaired(low_lat_rec_hecs, x = "time_period", y = "lat",
+rec_low_lat <- ggpaired(low_lat_rec_hecs, x = "time_period", y = "lat",
          color = "time_period", line.color = "gray", line.size = 0.4,
          palette = "jco", id="Common_Name")+
   xlab("Time period")+
   ylab("Low latitude boundary")+
   stat_compare_means(method="wilcox.test", paired = TRUE)
+rec_low_lat
+ggsave(rec_low_lat, file="Graphs/Low_latitude_shift_rec_hecs.png")
 ## no change in low latitude boundary over time
 
 
@@ -732,6 +804,60 @@ nmrsdata_wh <- nmrsdata[which(nmrsdata$Hectad %in% well_heavy_hecs$HECTAD), ]
 length(unique(nmrsdata_wh$Hectad)) ## 639 hectads
 length(unique(nmrsdata_wh$Common_Name)) ## 69 species
 
+##### Mean elevation shift
+mean_elev_well <- nmrsdata_wh %>% group_by(Common_Name, time_period) %>%
+  dplyr::summarise(mean_elev=mean(elevation10x10km))
+## change orientation
+mean_elev_well2 <- mean_elev_well %>%
+  gather(key, value, -Common_Name, -time_period) %>%
+  unite(col, key, time_period) %>%
+  spread(col, value)
+## remove NAs - some species are only found in one TP 
+mean_elev_well2 <- na.omit(mean_elev_well2) ## 67 species
+mean_elev_well2$elev_shift <- mean_elev_well2$mean_elev_TP2 - mean_elev_well2$mean_elev_TP1 ## TP2 - TP1
+hist(mean_elev_well2$elev_shift) ## looks good
+
+mean(mean_elev_well2$elev_shift) ## 42.03 uphill
+sd(mean_elev_well2$elev_shift) ## 149.4m 
+
+# Shapiro-Wilk normality test for the differences
+shapiro.test(mean_elev_well2$elev_shift) # => p-value = 0.02 - distribution is NOT normal
+qqnorm(mean_elev_well2$elev_shift)
+qqline(mean_elev_well2$elev_shift) ## looks ok
+
+## one sample t-test to test whether elevation shifts differ significantly from 0
+t.test(mean_elev_well2$elev_shift) ## significant
+wilcox.test(mean_elev_well2$elev_shift) ## significant
+
+## check for normality 
+# compute the difference
+d <- with(mean_elev_well, 
+          mean_elev[time_period == "TP1"] - mean_elev[time_period == "TP2"])
+# Shapiro-Wilk normality test for the differences
+shapiro.test(d) # => p-value = <0.001 - distribution is NOT normal
+qqnorm(d)
+qqline(d) ## not good
+
+## wilcoxon signed-rank test instead
+elev_well <- wilcox.test(mean_elev ~ time_period, data = mean_elev_well, paired = TRUE)
+elev_well ## significant
+
+## plot result
+elev_well_plot <- ggpaired(mean_elev_well, x = "time_period", y = "mean_elev",
+                        color = "time_period", line.color = "gray", line.size = 0.4,
+                        palette = "jco", id="Common_Name")+
+  xlab("Time period")+
+  ylab("Mean elevation")+
+  stat_compare_means(method="wilcox.test", paired = TRUE)
+elev_well_plot
+ggsave(elev_well_plot, file="Graphs/Mean_elevation_shift_well_hecs.png")
+
+
+length(which(mean_elev_well2$elev_shift>0)) ## 44 species moving uphill (66%)
+length(which(mean_elev_well2$elev_shift<0)) ## 21 species moving downhill (33%)
+
+mean_elev_well2$shift_direction <- ifelse(mean_elev_well2$elev_shift>0, "Uphill", "Downhill")
+
 ####### Multidirectional centroid range shift
 
 # take mean easting and northing and lat and lon across each species occupied hectads for each time period = range centroid
@@ -757,9 +883,12 @@ library(geosphere)
 range_centroid_wh2$bearing <- bearing(range_centroid_wh2[,c(6,4)], range_centroid_wh2[,c(7,5)])
 range_centroid_wh2$direction <- (range_centroid_wh2$bearing + 360) %% 360 # add full circle, i.e. +360, and determine modulo for 360
 
+## add in elevation results
+centroid_elev_well <- merge(mean_elev_well2, range_centroid_wh2, by="Common_Name")
+
 ## plot result
-wh_centroid <- ggplot(data=range_centroid_wh2,
-                      aes(direction, distance)) +
+wh_centroid <- ggplot(data=centroid_elev_well,
+                      aes(x=direction, y=distance)) +
   geom_segment(aes(xend = direction, yend = 0.1)) +
   geom_point() +
   scale_x_continuous(limits = c(0,360),
@@ -767,9 +896,38 @@ wh_centroid <- ggplot(data=range_centroid_wh2,
                      minor_breaks = seq(0, 360, by = 15)) +
   # scale_y_log10() +
   coord_polar() +
-  ggtitle("Well/heavily recorded hectads") +
   theme_bw()
 wh_centroid
+ggsave(wh_centroid, file="Graphs/multidirectional_shifts_well.png")
+
+## plot result with elevation
+wh_centroid2 <- ggplot(data=centroid_elev_well,
+                      aes(x=direction, y=distance, colour=shift_direction)) +
+  geom_segment(aes(xend = direction, yend = 0.1)) +
+  geom_point() +
+  scale_x_continuous(limits = c(0,360),
+                     breaks = seq(0, 360, by = 45),
+                     minor_breaks = seq(0, 360, by = 15)) +
+  # scale_y_log10() +
+  coord_polar() +
+  theme_bw()
+wh_centroid2
+ggsave(wh_centroid2, file="Graphs/multidirectional_elev_shifts_well.png")
+
+## plot barchart of elevational shifts
+centroid_elev_well$effort_level <- "Well recorded hectads"
+centroid_elev_rec$effort_level <- "Recorded hectads"
+
+centroid_elev <- rbind(centroid_elev_rec, centroid_elev_well)
+elev_sum <- centroid_elev %>% group_by(effort_level, shift_direction) %>% dplyr::summarise(n_sp=n())
+elev_sum$tot_sp <- c(72,72,67,67)
+elev_sum$perc_change <- (elev_sum$n_sp/elev_sum$tot_sp)*100  
+
+elev_shift <- ggplot(elev_sum, aes(fill=effort_level, y=perc_change, x=shift_direction)) + 
+  geom_bar(position="dodge", stat="identity") +
+  labs(y="Percentage change", x="Direction of elevational shift") +
+  theme_classic()
+elev_shift
 
 # use circ.mean from the circstats package to find a mean direction & confidence limits across all species
 library(NISTunits)
@@ -843,12 +1001,14 @@ low_elev_wh <- wilcox.test(elevation10x10km ~ time_period, data = low_elev_wh_he
 low_elev_wh ## non-significant
 
 ## plot anyway
-ggpaired(low_elev_wh_hecs, x = "time_period", y = "elevation10x10km",
+low_elev_wh <- ggpaired(low_elev_wh_hecs, x = "time_period", y = "elevation10x10km",
          color = "time_period", line.color = "gray", line.size = 0.4,
          palette = "jco", id="Common_Name")+
   xlab("Time period")+
   ylab("Low elevation boundary")+
   stat_compare_means(method="wilcox.test", paired = TRUE)
+low_elev_wh
+ggsave(low_elev_wh, file="Graphs/Low_elevation_shift_well_hecs.png")
 
 ## method 2: accounting for status change using regression model
 # calculate average latitude of 10 lowest grid cells in each time period = range margin
@@ -947,13 +1107,14 @@ low_lat_wh <- wilcox.test(lat ~ time_period, data = low_lat_wh_hecs, paired = TR
 low_lat_wh ## non-significant
 
 ## plot anyway
-ggpaired(low_lat_wh_hecs, x = "time_period", y = "lat",
+low_lat_wh <- ggpaired(low_lat_wh_hecs, x = "time_period", y = "lat",
          color = "time_period", line.color = "gray", line.size = 0.4,
          palette = "jco", id="Common_Name")+
   xlab("Time period")+
   ylab("Low latitude boundary")+
-  stat_compare_means(method="t.test", paired = TRUE)
-
+  stat_compare_means(method="wilcox", paired = TRUE)
+low_lat_wh
+ggsave(low_lat_wh, file="Graphs/Low_latitude_shift_well_hecs.png")
 
 ## method 2: accounting for status change using regression model
 # calculate average latitude of 10 southern-most grid cells in each time period = range margin
