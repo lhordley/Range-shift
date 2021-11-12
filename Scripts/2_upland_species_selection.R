@@ -24,7 +24,7 @@ library(here)
 ## https://catalogue.ceda.ac.uk/uuid/f2da35c56afb4fa6aebf44094b65dff3 
 library(ncdf4)
 library(raster)
-files <- list.files(path="../../Range shift/Data/UKCP_tas_annual/Early_TP_75_91/",
+files <- list.files(path="Data/UKCP_tas_annual/Early_TP_75_91/",
                     pattern='*.nc',full.names=TRUE)
 
 s <- raster::stack(files)
@@ -44,7 +44,8 @@ plot(mean_newproj, axes = T) ## mean temperature averaged across years 1975-1991
 mean_temp <- as.data.frame(rasterToPoints(mean_newproj)) ## get temp values as dataframe (2929 rows)
 colnames(mean_temp) <- c("lon", "lat", "temperature")
 ## save temp data
-write.csv(mean_temp, file="../../Range shift/Data/UKCP_tas_annual/Early_TP_75_91/mean_temp_75_91.csv", row.names=FALSE)
+write.csv(mean_temp, file="Data/UKCP_tas_annual/Early_TP_75_91/mean_temp_75_91.csv", row.names=FALSE)
+mean_temp <- read.csv("Data/UKCP_tas_annual/Early_TP_75_91/mean_temp_75_91.csv", header=TRUE)
 
 ## better plot of temperature data
 library(ggplot2)
@@ -54,16 +55,15 @@ temp_map <- ggplot() +
                aes(x = long, y = lat, group = group), 
                fill = 'gray90', color = 'black') + 
   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
-  geom_point(data = mean_temp, 
+  geom_point(data = nmrsdata, 
              aes(x = as.numeric(lon), 
-                 y = as.numeric(lat), colour = temperature), size=1) + 
-  scale_color_viridis_c(name="Mean air temperature") + 
+                 y = as.numeric(lat)), size=1) + 
   theme_void() +
   theme(title = element_text(size = 12))
 temp_map
 
 ## now match these with NMRS data
-nmrsdata <- readRDS("../../Range shift/Data/NMRS/NMRS_hectad_cleaned.rds")
+nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_cleaned.rds")
 ## add 5km to easting and northing values to move record to centre of hectad
 ## this will ensure we are taking the temperature which represents middle of hectad
 nmrsdata$easting_centre <- nmrsdata$easting + 5000
@@ -91,7 +91,7 @@ nmrs_latlon <- nmrsdata[,c(11:12)]
 nmrs_latlon <- data.frame(unique(nmrs_latlon)) ## 2732 rows
 
 ## need to source Find Closest Rcpp function first!
-Rcpp::sourceCpp("Find_Closest_Rcpp_Function.cpp")
+Rcpp::sourceCpp("Scripts/Functions/Find_Closest_Rcpp_Function.cpp")
 
 find_closest <- function(lat1, long1, lat2, long2) {
   
@@ -148,9 +148,9 @@ unique(nmrsdata_temp_early$Year) ## 17 years
 ## now remove year and unique dataset - this means that when a species is recorded in the same hectad
 ## in multiple years, it's not counted in our calculation of the median
 nmrsdata_temp_early$Year <- NULL
-nmrsdata_temp_early <- unique(nmrsdata_temp_early) ## 165474 rows
+nmrsdata_temp_early <- unique(nmrsdata_temp_early) ## 165005 rows
 ## save data: NMRS data for all species & all hectads with mean annual temperature 
-saveRDS(nmrsdata_temp_early, file="../../Range shift/Data/NMRS_hectad_temperature_TP1.rds") ## 165474 rows
+saveRDS(nmrsdata_temp_early, file="Data/NMRS/NMRS_hectad_temperature_TP1.rds") ## 165005 rows
 
 ########################################################################################################
 ## PLOT SPECIES TEMPERATURE RANGES (MEDIAN & 75TH PERCENTILE)
@@ -276,7 +276,7 @@ ggplot() +
 ## https://catalogue.ceda.ac.uk/uuid/f2da35c56afb4fa6aebf44094b65dff3 
 library(ncdf4)
 library(raster)
-files <- list.files(path="../../Range shift/Data/UKCP_tas_annual/Late_TP_12_16/",
+files <- list.files(path="Data/UKCP_tas_annual/Late_TP_12_16/",
                     pattern='*.nc',full.names=TRUE)
 
 s <- raster::stack(files)
@@ -296,7 +296,8 @@ plot(mean_newproj, axes = T) ## mean temperature averaged across years 1975-1991
 mean_temp <- as.data.frame(rasterToPoints(mean_newproj)) ## get temp values as dataframe (2929 rows)
 colnames(mean_temp) <- c("lon", "lat", "temperature")
 ## save file
-write.csv(mean_temp, file="../../Range shift/Data/UKCP_tas_annual/Late_TP_12_16/mean_temp_12_16.csv", row.names=FALSE)
+write.csv(mean_temp, file="Data/UKCP_tas_annual/Late_TP_12_16/mean_temp_12_16.csv", row.names=FALSE)
+mean_temp <- read.csv("Data/UKCP_tas_annual/Late_TP_12_16/mean_temp_12_16.csv", header=TRUE)
 
 ## better plot of temperature data
 library(ggplot2)
@@ -315,7 +316,7 @@ temp_map <- ggplot() +
 temp_map
 
 ## now match these with NMRS data
-nmrsdata <- readRDS("../../Data/NMRS/NMRS_hectad_cleaned.rds")
+nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_cleaned.rds")
 ## add 5km to easting and northing values to move record to centre of hectad
 ## this will ensure we are taking the temperature which represents middle of hectad
 nmrsdata$easting_centre <- nmrsdata$easting + 5000
@@ -343,7 +344,7 @@ nmrs_latlon <- nmrsdata[,c(11:12)]
 nmrs_latlon <- data.frame(unique(nmrs_latlon)) ## 2732 rows
 
 ## need to source Find Closest Rcpp function first!
-Rcpp::sourceCpp("Find_Closest_Rcpp_Function.cpp")
+Rcpp::sourceCpp("Scripts/Functions/Find_Closest_Rcpp_Function.cpp")
 
 find_closest <- function(lat1, long1, lat2, long2) {
   
@@ -400,9 +401,9 @@ unique(nmrsdata_temp_late$Year) ## 5 years
 ## now remove year and unique dataset - this means that when a species is recorded in the same hectad
 ## in multiple years, it's not counted in our calculation of the median
 nmrsdata_temp_late$Year <- NULL
-nmrsdata_temp_late <- unique(nmrsdata_temp_late) ## 390632 rows
+nmrsdata_temp_late <- unique(nmrsdata_temp_late) ## 388890 rows
 ## save data: NMRS data for all species & unique hectads with mean annual temperature for years 2012-2016
-saveRDS(nmrsdata_temp_late, file="../../Range shift/Data/NMRS/NMRS_hectad_temperature_TP2.rds")
+saveRDS(nmrsdata_temp_late, file="Data/NMRS/NMRS_hectad_temperature_TP2.rds")
 
 
 
@@ -969,7 +970,7 @@ group <- unique(nmrsdata_temp$groups)
 sp1 <- nmrsdata[,c(3)]
 sp1 <- unique(sp1)
 sp2 <- 
-indx <- match(nmrsdata$Common_Name, summary_nmrs_temp$Common_Name, nomatch = 0)
+  indx <- match(nmrsdata$Common_Name, summary_nmrs_temp$Common_Name, nomatch = 0)
 
 for(i in group) {
   print(i)
