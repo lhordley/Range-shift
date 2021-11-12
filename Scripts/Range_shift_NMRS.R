@@ -81,19 +81,19 @@ nmrsdata_rec <- nmrsdata[which(nmrsdata$Hectad %in% hectads), ]
 length(unique(nmrsdata_rec$Hectad)) ## 1424 hectads
 length(unique(nmrsdata_rec$Common_Name)) ## 72 species
 
-# ## read in grey records - showing large southwards shift in range margin which is odd
-# ## check raw nmrs records
-# grey_recs <- read.csv("../../Range shift/Data/NMRS/nmrs_grey_records.csv", header=TRUE)
-# grey_recs <- grey_recs[,c(5,8,14)]
-# ## change gridref to 10km
-# # remove white space
-# grey_recs <- grey_recs %>% 
-#   mutate(across(where(is.character), str_trim))
-# grey_recs$gridref_10km <- dplyr::case_when(nchar(grey_recs$gridref)==10 ~ paste(substr(grey_recs$gridref,1,3), substr(grey_recs$gridref,7,7), sep=""), 
-#                       nchar(grey_recs$gridref)==8 ~ paste(substr(grey_recs$gridref,1,3), substr(grey_recs$gridref,6,6), sep=""), 
-#                       nchar(grey_recs$gridref)==6 ~ paste(substr(grey_recs$gridref,1,3), substr(grey_recs$gridref,5,5), sep=""),
-#                                                                                               TRUE ~ grey_recs$gridref)
-# 
+## read in grey records - showing large southwards shift in range margin which is odd
+## check raw nmrs records
+grey_recs <- read.csv("../../Range shift/Data/NMRS/nmrs_grey_records.csv", header=TRUE)
+grey_recs <- grey_recs[,c(5,8,14)]
+## change gridref to 10km
+# remove white space
+grey_recs <- grey_recs %>%
+  mutate(across(where(is.character), str_trim))
+grey_recs$gridref_10km <- dplyr::case_when(nchar(grey_recs$gridref)==10 ~ paste(substr(grey_recs$gridref,1,3), substr(grey_recs$gridref,7,7), sep=""),
+                      nchar(grey_recs$gridref)==8 ~ paste(substr(grey_recs$gridref,1,3), substr(grey_recs$gridref,6,6), sep=""),
+                      nchar(grey_recs$gridref)==6 ~ paste(substr(grey_recs$gridref,1,3), substr(grey_recs$gridref,5,5), sep=""),
+                                                                                              TRUE ~ grey_recs$gridref)
+
 # ## convert to lat/lon
 # library(rnrfa)
 # gridrefs <- as.data.frame(unique(grey_recs[,4])) ## 18 10km gridrefs
