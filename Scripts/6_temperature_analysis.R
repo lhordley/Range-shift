@@ -20,7 +20,7 @@ hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.c
 
 ## Recorded hectads (hectads recorded in both time periods)
 hectads <- unique(hec_records$HECTAD) ## 1782
-nmrsdata_temp_rec <- nmrsdata_temp_final[which(nmrsdata_temp_final$Hectad %in% hectads), ]
+nmrsdata_temp_rec <- nmrsdata[which(nmrsdata$Hectad %in% hectads), ]
 length(unique(nmrsdata_temp_rec$Hectad)) ## 1424 hectads
 length(unique(nmrsdata_temp_rec$Common_Name)) ## 72 species
 
