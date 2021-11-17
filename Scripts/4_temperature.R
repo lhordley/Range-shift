@@ -119,6 +119,10 @@ ggplot() +
 
 ## merge in with NMRS data
 nmrsdata_temp <- merge(nmrsdata, lat_lon_final, by=c("lon_centre", "lat_centre"))
+## save the temp data here - this will be for ALL NMRS hectads - not just the ones recorded in our years of interest
+all_nmrs_hecs_temp_tp1 <- unique(nmrsdata_temp[,c(1:3,15)]) # 2719 rows
+write.csv(all_nmrs_hecs_temp_tp1, file="Data/NMRS/All_NMRS_hectads_temperature_TP1.csv", row.names=FALSE)
+
 ## need to subset by year (temperature values only refer to 1975-1991 so occupied hectads need to reflect this too)
 ## then remove year column and unique - so we only have a list of unique hectads for each species
 nmrsdata_temp_early <- nmrsdata_temp[nmrsdata_temp$Year>=1975 & nmrsdata_temp$Year<=1991, ]
@@ -350,6 +354,10 @@ ggplot() +
 
 ## merge in with NMRS data
 nmrsdata_temp <- merge(nmrsdata, lat_lon_final, by=c("lon_centre", "lat_centre"))
+## save the temp data here - this will be for ALL NMRS hectads - not just the ones recorded in our years of interest
+all_nmrs_hecs_temp_tp2 <- unique(nmrsdata_temp[,c(1:3,15)]) # 2719 rows
+write.csv(all_nmrs_hecs_temp_tp2, file="Data/NMRS/All_NMRS_hectads_temperature_TP2.csv", row.names=FALSE)
+
 ## need to subset by year (temperature values only refer to 1975-1991 so occupied hectads need to reflect this too)
 ## then remove year column and unique - so we only have a list of unique hectads for each species
 nmrsdata_temp_late <- nmrsdata_temp[nmrsdata_temp$Year>=2012 & nmrsdata_temp$Year<=2016, ]
