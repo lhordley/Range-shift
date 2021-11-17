@@ -27,7 +27,29 @@ hist(values(tmp_agg))
 
 ## re-project using NMRS cleaned hectad data
 nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_cleaned.rds") 
-nmrs_lat_lon <- unique(nmrsdata[,c(1,7:8)]) # 2719 (keep gridref to merge elevation with nmrsdata later)
+## add 5km to easting and northing values to move record to centre of hectad
+## this will ensure we are taking the mean elevation which represents the mean of surrounding 1km squares WITHIN the hectad
+nmrsdata$easting_centre <- nmrsdata$easting + 5000
+nmrsdata$northing_centre <- nmrsdata$northing + 5000
+
+## convert easting + northing to lat + lon
+wgs84 = "+init=epsg:4326"
+bng = '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 
++ellps=airy +datum=OSGB36 +units=m +no_defs'
+
+ConvertCoordinates <- function(easting,northing) {
+  out = cbind(easting,northing)
+  mask = !is.na(easting)
+  sp <-  sp::spTransform(sp::SpatialPoints(list(easting[mask],northing[mask]),proj4string=sp::CRS(bng)),sp::CRS(wgs84))
+  out[mask,]=sp@coords
+  out
+}
+
+x <- ConvertCoordinates(nmrsdata$easting_centre, nmrsdata$northing_centre)
+colnames(x) <- c("lon_centre","lat_centre")
+nmrsdata <- cbind(nmrsdata, x) ## nmrsdata now has lat and lon values for centre of hectad to match to nearest temperature hectads
+
+nmrs_lat_lon <- unique(nmrsdata[,c(1,11,12)]) # 2719 (keep gridref to merge elevation with nmrsdata later)
 
 tmp_newproj <- projectRaster(tmp_agg,crs = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 plot(tmp_newproj, axes = T)
@@ -47,12 +69,11 @@ ggplot() +
                fill = 'gray90', color = 'black') + 
   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
   geom_point(data = tmp_elev, 
-             aes(x = as.numeric(lon), 
-                 y = as.numeric(lat), colour = elevation10x10km), size=1) + 
+             aes(x = as.numeric(lon_centre), 
+                 y = as.numeric(lat_centre), colour = elevation10x10km), size=1) + 
   scale_color_viridis_c(name="Elevation") + 
   theme_void() +
   theme(title = element_text(size = 12))
-
 
 
 ##############################################################
@@ -73,18 +94,19 @@ colnames(elev_sd_nmrs)[1] <- "elevation10x10km_SD"
 
 ## plot standard deviation of elevation
 worldmap = map_data('world')
-ggplot() + 
+elev_variation <- ggplot() + 
   geom_polygon(data = worldmap, 
                aes(x = long, y = lat, group = group), 
                fill = 'gray90', color = 'black') + 
   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
   geom_point(data = elev_sd_nmrs, 
-             aes(x = as.numeric(lon), 
-                 y = as.numeric(lat), colour = elevation10x10km_SD), size=1) + 
+             aes(x = as.numeric(lon_centre), 
+                 y = as.numeric(lat_centre), colour = elevation10x10km_SD), size=1) + 
   scale_color_viridis_c(name="SD of elevation") + 
   theme_void() +
   theme(title = element_text(size = 12))
-
+elev_variation
+ggsave(elev_variation, file="Maps/Elevation10x10km_SD.png")
 ###
 
 ## remove lat/lon - not needed and doesn't merge in with nmrs data properly
