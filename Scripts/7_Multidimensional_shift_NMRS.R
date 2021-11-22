@@ -82,7 +82,10 @@ library(NISTunits)
 library(CircStats)
 range_centroid_rec2$radians <- NISTdegTOradian(range_centroid_rec2$direction)
 x <- deg(circ.mean(range_centroid_rec2$radians)) # -36, add full circle
-(x+360)%%360 ## 323
+(x+360)%%360 ## 324
+ci <- vm.bootstrap.ci(range_centroid_rec2$radians) 
+deg(c(5.21, 5.95)) ## lower=299 upper=341
+
 # median & quartiles for distances
 median(range_centroid_rec2$distance) ## 40.2km 
 quantile(range_centroid_rec2$distance) ## 25th = 22.9km, 75th = 70.9km
@@ -208,7 +211,9 @@ temp_centroid_rec2$bearing <- bearing(temp_centroid_rec2[,c(6,4)], temp_centroid
 temp_centroid_rec2$direction <- (temp_centroid_rec2$bearing + 360) %% 360 # add full circle, i.e. +360, and determine modulo for 360
 temp_centroid_rec2$radians <- NISTdegTOradian(temp_centroid_rec2$direction)
 x <- deg(circ.mean(temp_centroid_rec2$radians)) # -36, add full circle
-(x+360)%%360 ## 337
+(x+360)%%360 ## 338
+ci <- vm.bootstrap.ci(temp_centroid_rec2$radians) 
+deg(c(5.7, 6.06)) ## lower=327 upper=347
 # median & quartiles for distances
 median(temp_centroid_rec2$distance) ## 60.06km 
 quantile(temp_centroid_rec2$distance) ## 25th = 30.5km, 75th = 93.4km
@@ -292,7 +297,9 @@ summer_temp_centroid_rec2$bearing <- bearing(summer_temp_centroid_rec2[,c(6,4)],
 summer_temp_centroid_rec2$direction <- (summer_temp_centroid_rec2$bearing + 360) %% 360 # add full circle, i.e. +360, and determine modulo for 360
 summer_temp_centroid_rec2$radians <- NISTdegTOradian(summer_temp_centroid_rec2$direction)
 x <- deg(circ.mean(summer_temp_centroid_rec2$radians)) # -36, add full circle
-(x+360)%%360 ## 327
+(x+360)%%360 ## 328
+ci <- vm.bootstrap.ci(summer_temp_centroid_rec2$radians) 
+deg(c(5.47, 5.93)) ## lower=313 upper=340
 # median & quartiles for distances
 median(summer_temp_centroid_rec2$distance) ## 46.3km 
 quantile(summer_temp_centroid_rec2$distance) ## 25th = 27.18km, 75th = 72.8km
@@ -376,8 +383,7 @@ precip_centroid_rec2$radians <- NISTdegTOradian(precip_centroid_rec2$direction)
 x <- deg(circ.mean(precip_centroid_rec2$radians)) # -36, add full circle
 (x+360)%%360 ## 323
 x.bs <- vm.bootstrap.ci(precip_centroid_rec2$radians)
-(0.35+360)%%360 ## 323
-
+deg(c(5.12, 6.01)) ## lower=293 upper=344
 library(Directional)
 circ.summary(precip_centroid_rec2$radians, rads=TRUE)
 
@@ -499,6 +505,14 @@ extir_hecs <- ggplot() +
 extir_hecs
 ggsave(extir_hecs, file="Maps/Rec_extirpated_hecs2.png")
 
+## are hectads with lower proportion of extirpated species at higher elevations?
+## prediction: species being lost from lower elevation as they are moving uphill
+ggplot(extirpated_hecs, aes(x = elevation10x10km, y = extir_prop)) + 
+  geom_point() +
+  geom_smooth(color = "blue") +
+  theme_bw() ## possible negative relationship
+
+cor.test(extirpated_hecs$extir_prop, extirpated_hecs$elevation10x10km, method="spearman", exact=FALSE)
 
 #################################################################
 #### How does the climate and elevation of extirpated hectads compared to all recorded hectads?
@@ -727,7 +741,7 @@ extirpated_hecs2 <- well_extir_hecs %>% mutate(elev_cat = case_when(
 
 extirpated_hecs_prop <- extirpated_hecs2 %>% group_by(elev_cat) %>% 
   dplyr::summarise(cnt = n()) %>%
-  mutate(freq = cnt / sum(cnt), 3)
+  mutate(freq = cnt / sum(cnt))
 plot(extirpated_hecs_prop$freq ~ extirpated_hecs_prop$elev_cat) ## lower proportion of hectads with higher elevation
 
 extirpated_hecs_prop <- extirpated_hecs_prop[,c("elev_cat", "freq")]
@@ -871,7 +885,11 @@ rec_extir_temp_diff <- ggplot(temp_prop, aes(x=median, y=freq, group=hec_cat)) +
 rec_extir_temp_diff
 ggsave(rec_extir_temp_diff, file="Graphs/Rec_hecs_extirpated_temperature_difference.png")
 
-
+## Put line graphs together
+climate_extir <- ggarrange(rec_extir_temp, rec_extir_summer_temp, rec_extir_temp_diff, rec_extir_precip,
+                           rec_extir_elev, rec_extir_elev_sd, labels = c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)"),
+                         common.legend = TRUE, ncol = 2, nrow = 3, font.label = list(size = 12))
+ggsave(climate_extir, file="Graphs/Rec_climate_extirpated_hecs.png", height=10, width=8)
 
 
 ##############################################################################################################################
@@ -955,7 +973,9 @@ library(NISTunits)
 library(CircStats)
 range_centroid_well2$radians <- NISTdegTOradian(range_centroid_well2$direction)
 x <- deg(circ.mean(range_centroid_well2$radians)) # -36, add full circle
-(x+360)%%360 ## 230
+(x+360)%%360 ## 320
+ci <- vm.bootstrap.ci(range_centroid_well2$radians) 
+deg(c(5.04, 5.93)) ## lower=289 upper=340
 # median & quartiles for distances
 median(range_centroid_well2$distance) ## 37.2km 
 quantile(range_centroid_well2$distance) ## 25th = 22.8km, 75th = 68km
@@ -1083,8 +1103,12 @@ library(geosphere)
 temp_centroid_well2$bearing <- bearing(temp_centroid_well2[,c(6,4)], temp_centroid_well2[,c(7,5)])
 temp_centroid_well2$direction <- (temp_centroid_well2$bearing + 360) %% 360 # add full circle, i.e. +360, and determine modulo for 360
 temp_centroid_well2$radians <- NISTdegTOradian(temp_centroid_well2$direction)
-x <- deg(circ.mean(temp_centroid_well2$radians)) # -36, add full circle
+x <- deg(circ.mean(temp_centroid_well2$radians)) # -11, add full circle
 (x+360)%%360 ## 348
+ci <- vm.bootstrap.ci(temp_centroid_well2$radians) 
+deg(c(-0.39, -0.01)) 
+(-22.34535+360)%%360 ## 338
+(-0.5729578+360)%%360 ## 349
 # median & quartiles for distances
 median(temp_centroid_well2$distance) ## 56.21m 
 quantile(temp_centroid_well2$distance) ## 25th = 33.67km, 75th = 95.6km
@@ -1169,12 +1193,14 @@ summer_temp_centroid_well2$direction <- (summer_temp_centroid_well2$bearing + 36
 summer_temp_centroid_well2$radians <- NISTdegTOradian(summer_temp_centroid_well2$direction)
 x <- deg(circ.mean(summer_temp_centroid_well2$radians)) # -36, add full circle
 (x+360)%%360 ## 329
+ci <- vm.bootstrap.ci(summer_temp_centroid_well2$radians) 
+deg(c(5.45, 5.99)) ## lower=312 upper=343
 # median & quartiles for distances
 median(summer_temp_centroid_well2$distance) ## 43.7km 
 quantile(summer_temp_centroid_well2$distance) ## 25th = 25.1km, 75th = 75.8km
 
 ## plot result
-ybreaks <- c(0,50,100,150,200,250,300)
+ybreaks <- c(0,50,100,150,200)
 well_summer_temp_centroid <- ggplot(data=summer_temp_centroid_well2,
                                    aes(x=direction, y=distance)) +
   geom_segment(aes(xend = direction, yend = 0.1)) +
@@ -1251,12 +1277,15 @@ precip_centroid_well2$direction <- (precip_centroid_well2$bearing + 360) %% 360 
 precip_centroid_well2$radians <- NISTdegTOradian(precip_centroid_well2$direction)
 x <- deg(circ.mean(precip_centroid_well2$radians)) # -36, add full circle
 (x+360)%%360 ## 334
+ci <- vm.bootstrap.ci(precip_centroid_well2$radians) 
+deg(c(-2.69, 0.68)) ## upper=39
+(-154.12565+360)%%360 ## lower=205
 # median & quartiles for distances
 median(precip_centroid_well2$distance) ## 39.06km 
 quantile(precip_centroid_well2$distance) ## 25th = 23.7km, 75th = 76.01km
 
 ## plot result
-ybreaks <- c(0,50,100,150,200,250,300)
+ybreaks <- c(0,50,100,150)
 well_precip_centroid <- ggplot(data=precip_centroid_well2,
                               aes(x=direction, y=distance)) +
   geom_segment(aes(xend = direction, yend = 0.1)) +
@@ -1719,7 +1748,7 @@ temp_prop <- merge(temp_prop, medians, by="temp_diff_cat")
 well_extir_temp_diff <- ggplot(temp_prop, aes(x=median, y=freq, group=hec_cat)) +
   geom_line(aes(linetype=hec_cat), lwd=1) + 
   labs(x="Difference in temperature", y="Proportion of hectads") +
-  scale_x_continuous(limits=c(0.25,1.15)) +
+  scale_x_continuous(limits=c(0.4,1.1)) +
   scale_y_continuous(breaks=seq(0,1, by=0.05)) +
   theme_classic() +
   theme(legend.title = element_blank())
@@ -1727,7 +1756,12 @@ well_extir_temp_diff
 ggsave(well_extir_temp_diff, file="Graphs/Well_hecs_extirpated_temperature_difference.png")
 
 
-
+## Put line graphs together
+climate_extir <- ggarrange(well_extir_temp, well_extir_summer_temp, well_extir_temp_diff, well_extir_precip,
+                           well_extir_elev, well_extir_elev_sd, labels = c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)"),
+                           common.legend = TRUE, ncol = 2, nrow = 3, font.label = list(size = 12))
+ggsave(climate_extir, file="Graphs/Well_rec_climate_extirpated_hecs.png", height=10, width=8)
+#
 
 
 
