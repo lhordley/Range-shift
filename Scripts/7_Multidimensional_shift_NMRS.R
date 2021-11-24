@@ -465,7 +465,8 @@ nmrsdata_rec_expand2$Hectad_category <- case_when(
 
 ## plot results on a map
 ## add in lat/lon info
-lat_lon <- unique(nmrsdata_rec[,c("Hectad", "lat", "lon","elevation10x10km","elevation10x10km_SD")])
+lat_lon <- nmrsdata_rec[,c("Hectad", "lat", "lon","elevation10x10km","elevation10x10km_SD")]
+lat_lon <- lat_lon %>% distinct(Hectad, .keep_all = TRUE) ## different way of unique
 nmrsdata_rec_expand2 <- merge(nmrsdata_rec_expand2, lat_lon, by="Hectad", all.x=TRUE)
 worldmap = map_data('world')
 ggplot() +
@@ -480,13 +481,15 @@ ggplot() +
   theme(title = element_text(size = 12))
 
 ## find proportion of species at each extirpated hectad - where are extirpations occurring? 
-extirpated_hecs1 <- nmrsdata_rec_expand2 %>% group_by(Hectad, lat, lon, elevation10x10km, elevation10x10km_SD) %>%
-                   dplyr::summarise(tot_sp = n())
-extirpated_hecs2 <- nmrsdata_rec_expand2 %>% group_by(Hectad, lat, lon, elevation10x10km, elevation10x10km_SD) %>%
+## remove colonisations - total species are those present in TP1 (extirpations and persistence's)
+nmrsdata_rec_expand3<-nmrsdata_rec_expand2[!(nmrsdata_rec_expand2$Hectad_category=="Colonisation"),]
+extirpated_hecs1 <- nmrsdata_rec_expand3 %>% group_by(Hectad, lat, lon, elevation10x10km, elevation10x10km_SD) %>%
+                   dplyr::summarise(tot_sp = n()) 
+extirpated_hecs2 <- nmrsdata_rec_expand3 %>% group_by(Hectad, lat, lon, elevation10x10km, elevation10x10km_SD) %>%
   filter(Hectad_category=="Extirpation") %>%
   dplyr::summarise(extir_sp = n())
 extirpated_hecs <- merge(extirpated_hecs1, extirpated_hecs2, by=c("Hectad", "lat", "lon", "elevation10x10km", "elevation10x10km_SD"))
-extirpated_hecs$extir_prop <- extirpated_hecs$extir_sp/extirpated_hecs$tot_sp
+extirpated_hecs$extir_prop <- extirpated_hecs$extir_sp/extirpated_hecs$tot_sp ## 841 hectads which have been extirpated
 ## very long way of doing this - gave up on finding a quicker way!
                   
 ## heatmap
@@ -518,10 +521,12 @@ cor.test(extirpated_hecs$extir_prop, extirpated_hecs$elevation10x10km, method="s
 #### How does the climate and elevation of extirpated hectads compared to all recorded hectads?
 
 ## proportion plots that Andy suggested
+## subset 'well' extirpated hecs which have lost at least 25% of species
+well_extir_hecs <- extirpated_hecs[extirpated_hecs$extir_prop>=0.25,] ## 813 hectads
+well_extir <- well_extir_hecs$Hectad
 rec_hecs <- nmrsdata_rec[,c("Hectad","elevation10x10km","elevation10x10km_SD")] ## all rec hecs: 1424
 rec_hecs <- rec_hecs %>% distinct(Hectad, .keep_all = TRUE) ## different way of unique
-## subset 'well' extirpated hecs which have lost at least 25% of species
-well_extir_hecs <- extirpated_hecs[extirpated_hecs$extir_prop>=0.25,] ## 814 hectads
+#rec_hecs <- rec_hecs %>% dplyr::filter(!Hectad %in% well_extir) ## now 611
 
 ## add in climate data to each data frame
 temp <- read.csv("Data/NMRS/All_NMRS_hectads_annual_temperature.csv", header=TRUE)
@@ -811,7 +816,7 @@ elev_prop <- merge(elev_prop, medians, by="elev_cat")
 rec_extir_elev_sd <- ggplot(elev_prop, aes(x=median, y=freq, group=hec_cat)) +
   geom_line(aes(linetype=hec_cat), lwd=1) + 
   labs(x="Standard deviation elevation (m)", y="Proportion of hectads") +
-  scale_x_continuous(limits=c(0,400)) +
+  scale_x_continuous(limits=c(0,450)) +
   scale_y_continuous(breaks=seq(0,1, by=0.05)) +
   theme_classic() +
   theme(legend.title = element_blank())
@@ -889,7 +894,7 @@ ggsave(rec_extir_temp_diff, file="Graphs/Rec_hecs_extirpated_temperature_differe
 climate_extir <- ggarrange(rec_extir_temp, rec_extir_summer_temp, rec_extir_temp_diff, rec_extir_precip,
                            rec_extir_elev, rec_extir_elev_sd, labels = c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)"),
                          common.legend = TRUE, ncol = 2, nrow = 3, font.label = list(size = 12))
-ggsave(climate_extir, file="Graphs/Rec_climate_extirpated_hecs.png", height=10, width=8)
+ggsave(climate_extir, file="Graphs/Rec_climate_extirpated_hecs2.png", height=10, width=8)
 
 
 ##############################################################################################################################
@@ -1343,7 +1348,8 @@ nmrsdata_well_expand2$Hectad_category <- case_when(
 
 ## plot results on a map
 ## add in lat/lon info
-lat_lon <- unique(nmrsdata_well[,c("Hectad", "lat", "lon","elevation10x10km","elevation10x10km_SD")])
+lat_lon <- nmrsdata_well[,c("Hectad", "lat", "lon","elevation10x10km","elevation10x10km_SD")]
+lat_lon <- lat_lon %>% distinct(Hectad, .keep_all = TRUE) ## different way of unique
 nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, lat_lon, by="Hectad", all.x=TRUE)
 worldmap = map_data('world')
 ggplot() +
@@ -1358,13 +1364,14 @@ ggplot() +
   theme(title = element_text(size = 12))
 
 ## find proportion of species at each extirpated hectad - where are extirpations occurring? 
+nmrsdata_well_expand2<-nmrsdata_well_expand2[!(nmrsdata_well_expand2$Hectad_category=="Colonisation"),]
 extirpated_hecs1 <- nmrsdata_well_expand2 %>% group_by(Hectad, lat, lon, elevation10x10km, elevation10x10km_SD) %>%
   dplyr::summarise(tot_sp = n())
 extirpated_hecs2 <- nmrsdata_well_expand2 %>% group_by(Hectad, lat, lon, elevation10x10km, elevation10x10km_SD) %>%
   filter(Hectad_category=="Extirpation") %>%
   dplyr::summarise(extir_sp = n())
 extirpated_hecs <- merge(extirpated_hecs1, extirpated_hecs2, by=c("Hectad", "lat", "lon", "elevation10x10km", "elevation10x10km_SD"))
-extirpated_hecs$extir_prop <- extirpated_hecs$extir_sp/extirpated_hecs$tot_sp
+extirpated_hecs$extir_prop <- extirpated_hecs$extir_sp/extirpated_hecs$tot_sp ## 496
 ## very long way of doing this - gave up on finding a quicker way!
 
 ## heatmap
@@ -1388,10 +1395,12 @@ ggsave(extir_hecs, file="Maps/Well_extirpated_hecs.png")
 #### How does the climate and elevation of extirpated hectads compared to all recorded hectads?
 
 ## proportion plots that Andy suggested
-well_hecs <- nmrsdata_well[,c("Hectad","elevation10x10km","elevation10x10km_SD")] ## all rec hecs: 1424
+well_extir_hecs <- extirpated_hecs[extirpated_hecs$extir_prop>=0.5,] ## 472 hectads
+extir_hecs <- extirpated_hecs$Hectad
+well_hecs <- nmrsdata_well[,c("Hectad","elevation10x10km","elevation10x10km_SD")] ## all rec hecs: 639
 well_hecs <- well_hecs %>% distinct(Hectad, .keep_all = TRUE) ## different way of unique
-## subset 'well' extirpated hecs which have lost at least 25% of species
-well_extir_hecs <- extirpated_hecs[extirpated_hecs$extir_prop>=0.25,] ## 504 hectads
+well_hecs <- well_hecs %>% dplyr::filter(!Hectad %in% extir_hecs) ## 167
+
 
 ## add in climate data to each data frame
 temp <- read.csv("Data/NMRS/All_NMRS_hectads_annual_temperature.csv", header=TRUE)
@@ -1404,16 +1413,72 @@ climate <- Reduce(function(x, y) merge(x, y, all=TRUE), df_list, accumulate=FALS
 climate_tp2 <- climate[climate$time_period=="TP2",]
 
 ## merge in with all recorded hectads and then all well extirpated hectads
-well_hecs <- merge(well_hecs, climate_tp2, by="Hectad", all.x=)
-well_extir_hecs <- merge(well_extir_hecs, climate_tp2, by="Hectad", all.x=)
+well_hecs <- merge(well_hecs, climate_tp2, by="Hectad", all.x=TRUE)
+well_extir_hecs <- merge(well_extir_hecs, climate_tp2, by="Hectad", all.x=TRUE)
 
+extirpated_hecs <- merge(extirpated_hecs, climate_tp2, by="Hectad", all.x=TRUE)
+## are hectads with lower proportion of extirpated species at higher elevations?
+## prediction: species being lost from lower elevation as they are moving uphill
+temp <- ggplot(extirpated_hecs, aes(x = temperature, y = extir_prop)) + 
+  geom_point() +
+  geom_smooth(color = "black") +
+  theme_bw() ## possible positive relationship
+cor.test(extirpated_hecs$extir_prop, extirpated_hecs$temperature, method="spearman", exact=FALSE)
+
+summer_temp <- ggplot(extirpated_hecs, aes(x = summer_temperature, y = extir_prop)) + 
+  geom_point() +
+  geom_smooth(color = "black") +
+  theme_bw() ## possible positive relationship
+
+cor.test(extirpated_hecs$extir_prop, extirpated_hecs$summer_temperature, method="spearman", exact=FALSE)
+wilcox.test(extirpated_hecs$extir_prop, extirpated_hecs$summer_temperature)
+
+library("ggpubr")
+
+precip <- ggplot(extirpated_hecs, aes(x = total_precip, y = extir_prop)) + 
+  geom_point() +
+  geom_smooth(color = "black") +
+  theme_bw() ## possible negative relationship
+cor.test(extirpated_hecs$extir_prop, extirpated_hecs$total_precip, method="spearman", exact=FALSE)
+
+temp_df <- climate[,c("Hectad", "time_period", "temperature")]
+climate_diff <- temp_df %>%
+  spread(time_period, temperature) %>% 
+  mutate(temp_diff = TP2-TP1)
+## merge in with all recorded hectads and then all well extirpated hectads
+extirpated_hecs <- merge(extirpated_hecs, climate_diff, by="Hectad", all.x=TRUE)
+temp_diff <- ggplot(extirpated_hecs, aes(x = temp_diff, y = extir_prop)) + 
+  geom_point() +
+  geom_smooth(color = "black") +
+  theme_bw() ## possible positive relationship
+cor.test(extirpated_hecs$extir_prop, extirpated_hecs$temp_diff, method="kendall")
+
+elev <- ggplot(extirpated_hecs, aes(x = elevation10x10km, y = extir_prop)) + 
+  geom_point() +
+  geom_smooth(color = "black") +
+  theme_bw() ## possible positive relationship
+cor.test(extirpated_hecs$extir_prop, extirpated_hecs$elevation10x10km, method="kendall")
+
+elev_sd <- ggplot(extirpated_hecs, aes(x = elevation10x10km_SD, y = extir_prop)) + 
+  geom_point() +
+  geom_smooth(color = "black") +
+  theme_bw() ## possible positive relationship
+cor.test(extirpated_hecs$extir_prop, extirpated_hecs$elevation10x10km_SD, method="kendall")
+
+hist(extirpated_hecs$extir_prop) ## left skew
+extirpated_hecs$extir_prop_t <- (extirpated_hecs$extir_prop)^2 
+hist(extirpated_hecs$extir_prop_t) ## right skew
+
+plots <- ggarrange(temp, summer_temp, temp_diff, precip, elev, elev_sd,
+                   ncol = 2, nrow = 3)
+ggsave(plots, file="Graphs/extir_prop_climate.png", height=12, width=10)
 #### Annual temperature
 # split temperature into 10 bins
 well_hecs$temperature_cat <- cut(well_hecs$temperature, breaks = 10, labels=FALSE)
 
 well_hecs_temp_prop <- well_hecs %>% group_by(temperature_cat) %>% 
   dplyr::summarise(cnt = n()) %>%
-  mutate(freq = cnt / sum(cnt), 3)
+  mutate(freq = cnt / sum(cnt))
 plot(well_hecs_temp_prop$freq ~ well_hecs_temp_prop$temperature_cat) ## lower proportion of hectads with higher elevation
 ## same again for extirpated hectads
 
@@ -1760,7 +1825,7 @@ ggsave(well_extir_temp_diff, file="Graphs/Well_hecs_extirpated_temperature_diffe
 climate_extir <- ggarrange(well_extir_temp, well_extir_summer_temp, well_extir_temp_diff, well_extir_precip,
                            well_extir_elev, well_extir_elev_sd, labels = c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)"),
                            common.legend = TRUE, ncol = 2, nrow = 3, font.label = list(size = 12))
-ggsave(climate_extir, file="Graphs/Well_rec_climate_extirpated_hecs.png", height=10, width=8)
+ggsave(climate_extir, file="Graphs/Well_rec_climate_extirpated_hecs2.png", height=10, width=8)
 #
 
 
