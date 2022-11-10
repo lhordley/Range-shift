@@ -49,7 +49,7 @@ x <- ConvertCoordinates(nmrsdata$easting_centre, nmrsdata$northing_centre)
 colnames(x) <- c("lon_centre","lat_centre")
 nmrsdata <- cbind(nmrsdata, x) ## nmrsdata now has lat and lon values for centre of hectad to match to nearest temperature hectads
 
-nmrs_lat_lon <- unique(nmrsdata[,c(1,11,12)]) # 2719 (keep gridref to merge elevation with nmrsdata later)
+nmrs_lat_lon <- unique(nmrsdata[,c(1,12,13)]) # 2695 (keep gridref to merge elevation with nmrsdata later)
 
 tmp_newproj <- projectRaster(tmp_agg,crs = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 plot(tmp_newproj, axes = T)
@@ -61,7 +61,7 @@ tmp_elev$elevation1x1_new <- tmp_elev$elevation1x1_new*10 ## elevation in meters
 tmp_elev <- tmp_elev[,-1]
 colnames(tmp_elev)[1] <- "elevation10x10km"
 
-## map of elevation at NMRS 1km sqaures/points
+## map of elevation at NMRS 10km sqaures/points
 worldmap = map_data('world')
 ggplot() + 
   geom_polygon(data = worldmap, 
@@ -116,9 +116,9 @@ elev_sd_nmrs <- elev_sd_nmrs[,-c(3:4)]
 elev_mean_sd <- merge(tmp_elev, elev_sd_nmrs, by="Hectad")
 ## if throwing memory issues: memory.limit(size = 15000)
 nmrsdata <- merge(nmrsdata, elev_mean_sd, by="Hectad", all=T)
-## 20,501,968 rows in NMRS data (same as when first read in)
+## 667,521 rows in NMRS data (same as when first read in)
 head(nmrsdata)
-length(unique(nmrsdata$Hectad)) ## 2719
+length(unique(nmrsdata$Hectad)) ## 2695
 ## save data
 saveRDS(nmrsdata, file="Data/NMRS/NMRS_hectad_elevation.rds")
 ## use this for trailing edge analysis for elevation and latitude at a 10km scale
