@@ -20,46 +20,11 @@ nmrs_rec_hectad_years <- ddply(nmrsdata, .(Hectad, Time_period, easting, northin
 recording_effort <- nmrsdata %>% group_by(Hectad) %>% summarise(n_records=n())
 write.csv(recording_effort, file="Data/Recording_effort_all_spp.csv", row.names=FALSE)
 
-# # let's actually count the number of recorded hectads and the number of species*hectad records in each year
-# years.extended <- 1970:2016
-# 
-# recording <- data.frame(YEAR = numeric(),
-#                         HECTADS = numeric(),
-#                         RECORDS = numeric())
-# 
-# for (n in years.extended){
-#   year.hec <- nmrs_rec_hectad_years[which(nmrs_rec_hectad_years$Year==n), ]
-#   HECTADS <- nrow(year.hec)
-# 
-#   year.rec <- nmrsdata[which(nmrsdata$Year==n), ]
-#   RECORDS <- nrow(year.rec)
-# 
-#   YEAR <- n
-# 
-#   out <- data.frame(cbind(YEAR,HECTADS,RECORDS))
-#   recording <- rbind(recording,out)
-# 
-# 
-# }
-# 
-# summary(recording)
-# 
-# 
-# # now plot the number of records over time
-# records_time <- ggplot(recording, aes(x=YEAR, y=RECORDS)) +
-#   geom_point(size=2) +
-#   labs(x="Year", y="Number of records") +
-#   scale_y_continuous(breaks = seq(60000, 1400000, by=400000)) +
-#   theme_classic()
-# records_time
-# 
-# plot(RECORDS ~ YEAR, data = recording)
-
 ## time periods of interest
 tp1 <- 1975:1991
 tp2 <- 2012:2016
 
-# first follow Hickling et al directly by calculating which grid squares were recorded at least once in each interval
+# first follow Hickling et al directly by calculating which hectads were recorded at least once in each interval
 # first select out the intervals
 nmrs_rec_hectad_years_tp1 <- nmrs_rec_hectad_years[which(nmrs_rec_hectad_years$Time_period=="1975-1991"), ] # 2239
 nmrs_rec_hectad_years_tp2 <- nmrs_rec_hectad_years[which(nmrs_rec_hectad_years$Time_period=="2012-2016"), ] # 2647
@@ -228,49 +193,3 @@ hec_records <- merge(hec_records, lat_lon, by.x="HECTAD", by.y="Hectad")
 # this data takes a while to generate so let's back it up
 write.csv(hec_records, "Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", row.names = F)
 
-# ## Analysis 1: hectads with at least one species recorded in BOTH time periods: 1782 hectads
-# ## file = nmrsdata_good_hectads (needs subsetting by years)
-# years <- c(1975:1991, 2012:2016)
-# nmrsdata_rec_hecs <- nmrsdata_good_hectads[which(nmrsdata_good_hectads$Year %in% years), ]
-# length(unique(nmrsdata_rec_hecs$Hectad)) ## 1782 hectads
-# length(unique(nmrsdata_rec_hecs$Year)) ## 22 years
-# ## save file
-# saveRDS(nmrsdata_rec_hecs, "../../Data/NMRS/NMRSdata_rec_hecs_75_91_12_16.rds")
-# 
-# ## Analysis 2a: hectads classed as well-recorded in BOTH time periods: 57 hectads (not doable)
-# well_hecs <- hec_records %>%
-#   filter(RECORDING.LEVEL == "Well recorded") %>%
-#   group_by(HECTAD) %>%
-#   dplyr::summarise(n_row=n())
-# well_hecs <- well_hecs[which(well_hecs$n_row > 1), ] 
-# well_hecs$n_row <- NULL
-# 
-# ## Analysis 2b: hectads classed as heavily recorded in BOTH time periods: 412 hectads
-# heavy_hecs <- hec_records %>%
-#   filter(RECORDING.LEVEL == "Heavily recorded") %>%
-#   group_by(HECTAD) %>%
-#   dplyr::summarise(n_row=n())
-# heavy_hecs <- heavy_hecs[which(heavy_hecs$n_row > 1), ] 
-# heavy_hecs$n_row <- NULL
-# ## merge into nmrs data and filter by years so only have years within time periods
-# nmrsdata_heavy_hecs <- nmrsdata[which(nmrsdata$Hectad %in% heavy_hecs$HECTAD)]
-# length(unique(nmrsdata_heavy_hecs$Hectad)) ## 412 hectads
-# nmrsdata_heavy_hecs <- nmrsdata_heavy_hecs[which(nmrsdata_heavy_hecs$Year %in% years)]
-# length(unique(nmrsdata_heavy_hecs$Year)) ## 22 years
-# ## save file
-# saveRDS(nmrsdata_heavy_hecs, "../../Data/NMRS/NMRSdata_heavy_hecs_75_91_12_16.rds")
-# 
-# ## Analysis 2c: hectads classed as well OR heavily recorded in BOTH time periods: 747 hectads
-# well_heavy_hecs <- hec_records %>%
-#   filter(RECORDING.LEVEL == "Heavily recorded" | RECORDING.LEVEL=="Well recorded") %>%
-#   group_by(HECTAD) %>%
-#   dplyr::summarise(n_row=n())
-# well_heavy_hecs <- well_heavy_hecs[which(well_heavy_hecs$n_row > 1), ] 
-# well_heavy_hecs$n_row <- NULL
-# ## merge into nmrs data and filter by years so only have years within time periods
-# nmrsdata_well_heavy_hecs <- nmrsdata[which(nmrsdata$Hectad %in% well_heavy_hecs$HECTAD)]
-# length(unique(nmrsdata_well_heavy_hecs$Hectad)) ## 747 hectads
-# nmrsdata_well_heavy_hecs <- nmrsdata_well_heavy_hecs[which(nmrsdata_well_heavy_hecs$Year %in% years)]
-# length(unique(nmrsdata_well_heavy_hecs$Year)) ## 22 years
-# ## save file
-# saveRDS(nmrsdata_well_heavy_hecs, "../../Data/NMRS/NMRSdata_well_heavy_hecs_75_91_12_16.rds")

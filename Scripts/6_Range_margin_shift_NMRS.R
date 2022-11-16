@@ -21,119 +21,12 @@ nmrsdata <- readRDS("Data/NMRS/NMRS_cool_moths_final.rds") ## NMRS data for all 
 ## hectad recording levels
 hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
 
-###############################################################
-###################### RECORDED HECTADS #######################
-###############################################################
-
-## filter to recorded hectads only (i.e. those recorded once in both time periods)
-hectads <- unique(hec_records$HECTAD) ## 2191
-nmrsdata_rec <- nmrsdata[which(nmrsdata$Hectad %in% hectads), ]
-length(unique(nmrsdata_rec$Hectad)) ## 1886 hectads - fewer because the cool-adapted species aren't found in all hectads
-length(unique(nmrsdata_rec$Common_name)) ## 77 species
-
-### Filter: species need to occupy at least 20 hectads in each time period to calculate range shifts
-# count the number of hectads per species for each year
-nmrsdata_rec$PRESENCE <- 1
-tp_species_hecs <- ddply(nmrsdata_rec, .(Scientific_name,Common_name, Time_period), summarise,
-                         HECTADS = sum(PRESENCE)) ## 154 (77 species in two time periods)
-## only keep species if they occur in at least 20 hectads in BOTH time periods
-tp_species_hecs <- tp_species_hecs %>% group_by(Common_name) %>% filter(all(HECTADS>=20))
-species_keep <- unique(tp_species_hecs$Common_name) ## 51 species (lose 26)
-## mostly removes rare/restricted species
-nmrsdata_rec <-  nmrsdata_rec[which(nmrsdata_rec$Common_name %in% species_keep),] 
-length(unique(nmrsdata_rec$Hectad)) ## 1883 hectads
-length(unique(nmrsdata_rec$Common_name)) ## 51 species
-
-## map
-worldmap = map_data('world')
-rec_hecs <- ggplot() + 
-  geom_polygon(data = worldmap, 
-               aes(x = long, y = lat, group = group), 
-               fill = 'gray90', color = 'black') + 
-  coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
-  theme_void() + 
-  geom_point(data =nmrsdata_rec, 
-             aes(x = lon, y=lat), size=1) +
-  theme(title = element_text(size = 12))
-rec_hecs
-## save graph
-#ggsave(rec_hecs, file="../../Maps/Upland_moth_17spp_rec_hecs.png")
-
-
-################# LOW ELEVATION BOUNDARY SHIFT - mean elevation of 10 lowest elevation hectads for each time period
-
-## order elevation by ascending value
-## and take the top 10 values 
-low_10_elev_rec_hecs <- nmrsdata_rec %>% group_by(Common_name, Time_period) %>% arrange(elevation10x10km) %>% slice(seq_len(10))
-## now calculate mean of the 10 lowest hectads + summary stats
-low_elev_rec_hecs <- summarySE(low_10_elev_rec_hecs, measurevar="elevation10x10km", groupvars=c("Common_name","Time_period"))
-
-## check for normality 
-# compute the difference
-d <- with(low_elev_rec_hecs, 
-          elevation10x10km[Time_period == "1975-1991"] - elevation10x10km[Time_period == "2012-2016"])
-# Shapiro-Wilk normality test for the differences
-shapiro.test(d) # => p-value = <0.001 - distribution is NOT normal
-qqnorm(d)
-qqline(d) ## not good
-
-## wilcoxon signed-rank test instead
-low_elev_rec <- wilcox.test(elevation10x10km ~ Time_period, data = low_elev_rec_hecs, paired = TRUE)
-low_elev_rec ## significant (p=0.007) - elevation is higher in TP1 compared to TP2
-
-## plot result
-rec_low_elev <- ggpaired(low_elev_rec_hecs, x = "Time_period", y = "elevation10x10km",
-                         color = "Time_period", line.color = "gray", line.size = 0.4,
-                         palette = "jco", id="Common_name")+
-  xlab("Time period")+
-  ylab("Low elevation boundary")+
-  stat_compare_means(method="wilcox.test", paired = TRUE)
-rec_low_elev
-## low elevation boundary moving downhill over time
-ggsave(rec_low_elev, file="Graphs/Low_elevation_shift_rec_hecs.png")
-
-################# LOW LATITUDE BOUNDARY SHIFT - mean latitude of 10 most southerly hectads for each time period
-
-## order latitude by ascending value
-## take the top 10 values & average those
-
-low_10_lat_rec_hecs <- nmrsdata_rec %>% group_by(Common_name, Time_period) %>% arrange(lat) %>% slice(seq_len(10))
-## now calculate mean of the 10 lowest hectads + summary stats
-low_lat_rec_hecs <- summarySE(low_10_lat_rec_hecs, measurevar="lat", groupvars=c("Common_name","Time_period"))
-
-## check for normality 
-# compute the difference
-d <- with(low_lat_rec_hecs, 
-          lat[Time_period == "1975-1991"] - lat[Time_period == "2012-2016"])
-# Shapiro-Wilk normality test for the differences
-shapiro.test(d) # => p-value <0.001 - non-normal distribution
-qqnorm(d)
-qqline(d) ## looks ok
-
-## wilcoxon signed-rank test instead
-low_lat_rec <- wilcox.test(lat ~ Time_period, data = low_lat_rec_hecs, paired = TRUE)
-low_lat_rec ## significant
-
-## plot anyway
-rec_low_lat <- ggpaired(low_lat_rec_hecs, x = "Time_period", y = "lat",
-                        color = "Time_period", line.color = "gray", line.size = 0.4,
-                        palette = "jco", id="Common_name")+
-  xlab("Time period")+
-  ylab("Low latitude boundary")+
-  stat_compare_means(method="wilcox.test", paired = TRUE)
-rec_low_lat
-ggsave(rec_low_lat, file="Graphs/Low_latitude_shift_rec_hecs.png")
-##low latitude boundary moving northwards
-## Sword grass shows massive northwards shift
-
-
-
 ##################################################################
 ##################### WELL RECORDED HECTADS ######################
 ##################################################################
 
-## remove Lunar thorn
-nmrsdata <- nmrsdata[!nmrsdata$Common_name=="Lunar Thorn",]
+## remove Lunar thorn - immigrant species
+nmrsdata <- nmrsdata[!nmrsdata$Common_name=="Lunar Thorn",] # 76 species now
 
 ## filter to recorded hectads only (i.e. those recorded once in both time periods)
 well_heavy_hecs <- hec_records %>%
@@ -301,7 +194,7 @@ plot2
 ##################### HEAVILY RECORDED HECTADS ######################
 #####################################################################
 
-## remove Lunar thorn
+## remove Lunar thorn - immigrant species
 nmrsdata <- nmrsdata[!nmrsdata$Common_name=="Lunar Thorn",]
 
 ## filter to recorded hectads only (i.e. those recorded once in both time periods)

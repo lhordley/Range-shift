@@ -55,63 +55,115 @@ nmrsdata <- nmrsdata[!Hectad %in% sqIM$Hectad] ## 667,521 rows
 saveRDS(nmrsdata, "Data/NMRS/NMRS_hectad_cleaned.rds")
 
 
-## plot species with migrant populations on a map for Richard to determine which species x hectad combinations to remove
-# Angle-striped Sallow, Great Brocade, Rannoch Looper, Sword Grass, Gold Spangle, Golden-rod Brindle, Red Sword-grass and Scarce Silver Y
-
-nmrs_migrant <- filter(nmrsdata, (Common_name %in% c("Angle-striped Sallow", "Great Brocade",
-                                                     "Rannoch Looper", "Sword-grass", "Gold Spangle",
-                                                     "Golden-rod Brindle", "Red Sword-grass",
-                                                     "Scarce Silver Y")))
-
-worldmap = map_data('world')
-migrant_maps <- ggplot() + 
-  geom_polygon(data = worldmap, 
-               aes(x = long, y = lat, group = group), 
-               fill = 'gray90', color = 'black') + 
-  coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
-  geom_point(data = nmrs_migrant, 
-             aes(x = as.numeric(lon), 
-                 y = as.numeric(lat)), colour="red", size=0.7) + 
-  theme_void() +
-  theme(title = element_text(size = 12)) +
-  facet_wrap(~Common_name, ncol=4)
-migrant_maps
-ggsave(migrant_maps, file="Maps/Migrant_species_maps.png", height=8, width=10)
-
-nmrs_migrant <- nmrs_migrant[,c("Common_name", "Hectad", "Time_period")]
-write.csv(nmrs_migrant, file="Data/NMRS/NMRS_migrant_hectads.csv", row.names=FALSE)
-
-## re-plot maps with immigrant hectads removed
-nmrs_migrant_exclude <- read.csv("Data/NMRS/NMRS_migrant_hectads_exclude.csv", header=TRUE)
-nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_cleaned.rds")
-
-nmrs_migrant <- filter(nmrsdata, (Common_name %in% c("Angle-striped Sallow", "Great Brocade",
-                                                     "Rannoch Looper", "Sword-grass", "Gold Spangle",
-                                                     "Golden-rod Brindle", "Red Sword-grass",
-                                                     "Scarce Silver Y")))
 
 
-nmrs_migrant <- merge(nmrs_migrant, nmrs_migrant_exclude, by=c("Common_name", "Hectad", "Time_period"))
-## remove rows where exclude = 1
-nmrs_migrant[is.na(nmrs_migrant)] <- 0
-nmrs_migrant <- nmrs_migrant[!(nmrs_migrant$Exclude==1),]
 
-nmrs_migrant$Exclude <- as.factor(nmrs_migrant$Exclude)
-worldmap = map_data('world')
-migrant_maps <- ggplot() + 
-  geom_polygon(data = worldmap, 
-               aes(x = long, y = lat, group = group), 
-               fill = 'gray90', color = 'black') + 
-  coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
-  geom_point(data = nmrs_migrant, 
-             aes(x = as.numeric(lon), 
-                 y = as.numeric(lat)), colour="indianred2", size=0.7) + 
-  theme_void() +
-  theme(title = element_text(size = 12)) +
-  facet_wrap(~Common_name, ncol=4)
-migrant_maps
-ggsave(migrant_maps, file="Maps/Migrant_species_maps_exclude2.png", height=8, width=10)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 
+# ## plot species with migrant populations on a map for Richard to determine which species x hectad combinations to remove
+# # Angle-striped Sallow, Great Brocade, Rannoch Looper, Sword Grass, Gold Spangle, Golden-rod Brindle, Red Sword-grass and Scarce Silver Y
+# 
+# nmrs_migrant <- filter(nmrsdata, (Common_name %in% c("Angle-striped Sallow", "Great Brocade",
+#                                                      "Rannoch Looper", "Sword-grass", "Gold Spangle",
+#                                                      "Golden-rod Brindle", "Red Sword-grass",
+#                                                      "Scarce Silver Y")))
+# 
+# worldmap = map_data('world')
+# migrant_maps <- ggplot() + 
+#   geom_polygon(data = worldmap, 
+#                aes(x = long, y = lat, group = group), 
+#                fill = 'gray90', color = 'black') + 
+#   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
+#   geom_point(data = nmrs_migrant, 
+#              aes(x = as.numeric(lon), 
+#                  y = as.numeric(lat)), colour="red", size=0.7) + 
+#   theme_void() +
+#   theme(title = element_text(size = 12)) +
+#   facet_wrap(~Common_name, ncol=4)
+# migrant_maps
+# ggsave(migrant_maps, file="Maps/Migrant_species_maps.png", height=8, width=10)
+# 
+# nmrs_migrant <- nmrs_migrant[,c("Common_name", "Hectad", "Time_period")]
+# write.csv(nmrs_migrant, file="Data/NMRS/NMRS_migrant_hectads.csv", row.names=FALSE)
+# 
+# ## re-plot maps with immigrant hectads removed
+# nmrs_migrant_exclude <- read.csv("Data/NMRS/NMRS_migrant_hectads_exclude.csv", header=TRUE)
+# nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_cleaned.rds")
+# 
+# nmrs_migrant <- filter(nmrsdata, (Common_name %in% c("Angle-striped Sallow", "Great Brocade",
+#                                                      "Rannoch Looper", "Sword-grass", "Gold Spangle",
+#                                                      "Golden-rod Brindle", "Red Sword-grass",
+#                                                      "Scarce Silver Y")))
+# 
+# 
+# nmrs_migrant <- merge(nmrs_migrant, nmrs_migrant_exclude, by=c("Common_name", "Hectad", "Time_period"))
+# ## remove rows where exclude = 1
+# nmrs_migrant[is.na(nmrs_migrant)] <- 0
+# nmrs_migrant <- nmrs_migrant[!(nmrs_migrant$Exclude==1),]
+# 
+# nmrs_migrant$Exclude <- as.factor(nmrs_migrant$Exclude)
+# worldmap = map_data('world')
+# migrant_maps <- ggplot() + 
+#   geom_polygon(data = worldmap, 
+#                aes(x = long, y = lat, group = group), 
+#                fill = 'gray90', color = 'black') + 
+#   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
+#   geom_point(data = nmrs_migrant, 
+#              aes(x = as.numeric(lon), 
+#                  y = as.numeric(lat)), colour="indianred2", size=0.7) + 
+#   theme_void() +
+#   theme(title = element_text(size = 12)) +
+#   facet_wrap(~Common_name, ncol=4)
+# migrant_maps
+# ggsave(migrant_maps, file="Maps/Migrant_species_maps_exclude2.png", height=8, width=10)
+# 
 
 # 
 # 

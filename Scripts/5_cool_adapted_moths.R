@@ -9,6 +9,71 @@ rm(list = ls())
 library(dplyr)
 library(ggplot2)
 
+########################################################################################################
+## STEP 1: PLOT SPECIES TEMPERATURE RANGES (MEDIAN & 75TH PERCENTILE) BETWEEN 1975-1991
+## These are given to Richard to determine which cool-adapted species to select
+nmrsdata_climate <- readRDS("Data/NMRS/NMRS_hectad_elevation_climate.rds") ## NMRS data with temperature 
+migrant_hectads <- read.csv("Data/NMRS/NMRS_migrant_hectads_exclude.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
+## provided by Richard in Teams 20/10/21
+
+## Remove TP1 data - only looking at temperature range between 1975 - 1991
+nmrsdata_climate <- nmrsdata_climate[nmrsdata_climate$Time_period=="1975-1991",] # 254689
+migrant_hectads <- migrant_hectads[migrant_hectads$Time_period=="1975-1991",]
+## merge migrant exclusion data with nmrs_temp data
+## remove hectad/species combinations where exclude == 1
+migrant_hectads[is.na(migrant_hectads)] <- 0
+nmrsdata_climate <- merge(nmrsdata_climate, migrant_hectads, by=c("Common_name", "Hectad", "Time_period"), all=TRUE)
+nmrsdata_climate[is.na(nmrsdata_climate)] <- 0
+nmrsdata_climate <- nmrsdata_climate[nmrsdata_climate$Exclude !=1, ] ## 254544 rows
+
+detach(package:plyr)
+library(dplyr)
+library(ggplot2)
+summary_nmrs_temp <- nmrsdata_climate %>% 
+  group_by(Common_name) %>% 
+  summarise(lower = min(temperature), upper = max(temperature), p = median(temperature)) ## 788 species
+summary_nmrs_temp$lower <- as.numeric(summary_nmrs_temp$lower)
+summary_nmrs_temp$upper <- as.numeric(summary_nmrs_temp$upper)
+summary_nmrs_temp$p <- as.numeric(summary_nmrs_temp$p)
+
+summary_nmrs_temp <- summary_nmrs_temp[order(summary_nmrs_temp$p, decreasing = TRUE),]  
+library(Hmisc)
+summary_nmrs_temp$groups<-as.numeric(cut2(summary_nmrs_temp$p, g=12))
+## these groups are used to put groups into nmrs_temp to plot them more easily
+sp_groups <- summary_nmrs_temp[,c(1,5)]
+
+library(Hmisc)
+## use groups from above to put each species into groups to make plots
+nmrsdata_climate <- merge(nmrsdata_climate, sp_groups, by="Common_name", all=TRUE)
+group <- unique(nmrsdata_climate$groups) ## 12 groups
+
+for(i in group) {
+  print(i)
+  # Printing ggplot within for-loop
+  temp_plot <- ggplot(data = nmrsdata_climate[nmrsdata_climate$groups==i,], mapping = aes(x = reorder(Common_name,-temperature, FUN=median), y = temperature)) +
+    geom_boxplot() +
+    #geom_hline(yintercept=9, linetype="dotted") +
+    coord_flip() +
+    labs(x="Common name", y="Median temperature") +
+    scale_y_continuous(breaks = seq(3, 11, by = 1)) +
+    theme_light()
+  
+  ggsave(temp_plot, file=paste0("Data/UKCP_tas_annual/Early_TP_75_91/NMRS_new_temp_range_box_", i,".png"), width = 20, height = 25, units = "cm")
+  Sys.sleep(2)
+}
+
+## calculate median and 75th percentile for each species for Richard
+temp_ranges <- nmrsdata_climate %>%  group_by(Common_name) %>% 
+  summarise(median_temperature = median(temperature), percentile_75th = quantile(temperature, probs = 0.75))
+## order by median ascending
+temp_ranges <- arrange(temp_ranges, median_temperature)
+## save file
+write.csv(temp_ranges, file="Data/NMRS_new_temp_median_percentile.csv", row.names=FALSE)
+## Boxplots and percentile list given to Richard to select cool adapted species
+
+########################################################################################################
+## STEP 2: FILTER NMRS DATA TO SELECTION OF COOL-ADAPTED SPECIES DEFINED BY RICHARD USING 75TH TEMPERATURE PERCETILE
+
 ## NMRS data with climate and elevation
 nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_elevation_climate.rds") ## 667,521 rows
 ## migrant hectads that need excluded
