@@ -160,26 +160,23 @@ str(nmrs_glmm)
 ## 0 = species has persisted at that site
 nmrs_glmm$extinct <- ifelse(nmrs_glmm$persisted==0, 1, 0)
 
-worldmap = map_data('world')
-worldmap <- worldmap[!worldmap$region=="Ireland",]
-worldmap <- worldmap[!worldmap$subregion=="Northern Ireland",]
-nmrs_glmm$extinct <- as.factor(nmrs_glmm$extinct)
-rh1 <- ggplot() + 
-  geom_polygon(data = worldmap, 
-               aes(x = long, y = lat, group = group), 
-               fill = 'gray90', color = 'black') + 
-  coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
-  theme_void() + 
-  geom_point(data =nmrs_glmm[nmrs_glmm$Common_name=="Small Autumnal Moth",],
-  aes(x = lon, y=lat, colour=extinct), size=1.4) +
-  scale_color_manual(values = c("1" = "red", "0" = "dodgerblue2")) +
-  theme(title = element_text(size = 12))
-rh1
-ggsave(rh1, file="Graphs/poster_method3.png", width=15, height=14, units="cm")
+# worldmap = map_data('world')
+# worldmap <- worldmap[!worldmap$region=="Ireland",]
+# worldmap <- worldmap[!worldmap$subregion=="Northern Ireland",]
+# nmrs_glmm$extinct <- as.factor(nmrs_glmm$extinct)
+# rh1 <- ggplot() + 
+#   geom_polygon(data = worldmap, 
+#                aes(x = long, y = lat, group = group), 
+#                fill = 'gray90', color = 'black') + 
+#   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
+#   theme_void() + 
+#   geom_point(data =nmrs_glmm[nmrs_glmm$Common_name=="Small Autumnal Moth",],
+#   aes(x = lon, y=lat, colour=extinct), size=1.4) +
+#   scale_color_manual(values = c("1" = "red", "0" = "dodgerblue2")) +
+#   theme(title = element_text(size = 12))
+# rh1
+# ggsave(rh1, file="Graphs/poster_method3.png", width=15, height=14, units="cm")
 
-null <- glmer(extinct ~ scale(n_recs) + (1|Common_name), family="binomial", data=nmrs_glmm, 
-              na.action = "na.fail")
-AIC(null)
 ## TP1 model 
 model_tp1 <- glmer(extinct ~ scale(temperature.TP1)*scale(total_precip.TP1) + scale(temp_diff)*scale(precip_diff) +
                  scale(temperature.TP1)*scale(precip_diff) + scale(total_precip.TP1)*scale(temp_diff) +
@@ -530,9 +527,6 @@ precip05 <- quantile(nmrs_glmm$total_precip.TP2, 0.05)
 
 tp1_pop <- pred.dat_tp1_pop[(pred.dat_tp1_pop$temperature.TP1 >= temp05 & pred.dat_tp1_pop$temperature.TP1 <= temp95), ]
 tp1_pop <- tp1_pop[(tp1_pop$total_precip.TP1 >= precip05 & tp1_pop$total_precip.TP1 <= precip95), ]
-
-
-
 
 ## Forest plots for main effects
 tp1_summary <- read.csv("Outputs/Results/Average_model_summary_TP1_well.csv", header=TRUE)
