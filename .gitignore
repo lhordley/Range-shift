@@ -3,7 +3,6 @@
 .RData
 .Ruserdata
 *.Rproj
-*.csv
 *.zip
 *.7z
 *.xlsx
@@ -21,3 +20,5 @@
 *.JPG
 Conferences/
 Write-up/
+Data (all)/
+Outputs/
