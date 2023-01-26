@@ -16,24 +16,33 @@ library(MuMIn)
 library(dplyr)
 library(ggpubr)
 library(data.table)
-
-#########################################################################
-######################### WELL RECORDED HECTADS ######################### 
-#########################################################################
+library(tidyr)
 options(scipen=999)
 
-## NMRS data for cool-adapted moths with elevation and temperature data at a 10km scale
-nmrsdata <- readRDS("Data/NMRS/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
+########################## Step 1: Get data into correct format for modelling ########################## 
+
+#####################################
+## well & heavily recorded hectads ##
+#####################################
+
+# # First calculate recording effort - read in data on all NMRS records for years of interest (1975-1991 and 2012-2016)
+# tot_records <- read.csv("Data (all)/lhordley_export.csv", header=TRUE)
+# # Calculate recording effort to put in future models
+# # This is calculated as the total number of records in T1 and T2 (summed together)
+# recording_effort <- tot_records %>% group_by(Hectad) %>% summarise(n_recs=n())
+# write.csv(recording_effort, file="Data/Recording_effort.csv", row.names=FALSE)
+
+## Read in data
+# NMRS data for cool-adapted moths with elevation and temperature data at a 10km scale
+nmrsdata <- readRDS("Data/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
 ## hectad recording levels
-hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
-tot_records <- read.csv("Data/lhordley_export.csv", header=TRUE)
+hec_records <- read.csv("Data/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
+# recording effort
+recording_effort <- read.csv("Data/Recording_effort.csv", header=TRUE)
 
 nmrsdata <- nmrsdata[!nmrsdata$Common_name=="Lunar Thorn",]
 
-###################################
-## well & heavily recorded hectads
-
-## filter to recorded hectads only (i.e. those recorded once in both time periods)
+## Step 1a. Filter NMRS data to well or heavily recorded hectads only
 well_heavy_hecs <- hec_records %>%
   filter(RECORDING.LEVEL == "Heavily recorded" | RECORDING.LEVEL=="Well recorded") %>%
   group_by(HECTAD) %>%
@@ -45,11 +54,7 @@ nmrsdata_well <- nmrsdata[which(nmrsdata$Hectad %in% well_heavy_hecs$HECTAD), ]
 length(unique(nmrsdata_well$Hectad)) ## 962 hectads
 length(unique(nmrsdata_well$Common_name)) ## 76 species
 
-# Calclate recording effort to put in future models
-# This is calculated as the total number of records in T1 and T2 (summed together)
-recording_effort <- tot_records %>% group_by(Hectad) %>% summarise(n_recs=n())
-
-#### 3. Define colonised, persisted, and extirpated hectads
+## Step 1b. Define colonised, persisted, and extirpated hectads
 nmrsdata_well$Recorded <- 1
 nmrsdata_well_expand <- nmrsdata_well %>% tidyr::expand(Common_name, Time_period, Hectad)
 recorded <- nmrsdata_well[,c("Common_name", "Time_period", "Hectad", "Recorded")]
@@ -66,25 +71,27 @@ nmrsdata_well_expand2$Hectad_category <- case_when(
   TRUE ~ "Persistence"
 )
 
+## Step 1c. Plot the proportion of extinctions at each hectad on a map
 ## add lat/lon data back in
 lat_lon <- nmrsdata_well[,c("Hectad", "lat", "lon","elevation10x10km","elevation10x10km_SD")]
 lat_lon <- lat_lon %>% distinct(Hectad, .keep_all = TRUE) ## different way of unique
 nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, lat_lon, by="Hectad", all.x=TRUE)
-# add recording effort in
-nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, recording_effort, by="Hectad", all.x=TRUE)
 
 ## find proportion of species at each extirpated hectad - where are extirpations occurring? 
-extirpated_hecs1 <- nmrsdata_well_expand2 %>% group_by(Hectad, lat, lon) %>%
-  dplyr::summarise(tot_sp = n())
-extirpated_hecs2 <- nmrsdata_well_expand2 %>% group_by(Hectad, lat, lon) %>%
+extirpated_hecs1 <- nmrsdata_well_expand2 %>% group_by(Hectad, lat, lon) %>% filter(`1975-1991`==1) %>%
+  dplyr::summarise(tot_sp = n()) # number of species recorded in each hectad in TP1
+extirpated_hecs2 <- nmrsdata_well_expand2 %>% group_by(Hectad, lat, lon) %>% filter(sum(`1975-1991`)==0) %>%
+  dplyr::summarise(tot_sp = 0)
+extirpated_hecs3 <- nmrsdata_well_expand2 %>% group_by(Hectad, lat, lon) %>%
   filter(Hectad_category=="Extirpation") %>%
-  dplyr::summarise(extir_sp = n())
-extirpated_hecs <- merge(extirpated_hecs1, extirpated_hecs2, by=c("Hectad", "lat", "lon"), all.x=TRUE)
+  dplyr::summarise(extir_sp = n()) # number of species which have gone extinct from each hectad
+extirpated_hecs <- rbind(extirpated_hecs1, extirpated_hecs2)
+extirpated_hecs <- merge(extirpated_hecs, extirpated_hecs3, by=c("Hectad", "lat", "lon"), all.x=TRUE)
 extirpated_hecs[is.na(extirpated_hecs)] <- 0 ## change NAs to zero - where there are no extirpations at a hectad
 extirpated_hecs$extir_prop <- extirpated_hecs$extir_sp/extirpated_hecs$tot_sp ## 962
-## very long way of doing this - gave up on finding a quicker way!
+extirpated_hecs$extir_prop[is.nan(extirpated_hecs$extir_prop)]<-0 # convert NaNs to zero (hectads where there are only colonising species - the 93 hectads in extirpated_hecs2)
 
-## heatmap
+## map
 worldmap = map_data('world')
 well_extir_hecs <- ggplot() +
   geom_polygon(data = worldmap,
@@ -100,53 +107,186 @@ well_extir_hecs <- ggplot() +
   scale_fill_continuous(guide = guide_legend()) +
   guides(colour = guide_colourbar(title.vjust = 0.9)) +
   theme(legend.position="bottom", legend.key.height = unit(0.5, "cm"), legend.key.width = unit(2, "cm"))
-## extirpated hectads with the most species lost tend to be in Northern Scotland/Pennines
 well_extir_hecs
-ggsave(extir_hecs, file="Outputs/Maps/Well_extirpated_hecs.png")
 
-
+## Step 1d. Add in recording effort and climate data and calculate difference between T1 and T2 temperature and precipitation
+# add recording effort in
+nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, recording_effort, by="Hectad", all.x=TRUE)
 ## add in climate data to each data frame
-temp <- read.csv("Data/NMRS/All_NMRS_hectads_annual_temperature.csv", header=TRUE)
-#summer_temp <- read.csv("Data/NMRS/All_NMRS_hectads_summer_temperature.csv", header=TRUE)
-precip <- read.csv("Data/NMRS/All_NMRS_hectads_total_precipitation.csv", header=TRUE)
-## put these together
-df_list <- list(temp, precip)
-climate <- Reduce(function(x, y) merge(x, y, all=TRUE), df_list, accumulate=FALSE)
-climate <- subset(climate, select=-c(lat_centre, lon_centre))
-## only want TP2 climate data
-#climate_tp2 <- climate[climate$time_period=="TP2",]
-climate_wide <- reshape(climate, idvar = "Hectad", timevar = "time_period", direction = "wide")
+temp <- unique(nmrsdata_well[,c("Hectad", "Time_period", "temperature")])
+precip <- unique(nmrsdata_well[,c("Hectad", "Time_period", "total_precip")])
+# change each from long to wide
+temp_wide <- reshape(temp, idvar = "Hectad", timevar = "Time_period", direction = "wide")
+colnames(temp_wide)[2:3] <- c("temperature.TP2", "temperature.TP1")
+temp_wide$temp_diff <- temp_wide$temperature.TP2 - temp_wide$temperature.TP1
+precip_wide <- reshape(precip, idvar = "Hectad", timevar = "Time_period", direction = "wide")
+colnames(precip_wide)[2:3] <- c("total_precip.TP2", "total_precip.TP1")
+precip_wide$precip_diff <- precip_wide$total_precip.TP2 - precip_wide$total_precip.TP1
+## merge in with nmrs data
+nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, temp_wide, by="Hectad", all.x=TRUE)
+nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, precip_wide, by="Hectad", all.x=TRUE)
 
-## merge in with all recorded hectads and then all well extirpated hectads
+## Step 1e. Remove colonisations - only interested in extinctions and persistence 
 nmrsdata_well_expand2<-nmrsdata_well_expand2[!(nmrsdata_well_expand2$Hectad_category=="Colonisation"),] ## remove colonisations
-nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, climate_wide, by="Hectad", all.x=TRUE)
+## create extinct column - opposite of persisted so the values from the model are probability of extinction, not persistance
+## 1 = species is locally extinct at that site
+## 0 = species has persisted at that site
+nmrsdata_well_expand2$`2012-2016` <- ifelse(nmrsdata_well_expand2$`2012-2016`==0, 1, 0) 
+colnames(nmrsdata_well_expand2)[4] <- "extinct" # change column name to extinct
+nmrsdata_well_expand2[3] <- NULL # remove TP1 presence/absence
+## save file
+write.csv(nmrsdata_well_expand2, file="Data/nmrsdata_well_local_extinction.csv", row.names=FALSE)
 
-temp_df <- climate[,c("Hectad", "time_period", "temperature")]
-temp_diff <- temp_df %>%
-  spread(time_period, temperature) %>% 
-  mutate(temp_diff = TP2-TP1)
-temp_diff <- temp_diff[,c("Hectad", "temp_diff")]
-precip_df <- climate[,c("Hectad", "time_period", "total_precip")]
-precip_diff <- precip_df %>%
-  spread(time_period, total_precip) %>% 
-  mutate(precip_diff = TP2-TP1)
-precip_diff <- precip_diff[,c("Hectad", "precip_diff")]
 
-## merge in with all recorded hectads and then all well extirpated hectads
-nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, temp_diff, by="Hectad", all.x=TRUE)
-nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, precip_diff, by="Hectad", all.x=TRUE)
+####################################
+##  heavily recorded hectads only ##
+####################################
 
-colnames(nmrsdata_well_expand2)[4] <- "persisted"
+rm(list = ls())
 
-write.csv(nmrsdata_well_expand2, file="Data/NMRS/nmrsdata_well_local_extinction2.csv", row.names=FALSE)
+library(ggplot2)
+library(ggeffects)
+library(DHARMa)
+library(lme4)
+library(MuMIn)
+library(stringr)
+library(blmeco)
+library(MuMIn)
+
+## Read in data
+# NMRS data for cool-adapted moths with elevation and temperature data at a 10km scale
+nmrsdata <- readRDS("Data/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
+## hectad recording levels
+hec_records <- read.csv("Data/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
+# recording effort
+recording_effort <- read.csv("Data/Recording_effort.csv", header=TRUE)
+
+nmrsdata <- nmrsdata[!nmrsdata$Common_name=="Lunar Thorn",]
+
+## Step 1a. Filter NMRS data to heavily recorded hectads only
+heavy_hecs <- hec_records %>%
+  filter(RECORDING.LEVEL == "Heavily recorded") %>%
+  group_by(HECTAD) %>%
+  dplyr::summarise(n_row=n())
+heavy_hecs <- heavy_hecs[which(heavy_hecs$n_row > 1), ]
+heavy_hecs$n_row <- NULL ## 1084 hectads
+## merge into nmrs data and filter by years so only have years within time periods
+nmrsdata_heavy <- nmrsdata[which(nmrsdata$Hectad %in% heavy_hecs$HECTAD), ]
+length(unique(nmrsdata_heavy$Hectad)) ## 592 hectads
+length(unique(nmrsdata_heavy$Common_name)) ## 72 species
+
+## Step 1b. Define colonised, persisted, and extirpated hectads
+nmrsdata_heavy$Recorded <- 1
+nmrsdata_heavy_expand <- nmrsdata_heavy %>% tidyr::expand(Common_name, Time_period, Hectad)
+recorded <- nmrsdata_heavy[,c("Common_name", "Time_period", "Hectad", "Recorded")]
+nmrsdata_heavy_expand <- merge(nmrsdata_heavy_expand, recorded, by=c("Common_name", "Time_period", "Hectad"), all.x=TRUE)
+nmrsdata_heavy_expand[is.na(nmrsdata_heavy_expand)] <- 0 ## change NAs to zero == species was NOT recorded at this hectad in this time period
+## change to long format
+nmrsdata_heavy_expand2 <- nmrsdata_heavy_expand %>%
+  spread(Time_period, Recorded) ## each species has 1424 rows = the number of recorded hectads
+## first remove rows where TP1 AND TP2 == 0 (this a hectad where a species was never recorded)
+nmrsdata_heavy_expand2<-nmrsdata_heavy_expand2[!(nmrsdata_heavy_expand2$`1975-1991`==0 & nmrsdata_heavy_expand2$`2012-2016`==0),]
+nmrsdata_heavy_expand2$Hectad_category <- case_when(
+  nmrsdata_heavy_expand2$`1975-1991`==0 & nmrsdata_heavy_expand2$`2012-2016`==1 ~ "Colonisation",
+  nmrsdata_heavy_expand2$`1975-1991`==1 & nmrsdata_heavy_expand2$`2012-2016`==0 ~ "Extirpation",
+  TRUE ~ "Persistence"
+)
+
+## Step 1c. Plot the proportion of extinctions at each hectad on a map
+## add lat/lon data back in
+lat_lon <- nmrsdata_heavy[,c("Hectad", "lat", "lon","elevation10x10km","elevation10x10km_SD")]
+lat_lon <- lat_lon %>% distinct(Hectad, .keep_all = TRUE) ## different way of unique
+nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, lat_lon, by="Hectad", all.x=TRUE)
+
+## find proportion of species at each extirpated hectad - where are extirpations occurring? 
+extirpated_hecs1 <- nmrsdata_heavy_expand2 %>% group_by(Hectad, lat, lon) %>% filter(`1975-1991`==1) %>%
+  dplyr::summarise(tot_sp = n()) # number of species recorded in each hectad in TP1
+extirpated_hecs2 <- nmrsdata_heavy_expand2 %>% group_by(Hectad, lat, lon) %>% filter(sum(`1975-1991`)==0) %>%
+  dplyr::summarise(tot_sp = 0)
+extirpated_hecs3 <- nmrsdata_heavy_expand2 %>% group_by(Hectad, lat, lon) %>%
+  filter(Hectad_category=="Extirpation") %>%
+  dplyr::summarise(extir_sp = n()) # number of species which have gone extinct from each hectad
+extirpated_hecs <- rbind(extirpated_hecs1, extirpated_hecs2)
+extirpated_hecs <- merge(extirpated_hecs, extirpated_hecs3, by=c("Hectad", "lat", "lon"), all.x=TRUE)
+extirpated_hecs[is.na(extirpated_hecs)] <- 0 ## change NAs to zero - where there are no extirpations at a hectad
+extirpated_hecs$extir_prop <- extirpated_hecs$extir_sp/extirpated_hecs$tot_sp ## 592
+extirpated_hecs$extir_prop[is.nan(extirpated_hecs$extir_prop)]<-0 # convert NaNs to zero (hectads where there are only colonising species - the 45 hectads in extirpated_hecs2)
+
+## map
+worldmap = map_data('world')
+heavy_extir_hecs <- ggplot() +
+  geom_polygon(data = worldmap,
+               aes(x = long, y = lat, group = group),
+               fill = 'gray90', color = 'black') +
+  coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) +
+  theme_void() +
+  geom_point(data =extirpated_hecs,
+             aes(x = as.numeric(lon),
+                 y = as.numeric(lat), colour=extir_prop), size=1) +
+  scale_color_viridis_c(name="Proportion of species") + 
+  theme(title = element_text(size = 12)) +
+  scale_fill_continuous(guide = guide_legend()) +
+  guides(colour = guide_colourbar(title.vjust = 0.9)) +
+  theme(legend.position="bottom", legend.key.height = unit(0.5, "cm"), legend.key.width = unit(2, "cm"))
+heavy_extir_hecs
+ggsave(heavy_extir_hecs, file="Outputs/Maps/Heavy_extirpated_hecs.png")
+
+## put maps together
+legend <- cowplot::get_legend(well_extir_hecs + theme(legend.position = "bottom"))
+library(gridExtra)
+library(grid)
+lay <- rbind(c(1,2), c(3,3))
+th <- sum(legend$heights)
+extir_maps <- grid.arrange(well_extir_hecs + theme(legend.position="none"), 
+                           heavy_extir_hecs + theme(legend.position="none"), legend, 
+                           ncol=2, layout_matrix=lay, heights = unit.c(unit(1, "null"), th))
+extir_maps
+ggsave("Outputs/Maps/Extir_maps.png", extir_maps, height=6, width=10)
+
+## Step 1d. Add in recording effort and climate data and calculate difference between T1 and T2 temperature and precipitation
+# add recording effort in
+nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, recording_effort, by="Hectad", all.x=TRUE)
+## add in climate data to each data frame
+temp <- unique(nmrsdata_heavy[,c("Hectad", "Time_period", "temperature")])
+precip <- unique(nmrsdata_heavy[,c("Hectad", "Time_period", "total_precip")])
+# change each from long to wide
+temp_wide <- reshape(temp, idvar = "Hectad", timevar = "Time_period", direction = "wide")
+colnames(temp_wide)[2:3] <- c("temperature.TP2", "temperature.TP1")
+temp_wide$temp_diff <- temp_wide$temperature.TP2 - temp_wide$temperature.TP1
+precip_wide <- reshape(precip, idvar = "Hectad", timevar = "Time_period", direction = "wide")
+colnames(precip_wide)[2:3] <- c("total_precip.TP2", "total_precip.TP1")
+precip_wide$precip_diff <- precip_wide$total_precip.TP2 - precip_wide$total_precip.TP1
+## merge in with nmrs data
+nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, temp_wide, by="Hectad", all.x=TRUE)
+nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, precip_wide, by="Hectad", all.x=TRUE)
+
+## Step 1e. Remove colonisations - only interested in extinctions and persistence 
+nmrsdata_heavy_expand2<-nmrsdata_heavy_expand2[!(nmrsdata_heavy_expand2$Hectad_category=="Colonisation"),] ## remove colonisations
+## create extinct column - opposite of TP2 presence/absence so the values from the model are probability of extinction, not persistance
+## 1 = species is locally extinct at that site
+## 0 = species has persisted at that site
+nmrsdata_heavy_expand2$`2012-2016` <- ifelse(nmrsdata_heavy_expand2$`2012-2016`==0, 1, 0) 
+colnames(nmrsdata_heavy_expand2)[4] <- "extinct" # change column name to extinct
+nmrsdata_heavy_expand2[3] <- NULL # remove TP1 presence/absence
+## save file
+write.csv(nmrsdata_heavy_expand2, file="Data/nmrsdata_heavy_local_extinction.csv", row.names=FALSE)
 
 
 #########################################################################################################
+#########################################################################################################
+#########################################################################################################
 
-nmrs_glmm <- read.csv("Data/NMRS/nmrsdata_well_local_extinction2.csv", header=TRUE)
+########################## Step 2: Run binomial GLMMs ########################## 
 
+#####################################
+## well & heavily recorded hectads ##
+#####################################
+
+nmrs_glmm <- read.csv("Data/nmrsdata_well_local_extinction.csv", header=TRUE)
+
+# check correlations between climate variables
 round(cor(nmrs_glmm[,c("temperature.TP1","temp_diff","total_precip.TP1","precip_diff", "n_recs")]),3)
-# all <0.6
+# all <0.7
 ## leave all variables in
 round(cor(nmrs_glmm[,c("temperature.TP2","temp_diff","total_precip.TP2","precip_diff", "n_recs")]),3)
 # 0.62 temp_diff and temp_tp2
@@ -154,28 +294,6 @@ round(cor(nmrs_glmm[,c("temperature.TP2","temp_diff","total_precip.TP2","precip_
 ## leave all in
 
 str(nmrs_glmm)
-
-## create extinct column - opposite of persisted so the values from the model are probability of extinction, not persistance
-## 1 = species is locally extinct at that site
-## 0 = species has persisted at that site
-nmrs_glmm$extinct <- ifelse(nmrs_glmm$persisted==0, 1, 0)
-
-# worldmap = map_data('world')
-# worldmap <- worldmap[!worldmap$region=="Ireland",]
-# worldmap <- worldmap[!worldmap$subregion=="Northern Ireland",]
-# nmrs_glmm$extinct <- as.factor(nmrs_glmm$extinct)
-# rh1 <- ggplot() + 
-#   geom_polygon(data = worldmap, 
-#                aes(x = long, y = lat, group = group), 
-#                fill = 'gray90', color = 'black') + 
-#   coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) + 
-#   theme_void() + 
-#   geom_point(data =nmrs_glmm[nmrs_glmm$Common_name=="Small Autumnal Moth",],
-#   aes(x = lon, y=lat, colour=extinct), size=1.4) +
-#   scale_color_manual(values = c("1" = "red", "0" = "dodgerblue2")) +
-#   theme(title = element_text(size = 12))
-# rh1
-# ggsave(rh1, file="Graphs/poster_method3.png", width=15, height=14, units="cm")
 
 ## TP1 model 
 model_tp1 <- glmer(extinct ~ scale(temperature.TP1)*scale(total_precip.TP1) + scale(temp_diff)*scale(precip_diff) +
@@ -346,11 +464,9 @@ model_tp2 <- glmer(extinct ~ scale(temperature.TP2) + scale(temp_diff) + scale(t
                  scale(n_recs) + (1|Common_name), family="binomial", glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 100000)),
                  data=nmrs_glmm, na.action = "na.fail")
 summary(model_tp2)
-## 3 way interaction: total_precip*temp_diff*temperature is non-significant
-## temperature*temp_diff is significant
 
 library(MuMIn)
-r.squaredGLMM(model_tp2) ## 8.3% fixed effects, 19.8% fixed and random effects
+r.squaredGLMM(model_tp2) 
 car::vif(model_tp2) ## all < 4
 
 ## check model assumptions - only use this to check for outliers, binomial GLMM don't require normal residuals or homogeneity of variance
@@ -384,7 +500,6 @@ y_unique <- c(str_extract(coords, "(?<=, ).+$"))
 sims<-simulateResiduals(model_tp2)
 simsrecalc<-recalculateResiduals(sims,group = nmrs_glmm$coords) # recalculate residuals based on unique coordinates
 testSpatialAutocorrelation(simsrecalc, x = x_unique, y = y_unique) ## non significant - no evidence of spatial autocorrelation
-
 
 ## dredge model
 # Dredge & get best models based on AIC
@@ -470,7 +585,6 @@ for(i in unique(pred.dat_tp2$Common_name)) {
   ggsave(extinct_plot, file=paste0("Outputs/Graphs/Extinction_TP2_2/Extinction_prob_TP2_", i,".png"), width = 20, height = 15, units = "cm")
   Sys.sleep(2)
 }
-
 
 ## Population level predictions
 pred.dat_tp2_pop = expand.grid(temp_diff = median(nmrs_glmm$temp_diff), precip_diff = median(nmrs_glmm$precip_diff), 
@@ -691,168 +805,27 @@ climate_hist <- ggarrange(temp_tp1, precip_tp1, temp_tp2, precip_tp2, temp_diff,
 climate_hist 
 ggsave(climate_hist, file="Outputs/Graphs/Climate_histograms.png", height=20, width=15)
 
-############################################################################
-######################### HEAVILY RECORDED HECTADS ######################### 
-############################################################################
 
-rm(list = ls())
-
-library(ggplot2)
-library(ggeffects)
-library(DHARMa)
-library(lme4)
-library(MuMIn)
-library(stringr)
-library(blmeco)
-library(MuMIn)
-
-## NMRS data for cool-adapted moths with elevation and temperature data at a 10km scale
-nmrsdata <- readRDS("Data/NMRS/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
-## hectad recording levels
-hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
-tot_records <- read.csv("Data/lhordley_export.csv", header=TRUE)
-
-nmrsdata <- nmrsdata[!nmrsdata$Common_name=="Lunar Thorn",]
-
-###################################
-## Heavily recorded hectads
-
-## filter to recorded hectads only (i.e. those recorded once in both time periods)
-heavy_hecs <- hec_records %>%
-  filter(RECORDING.LEVEL == "Heavily recorded") %>%
-  group_by(HECTAD) %>%
-  dplyr::summarise(n_row=n())
-heavy_hecs <- heavy_hecs[which(heavy_hecs$n_row > 1), ]
-heavy_hecs$n_row <- NULL ## 1084 hectads
-## merge into nmrs data and filter by years so only have years within time periods
-nmrsdata_heavy <- nmrsdata[which(nmrsdata$Hectad %in% heavy_hecs$HECTAD), ]
-length(unique(nmrsdata_heavy$Hectad)) ## 592 hectads
-length(unique(nmrsdata_heavy$Common_name)) ## 72 species
-
-# Calclate recording effort to put in future models
-# This is calculated as the total number of records in T1 and T2 (summed together)
-recording_effort <- tot_records %>% group_by(Hectad) %>% summarise(n_recs=n())
-
-#### Define colonised, persisted, and extirpated hectads
-nmrsdata_heavy$Recorded <- 1
-nmrsdata_heavy_expand <- nmrsdata_heavy %>% tidyr::expand(Common_name, Time_period, Hectad)
-recorded <- nmrsdata_heavy[,c("Common_name", "Time_period", "Hectad", "Recorded")]
-nmrsdata_heavy_expand <- merge(nmrsdata_heavy_expand, recorded, by=c("Common_name", "Time_period", "Hectad"), all.x=TRUE)
-nmrsdata_heavy_expand[is.na(nmrsdata_heavy_expand)] <- 0 ## change NAs to zero == species was NOT recorded at this hectad in this time period
-## change to long format
-nmrsdata_heavy_expand2 <- nmrsdata_heavy_expand %>%
-  spread(Time_period, Recorded) ## each species has 1424 rows = the number of recorded hectads
-## first remove rows where TP1 AND TP2 == 0 (this a hectad where a species was never recorded)
-nmrsdata_heavy_expand2<-nmrsdata_heavy_expand2[!(nmrsdata_heavy_expand2$`1975-1991`==0 & nmrsdata_heavy_expand2$`2012-2016`==0),]
-nmrsdata_heavy_expand2$Hectad_category <- case_when(
-  nmrsdata_heavy_expand2$`1975-1991`==0 & nmrsdata_heavy_expand2$`2012-2016`==1 ~ "Colonisation",
-  nmrsdata_heavy_expand2$`1975-1991`==1 & nmrsdata_heavy_expand2$`2012-2016`==0 ~ "Extirpation",
-  TRUE ~ "Persistence"
-)
-## add lat/lon data back in
-lat_lon <- nmrsdata_heavy[,c("Hectad", "lat", "lon","elevation10x10km","elevation10x10km_SD")]
-lat_lon <- lat_lon %>% distinct(Hectad, .keep_all = TRUE) ## different way of unique
-nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, lat_lon, by="Hectad", all.x=TRUE)
-# add recording effort in
-nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, recording_effort, by="Hectad", all.x=TRUE)
-
-## find proportion of species at each extirpated hectad - where are extirpations occurring? 
-extirpated_hecs1 <- nmrsdata_heavy_expand2 %>% group_by(Hectad, lat, lon) %>%
-  dplyr::summarise(tot_sp = n())
-extirpated_hecs2 <- nmrsdata_heavy_expand2 %>% group_by(Hectad, lat, lon) %>%
-  filter(Hectad_category=="Extirpation") %>%
-  dplyr::summarise(extir_sp = n())
-extirpated_hecs <- merge(extirpated_hecs1, extirpated_hecs2, by=c("Hectad", "lat", "lon"), all.x=TRUE)
-extirpated_hecs[is.na(extirpated_hecs)] <- 0 ## change NAs to zero - where there are no extirpations at a hectad
-extirpated_hecs$extir_prop <- extirpated_hecs$extir_sp/extirpated_hecs$tot_sp ## 962
-## very long way of doing this - gave up on finding a quicker way!
-
-## heatmap
-worldmap = map_data('world')
-heavy_extir_hecs <- ggplot() +
-  geom_polygon(data = worldmap,
-               aes(x = long, y = lat, group = group),
-               fill = 'gray90', color = 'black') +
-  coord_fixed(ratio = 1.3, xlim = c(-10,3), ylim = c(50, 59)) +
-  theme_void() +
-  geom_point(data =extirpated_hecs,
-             aes(x = as.numeric(lon),
-                 y = as.numeric(lat), colour=extir_prop), size=1) +
-  scale_color_viridis_c(name="Proportion of species") + 
-  theme(title = element_text(size = 12)) +
-  scale_fill_continuous(guide = guide_legend()) +
-  guides(colour = guide_colourbar(title.vjust = 0.9)) +
-  theme(legend.position="bottom", legend.key.height = unit(0.5, "cm"), legend.key.width = unit(2, "cm"))
-## extirpated hectads with the most species lost tend to be in Northern Scotland/Pennines
-heavy_extir_hecs
-ggsave(heavy_extir_hecs, file="Outputs/Maps/Heavy_extirpated_hecs.png")
-
-## put maps together
-legend <- cowplot::get_legend(well_extir_hecs + theme(legend.position = "bottom"))
-library(gridExtra)
-library(grid)
-lay <- rbind(c(1,2), c(3,3))
-th <- sum(legend$heights)
-extir_maps <- grid.arrange(well_extir_hecs + theme(legend.position="none"), 
-                                heavy_extir_hecs + theme(legend.position="none"), legend, 
-                                ncol=2, layout_matrix=lay, heights = unit.c(unit(1, "null"), th))
-extir_maps
-ggsave("Outputs/Maps/Extir_maps.png", final_heatmaps2, height=6, width=10)
-
-
-## add in climate data to each data frame
-temp <- read.csv("Data/NMRS/All_NMRS_hectads_annual_temperature.csv", header=TRUE)
-#summer_temp <- read.csv("Data/NMRS/All_NMRS_hectads_summer_temperature.csv", header=TRUE)
-precip <- read.csv("Data/NMRS/All_NMRS_hectads_total_precipitation.csv", header=TRUE)
-## put these together
-df_list <- list(temp, precip)
-climate <- Reduce(function(x, y) merge(x, y, all=TRUE), df_list, accumulate=FALSE)
-climate <- subset(climate, select=-c(lat_centre, lon_centre))
-## only want TP2 climate data
-#climate_tp2 <- climate[climate$time_period=="TP2",]
-climate_wide <- reshape(climate, idvar = "Hectad", timevar = "time_period", direction = "wide")
-
-## merge in with all recorded hectads and then all well extirpated hectads
-nmrsdata_heavy_expand2<-nmrsdata_heavy_expand2[!(nmrsdata_heavy_expand2$Hectad_category=="Colonisation"),] ## remove colonisations
-nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, climate_wide, by="Hectad", all.x=TRUE)
-
-temp_df <- climate[,c("Hectad", "time_period", "temperature")]
-temp_diff <- temp_df %>%
-  spread(time_period, temperature) %>% 
-  mutate(temp_diff = TP2-TP1)
-temp_diff <- temp_diff[,c("Hectad", "temp_diff")]
-precip_df <- climate[,c("Hectad", "time_period", "total_precip")]
-precip_diff <- precip_df %>%
-  spread(time_period, total_precip) %>% 
-  mutate(precip_diff = TP2-TP1)
-precip_diff <- precip_diff[,c("Hectad", "precip_diff")]
-
-## merge in with all recorded hectads and then all well extirpated hectads
-nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, temp_diff, by="Hectad", all.x=TRUE)
-nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, precip_diff, by="Hectad", all.x=TRUE)
-
-colnames(nmrsdata_heavy_expand2)[4] <- "persisted"
-
-write.csv(nmrsdata_heavy_expand2, file="Data/NMRS/nmrsdata_heavy_local_extinction2.csv", row.names=FALSE)
 
 ##################################################################################################################
+##################################################################################################################
+##################################################################################################################
 
-nmrs_glmm <- read.csv("Data/NMRS/nmrsdata_heavy_local_extinction2.csv", header=TRUE)
+###################################
+## heavily recorded hectads only ##
+###################################
 
+nmrs_glmm <- read.csv("Data/nmrsdata_heavy_local_extinction.csv", header=TRUE)
+
+# check correlations between climate variables
 round(cor(nmrs_glmm[,c("temperature.TP1","temp_diff","total_precip.TP1","precip_diff", "n_recs")]),3)
-# all <0.6
+# all <0.7
 ## leave all variables in
 round(cor(nmrs_glmm[,c("temperature.TP2","temp_diff","total_precip.TP2","precip_diff", "n_recs")]),3)
 # 0.62 temp_diff and temp_tp2
 # 0.66 precip_diff and precip_tp2
 ## leave all in
-
 str(nmrs_glmm)
-
-## create extinct column - opposite of persisted so the values from the model are probability of extinction, not persistance
-## 1 = species is locally extinct at that site
-## 0 = species has persisted at that site
-nmrs_glmm$extinct <- ifelse(nmrs_glmm$persisted==0, 1, 0)
 
 ## TP1 model 
 model_tp1 <- glmer(extinct ~ scale(temperature.TP1) + scale(temp_diff) + scale(total_precip.TP1) + scale(precip_diff) + 
@@ -1101,22 +1074,3 @@ final_heatmaps2 <- grid.arrange(precip_temp_TP1 + theme(legend.position="none"),
                                 ncol=2, layout_matrix=lay, heights = unit.c(unit(1, "null"), th))
 final_heatmaps2
 ggsave("Outputs/Graphs/Final_heatmaps_heavy.png", final_heatmaps2, height=4, width=10)
-
-
-
-
-num_recs <- read.csv("Data/nmrs_num_records_postgis.csv", header=TRUE)
-hecs <- read.csv("Data/nmrs_hectads_extinction.csv", header=TRUE)
-
-years <- c(1975:1991, 2012:2016)
-num_recs <- num_recs[num_recs$rec_year %in% years, ]
-rec_effort <- merge(hecs, num_recs, by.x="gridrefs", by.y="hectad", all.x=TRUE)
-library(dplyr)
-rec_effort_final <- rec_effort %>% group_by(gridrefs) %>% summarise(n_recs=sum(num_records))
-
-write.csv(rec_effort, "Data/nmrs_num_records.csv", row.names=FALSE)
-
-tot_records <- read.csv("Data/lhordley_export.csv", header=TRUE)
-
-tot_records_final <- tot_records %>% group_by(Hectad) %>% summarise(n_recs=n())
-tot_records_final <- merge(hecs, tot_records_final, by.x="gridrefs", by.y="Hectad", all.x=TRUE)
