@@ -15,7 +15,7 @@ library(plyr)
 library(ggpubr)
 
 ## read in nmrs data
-nmrsdata2 <- fread("Data/NMRS/NMRS_data_range_shift.csv", stringsAsFactors = FALSE) # 670,193 rows
+nmrsdata <- fread("Data/NMRS_data_range_shift.csv", stringsAsFactors = FALSE) # 670,193 rows
 
 ## change column names
 colnames(nmrsdata) <- c("Code", "Scientific_name", "Common_name", "Hectad", "Time_period")
@@ -52,7 +52,7 @@ ggplot(nmrsdata[!Hectad %in% sqIM$Hectad], aes(easting, northing))+
 nmrsdata <- nmrsdata[!Hectad %in% sqIM$Hectad] ## 667,521 rows
 
 ## save NMRS cleaned data
-saveRDS(nmrsdata, "Data/NMRS/NMRS_hectad_cleaned.rds")
+saveRDS(nmrsdata, "Data/NMRS_hectad_cleaned.rds")
 
 
 

@@ -17,9 +17,9 @@ library(ggpubr)
 library(Rmisc)
 
 ## NMRS data for cool-adapted moths with elevation and temperature data at a 10km scale
-nmrsdata <- readRDS("Data/NMRS/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
+nmrsdata <- readRDS("Data/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
 ## hectad recording levels
-hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
+hec_records <- read.csv("Data/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
 
 nmrsdata <- nmrsdata[!nmrsdata$Common_name=="Lunar Thorn",]
 
@@ -386,9 +386,9 @@ rm(list = ls())
 options(scipen=999)
 
 ## NMRS data for cool-adapted moths with elevation and temperature data at a 10km scale
-nmrsdata <- readRDS("Data/NMRS/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
+nmrsdata <- readRDS("Data/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
 ## hectad recording levels
-hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
+hec_records <- read.csv("Data/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
 
 nmrsdata <- nmrsdata[!nmrsdata$Common_name=="Lunar Thorn",]
 

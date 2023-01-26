@@ -242,7 +242,7 @@ write.csv(climate_final, file="Data/Climate_final.csv", row.names=FALSE)
 
 
 ## now match these with NMRS data
-nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_elevation.rds")
+nmrsdata <- readRDS("Data/NMRS_hectad_elevation.rds")
 climate_final <- read.csv("Data/Climate_final.csv", header=TRUE)
 ## now match centre lat/lon NMRS values with nearest mean_temp lat/lon values
 
@@ -298,7 +298,7 @@ lat_lon_final <- lat_lon_final[,-c(1:2)]
 ## merge in with NMRS data
 nmrsdata_climate <- merge(nmrsdata, lat_lon_final, by=c("Hectad", "Time_period"), all.x=TRUE)
 
-saveRDS(nmrsdata_climate, file="Data/NMRS/NMRS_hectad_elevation_climate.rds") ## 667521 rows
+saveRDS(nmrsdata_climate, file="Data/NMRS_hectad_elevation_climate.rds") ## 667521 rows
 
 
 

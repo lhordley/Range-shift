@@ -12,8 +12,8 @@ library(ggplot2)
 ########################################################################################################
 ## STEP 1: PLOT SPECIES TEMPERATURE RANGES (MEDIAN & 75TH PERCENTILE) BETWEEN 1975-1991
 ## These are given to Richard to determine which cool-adapted species to select
-nmrsdata_climate <- readRDS("Data/NMRS/NMRS_hectad_elevation_climate.rds") ## NMRS data with temperature 
-migrant_hectads <- read.csv("Data/NMRS/NMRS_migrant_hectads_exclude.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
+nmrsdata_climate <- readRDS("Data/NMRS_hectad_elevation_climate.rds") ## NMRS data with temperature 
+migrant_hectads <- read.csv("Data/NMRS_migrant_hectads_exclude.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
 ## provided by Richard in Teams 20/10/21
 
 ## Remove TP1 data - only looking at temperature range between 1975 - 1991
@@ -75,11 +75,11 @@ write.csv(temp_ranges, file="Data/NMRS_new_temp_median_percentile.csv", row.name
 ## STEP 2: FILTER NMRS DATA TO SELECTION OF COOL-ADAPTED SPECIES DEFINED BY RICHARD USING 75TH TEMPERATURE PERCETILE
 
 ## NMRS data with climate and elevation
-nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_elevation_climate.rds") ## 667,521 rows
+nmrsdata <- readRDS("Data/NMRS_hectad_elevation_climate.rds") ## 667,521 rows
 ## migrant hectads that need excluded
-migrant_hectads <- read.csv("Data/NMRS/NMRS_migrant_hectads_exclude.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
+migrant_hectads <- read.csv("Data/NMRS_migrant_hectads_exclude.csv", header=TRUE) ## species x hectad combinations to remove due to immigrant populations
 ## upland species list to filter
-cool_species <- read.csv("Data/NMRS/NMRS_new_temp_median_percentile_selection.csv", header=TRUE) ## provided by Richard on Teams (16/02/2022)
+cool_species <- read.csv("Data/NMRS_new_temp_median_percentile_selection.csv", header=TRUE) ## provided by Richard on Teams (16/02/2022)
 
 ## Chimney Sweeper name is incorrect in NMRS - change now
 nmrsdata$Common_name[nmrsdata$Common_name == "Chimney Sweep"] <- "Chimney Sweeper"
@@ -105,7 +105,7 @@ table(nmrsdata$Common_name, nmrsdata$Time_period)
 ## all 77 species are found in both time periods
 
 ## save file
-saveRDS(nmrsdata, file="Data/NMRS/NMRS_cool_moths_final.rds")
+saveRDS(nmrsdata, file="Data/NMRS_cool_moths_final.rds")
 
 ## Make maps of migrant hectads
 lat_lon <- unique(nmrsdata[,c("lat","lon","Hectad")])
@@ -136,7 +136,7 @@ ggsave(migrant_hecs, file="Outputs/Maps/FigureS1_immigrant_hecs.png", height=10,
 ## Look at distribution trends for cool moths
 
 trends <- read.csv("Data/Species trends for Moth Atlas (final).csv", header=TRUE)
-cool_species <- read.csv("Data/NMRS/NMRS_new_temp_median_percentile_selection.csv", header=TRUE) ## provided by Richard on Teams (16/02/2022)
+cool_species <- read.csv("Data/NMRS_new_temp_median_percentile_selection.csv", header=TRUE) ## provided by Richard on Teams (16/02/2022)
 
 # Remove capital B in trends so it matches NMRS names
 trends$Vernacular[trends$Vernacular == "Manchester Treble-Bar"] <- "Manchester Treble-bar"

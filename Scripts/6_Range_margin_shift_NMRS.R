@@ -17,9 +17,9 @@ library(ggpubr)
 library(Rmisc)
 
 ## NMRS data for cool-adapted moths with elevation and temperature data at a 10km scale
-nmrsdata <- readRDS("Data/NMRS/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
+nmrsdata <- readRDS("Data/NMRS_cool_moths_final.rds") ## NMRS data for all hectads and all years with elevation
 ## hectad recording levels
-hec_records <- read.csv("Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
+hec_records <- read.csv("Data/Hectad_recording_levels_1975_1991_2012_2016.csv", header=TRUE)
 
 ##################################################################
 ##################### WELL RECORDED HECTADS ######################
@@ -113,22 +113,29 @@ plot
 ## order latitude by ascending value
 ## take the top 10 values & average those
 
-low_10_lat_wh_hecs <- nmrsdata_well %>% group_by(Common_name, Time_period) %>% arrange(lat) %>% slice(seq_len(10))
+low_10_north_wh_hecs <- nmrsdata_well %>% group_by(Common_name, Time_period) %>% arrange(northing) %>% slice(seq_len(10))
 ## now calculate mean of the 10 lowest hectads + summary stats
-low_lat_wh_hecs <- summarySE(low_10_lat_wh_hecs, measurevar="lat", groupvars=c("Common_name","Time_period"))
+low_north_wh_hecs <- summarySE(low_10_north_wh_hecs, measurevar="northing", groupvars=c("Common_name","Time_period"))
 
 ## check for normality 
 # compute the difference
-d <- with(low_lat_wh_hecs, 
-          lat[Time_period == "1975-1991"] - lat[Time_period == "2012-2016"])
+d <- with(low_north_wh_hecs, 
+          northing[Time_period == "2012-2016"] - northing[Time_period == "1975-1991"])
 # Shapiro-Wilk normality test for the differences
 shapiro.test(d) # => p-value <0.001 - non-normal distribution
 qqnorm(d)
 qqline(d) ## not good
 
 ## wilcox.test
-low_lat_wh <- wilcox.test(lat ~ Time_period, data = low_lat_wh_hecs, paired = TRUE, exact=F, conf.int = T, conf.level = .95)
-low_lat_wh ## significant!
+low_north_wh <- wilcox.test(northing ~ Time_period, data = low_north_wh_hecs, paired = TRUE, exact=F, conf.int = T, conf.level = .95)
+low_north_wh ## significant!
+low_lat_wh
+low_lat_wh_hecs %>% group_by(Time_period) %>%
+  summarise(
+    count = n(),
+    median = median(lat, na.rm = TRUE),
+    IQR = IQR(lat, na.rm = TRUE)
+  )
 
 df2 <- low_lat_wh_hecs %>% 
   pivot_wider(id_cols = Common_name, 
@@ -250,7 +257,7 @@ low_elev_heavy_hecs <- summarySE(low_10_elev_heavy_hecs, measurevar="elevation10
 ## check for normality 
 # compute the difference
 d <- with(low_elev_heavy_hecs, 
-          elevation10x10km[Time_period == "1975-1991"] - elevation10x10km[Time_period == "2012-2016"])
+          elevation10x10km[Time_period == "2012-2016"] - elevation10x10km[Time_period == "1975-1991"])
 # Shapiro-Wilk normality test for the differences
 shapiro.test(d) # => p-value = <0.001 - distribution is NOT normal
 qqnorm(d)
@@ -281,14 +288,14 @@ plot
 ## order latitude by ascending value
 ## take the top 10 values & average those
 
-low_10_lat_heavy_hecs <- nmrsdata_heavy %>% group_by(Common_name, Time_period) %>% arrange(lat) %>% slice(seq_len(10))
+low_10_north_h_hecs <- nmrsdata_heavy %>% group_by(Common_name, Time_period) %>% arrange(northing) %>% slice(seq_len(10))
 ## now calculate mean of the 10 lowest hectads + summary stats
-low_lat_heavy_hecs <- summarySE(low_10_lat_heavy_hecs, measurevar="lat", groupvars=c("Common_name","Time_period"))
+low_north_h_hecs <- summarySE(low_10_north_h_hecs, measurevar="northing", groupvars=c("Common_name","Time_period"))
 
 ## check for normality 
 # compute the difference
-d <- with(low_lat_heavy_hecs, 
-          lat[Time_period == "1975-1991"] - lat[Time_period == "2012-2016"])
+d <- with(low_north_h_hecs, 
+          northing[Time_period == "2012-2016"] - northing[Time_period == "1975-1991"])
 # Shapiro-Wilk normality test for the differences
 shapiro.test(d) # => p-value <0.001 - non-normal distribution
 qqnorm(d)

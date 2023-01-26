@@ -6,19 +6,13 @@
 rm(list = ls())
 options(scipen=999)
 
-nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_cleaned.rds") # 667,521 rows
+nmrsdata <- readRDS("Data/NMRS_hectad_cleaned.rds") # 667,521 rows
 ## easting/northing, lat/lon and elevation are at 10km resolution
 
 # count the number of recorded hectads and the number of species*hectad records in each year
 library(plyr)
 nmrsdata$PRESENCE <- 1
 nmrs_rec_hectad_years <- ddply(nmrsdata, .(Hectad, Time_period, easting, northing), numcolwise(mean)) ## removes species data, just hectads recorded for each year
-
-# Calculate recording effort
-# This is the number of records for each hectad summed across T1 and T2
-# To be used in extinction models 
-recording_effort <- nmrsdata %>% group_by(Hectad) %>% summarise(n_records=n())
-write.csv(recording_effort, file="Data/Recording_effort_all_spp.csv", row.names=FALSE)
 
 ## time periods of interest
 tp1 <- 1975:1991
@@ -191,5 +185,5 @@ lat_lon <- nmrsdata_good_hectads %>% distinct(Hectad, lat, lon, .keep_all = FALS
 hec_records <- merge(hec_records, lat_lon, by.x="HECTAD", by.y="Hectad")
 
 # this data takes a while to generate so let's back it up
-write.csv(hec_records, "Data/NMRS/Hectad_recording_levels_1975_1991_2012_2016.csv", row.names = F)
+write.csv(hec_records, "Data/Hectad_recording_levels_1975_1991_2012_2016.csv", row.names = F)
 

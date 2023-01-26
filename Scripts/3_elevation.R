@@ -26,7 +26,7 @@ plot(tmp_agg)
 hist(values(tmp_agg))
 
 ## re-project using NMRS cleaned hectad data
-nmrsdata <- readRDS("Data/NMRS/NMRS_hectad_cleaned.rds") 
+nmrsdata <- readRDS("Data/NMRS_hectad_cleaned.rds") 
 ## add 5km to easting and northing values to move record to centre of hectad
 ## this will ensure we are taking the mean elevation which represents the mean of surrounding 1km squares WITHIN the hectad
 nmrsdata$easting_centre <- nmrsdata$easting + 5000
@@ -120,7 +120,7 @@ nmrsdata <- merge(nmrsdata, elev_mean_sd, by="Hectad", all=T)
 head(nmrsdata)
 length(unique(nmrsdata$Hectad)) ## 2695
 ## save data
-saveRDS(nmrsdata, file="Data/NMRS/NMRS_hectad_elevation.rds")
+saveRDS(nmrsdata, file="Data/NMRS_hectad_elevation.rds")
 ## use this for trailing edge analysis for elevation and latitude at a 10km scale
 
 hist(elev_sd_nmrs$elevation10x10km_SD)
