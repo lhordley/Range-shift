@@ -1,0 +1,789 @@
+Common_name,median_temperature,percentile_75th,Exclude,Reason
+Scotch Burnet,4.580244119,4.925349246,,
+Black Mountain Moth,4.550575053,5.446143932,,
+Rannoch Brindled Beauty,5.566355831,5.753158925,,
+Rannoch Sprawler,5.857042231,5.973811655,,
+Cousin German,5.920597711,6.261439784,,
+Small Dark Yellow Underwing,5.845582921,6.280530572,,
+Rannoch Looper,6.25189439,6.593048425,,
+Netted Mountain Moth,6.161910133,6.679667098,,
+Broad-bordered White Underwing,5.999893981,6.819281799,,
+Northern Dart,5.472272449,6.980911862,,
+Kentish Glory,6.350235126,7.104306735,,
+Slender-striped Rufous,6.794006302,7.509137316,,
+Great Brocade,6.477571201,7.530114398,,
+Welsh Clearwing,7.198756078,7.565576197,,
+Bedrule Brocade,7.604679727,7.604679727,1,migrant
+Sweet Gale Moth,6.620709428,7.60786549,,
+Heath Rivulet,6.908387889,7.712212227,,
+Saxon,7.23660598,7.766288784,,
+Bilberry Marble,7.781052959,7.802139979,1,micro-moth - shouldn't be in any of the analyses and would be worth letting Les know that this came through in his export
+Red Carpet,7.3566943,7.835356213,,
+Northern Arches or Exile,7.379549635,7.894557383,,
+Grey Mountain Carpet,7.441331663,8.048508514,,
+Pretty Pinion,7.49713155,8.134600778,,
+Slender Scotch Burnet,8.036737211,8.195477617,,
+Netted Carpet,7.981733192,8.249713136,,
+Manchester Treble-bar,7.421819005,8.251952679,,
+Scarce Silver Y,7.522197542,8.285419321,,
+Striped Twin-spot Carpet,7.815024922,8.289315999,,
+Yellow-ringed Carpet,7.346384256,8.297602093,,
+Plain Clay,7.547860713,8.345911095,,
+Crinan Ear,7.753297809,8.356471351,,
+Scotch Annulet,7.838807988,8.366169116,,
+Small Argent & Sable,7.860917495,8.409225096,,
+Smoky Wave,8.007388428,8.434677277,,
+Barred Carpet,7.801403214,8.45458318,,
+Chestnut-coloured Carpet,7.456047302,8.485457831,,
+Transparent Burnet,8.235724988,8.489512089,,
+Small Autumnal Moth,7.893739882,8.497460568,,
+Golden-rod Brindle,7.896662941,8.509909075,,
+Welsh Wave,8.006057445,8.51194555,,
+Ashworth's Rustic,8.060195858,8.544152088,,
+Light Knot Grass,7.937943191,8.548511692,,
+Northern Deep-brown Dart,7.977358985,8.569291641,,
+Brindled Ochre,7.88517126,8.571647182,,
+Haworth's Minor,7.825000885,8.61901225,,
+Grey,8.615755607,8.659345785,,
+Least Minor,8.648462125,8.772078009,,
+Eversmann's Rustic,8.375990028,8.772445625,1,migrant
+Rosy Marsh Moth,8.466389532,8.789800991,,
+Confused,8.150160098,8.815310116,,
+Grey Scalloped Bar,8.128218996,8.83039432,,
+Large Ear,7.971415823,8.835747349,,
+Glaucous Shears,8.173496611,8.84706263,,
+Lempke's Gold Spot,8.398372547,8.870307969,,
+Silurian,8.872000482,8.872000482,,
+Wood Tiger,8.130533258,8.872000482,,
+Belted Beauty,8.541002676,8.948066447,,
+Barred Chestnut,8.179878831,8.949152359,,
+Dark Bordered Beauty,7.907359897,8.960320269,,
+Autumn Green Carpet,8.187272562,9.017459171,,
+Northern Spinach,8.296323934,9.022978263,,
+Gold Spangle,8.322294871,9.025701763,,
+Anomalous,8.305219951,9.111725504,,
+Beech-green Carpet,7.864213492,9.118387967,,
+Northern Rustic,8.345612393,9.174734776,,
+Map-winged Swift,8.401307426,9.182850455,,
+Chimney Sweeper,8.512618406,9.217368681,,
+Angle-striped Sallow,8.999550613,9.262671341,,
+Red Sword-grass,8.354892008,9.280746889,,
+Dotted Carpet,8.304580872,9.283398529,,
+Grey Chi,8.68172383,9.291686012,,
+Marsh Moth,9.306780679,9.320286851,1,exclude on expert opinion
+Channel Islands Pug,9.401832506,9.401832506,1,migrant
+Mottled Grey,8.480771477,9.409148678,,
+Golden-rod Pug,9.012369654,9.4100162,,
+Weaver's Wave,8.812858812,9.412575192,,
+Cameo,9.429564198,9.429564198,1,migrant
+Twin-spot Carpet,8.659552486,9.431192274,1,exclude on expert opinion
+Sword-grass,8.404242305,9.439749642,,
+Cloaked Pug,9.00730543,9.443213659,1,alien hostplants
+Butterbur,8.828983913,9.448791928,,
+Satyr Pug,8.212432841,9.448791928,1,exclude on expert opinion
+Thyme Pug,9.003937475,9.460321278,1,exclude on expert opinion
+Marsh Pug,9.085009008,9.473511776,,
+Dark Brocade,8.703215598,9.484192757,,
+Muslin Footman,8.637203377,9.485877745,1,exclude on expert opinion
+Northern Winter Moth,8.835713627,9.510859634,1,exclude on expert opinion
+Antler Moth,8.89275558,9.515588088,1,exclude on expert opinion
+Ruddy Highflyer,8.869165631,9.516649593,,
+Heath Rustic,8.725979167,9.52007478,1,exclude on expert opinion
+Forester,9.230047113,9.530350344,1,75th centile temperature > 9.52
+Dotted Clay,8.961182433,9.530494195,1,75th centile temperature > 9.52
+Plumed Prominent,9.493750806,9.534667292,1,75th centile temperature > 9.52
+Geometrician,9.541762159,9.541762159,1,75th centile temperature > 9.52
+Juniper Pug,9.184280176,9.551202163,1,75th centile temperature > 9.52
+Dark Marbled Carpet,8.929464871,9.555511394,1,75th centile temperature > 9.52
+Double Dart,9.231154819,9.564727419,1,75th centile temperature > 9.52
+Neglected Rustic,8.602043496,9.572603685,1,75th centile temperature > 9.52
+Juniper Carpet,9.311746401,9.578444318,1,75th centile temperature > 9.52
+Square-spotted Clay,9.402361057,9.578825233,1,75th centile temperature > 9.52
+Autumnal Moth,9.120722914,9.580581679,1,75th centile temperature > 9.52
+Chevron,8.96116328,9.583582412,1,75th centile temperature > 9.52
+Clouded Magpie,9.240578397,9.591623363,1,75th centile temperature > 9.52
+Coast Dart,8.588833535,9.600451543,1,75th centile temperature > 9.52
+Grey Carpet,9.43398485,9.606221775,1,75th centile temperature > 9.52
+Spurge Hawk-moth,9.613422427,9.613422427,1,75th centile temperature > 9.52
+Gold Spot,9.060778129,9.614068435,1,75th centile temperature > 9.52
+Lunar Thorn,8.944254047,9.615994912,,
+Scarce Umber,9.23515631,9.617584438,1,75th centile temperature > 9.52
+Water Carpet,9.231154819,9.622426899,1,75th centile temperature > 9.52
+Small Dotted Buff,9.220740259,9.625185348,1,75th centile temperature > 9.52
+Narrow-winged Pug,9.049451511,9.627360079,1,75th centile temperature > 9.52
+Common Heath,8.831685262,9.628315395,1,75th centile temperature > 9.52
+Narrow-bordered Bee Hawk-moth,8.699597393,9.628590231,1,75th centile temperature > 9.52
+Red-green Carpet,8.93004277,9.629000282,1,75th centile temperature > 9.52
+V-moth,9.296154811,9.630270448,1,75th centile temperature > 9.52
+Dusky-lemon Sallow,9.287534762,9.631027607,1,75th centile temperature > 9.52
+Clouded-bordered Brindle,9.246214,9.632341326,1,75th centile temperature > 9.52
+Emperor Moth,8.892118823,9.63239015,1,75th centile temperature > 9.52
+Autumnal Rustic,9.066227387,9.640978532,1,75th centile temperature > 9.52
+Silver-ground Carpet,9.154650929,9.641472435,1,75th centile temperature > 9.52
+Barred Red,9.159061484,9.643362153,1,75th centile temperature > 9.52
+Beautiful Golden Y,9.237963244,9.643362153,1,75th centile temperature > 9.52
+Small Wainscot,9.230905501,9.644074338,1,75th centile temperature > 9.52
+Pale-shouldered Brocade,9.298339698,9.645259225,1,75th centile temperature > 9.52
+Gold Swift,9.299886701,9.646464738,1,75th centile temperature > 9.52
+Angle-barred Pug,9.317945693,9.647805754,1,75th centile temperature > 9.52
+Argent & Sable,9.148853302,9.648119415,1,75th centile temperature > 9.52
+Bordered White,9.291376351,9.650937759,1,75th centile temperature > 9.52
+Fen Square-spot,8.552069942,9.65277479,1,75th centile temperature > 9.52
+Brighton Wainscot,9.536891951,9.655144355,1,75th centile temperature > 9.52
+Scarce Blackneck,9.547939562,9.657455677,1,75th centile temperature > 9.52
+Green Arches,9.261058068,9.657841758,1,75th centile temperature > 9.52
+Flame Carpet,9.169049952,9.658170435,1,75th centile temperature > 9.52
+True Lover's Knot,8.972938104,9.658613921,1,75th centile temperature > 9.52
+Yellow Horned,9.29332343,9.659000003,1,75th centile temperature > 9.52
+Purple Clay,9.278893864,9.659085087,1,75th centile temperature > 9.52
+Larch Pug,9.343809198,9.659113449,1,75th centile temperature > 9.52
+Brown-spot Pinion,9.360650899,9.661432191,1,75th centile temperature > 9.52
+Pale November Moth,9.337980743,9.663576675,1,75th centile temperature > 9.52
+Narrow-bordered Five-spot Burnet,9.360489172,9.665544517,1,75th centile temperature > 9.52
+Valerian Pug,9.269438614,9.66700523,1,75th centile temperature > 9.52
+Mottled Umber,9.330376574,9.671748709,1,75th centile temperature > 9.52
+Latticed Heath,9.375928086,9.672096609,1,75th centile temperature > 9.52
+Red Chestnut,9.352449525,9.672225194,1,75th centile temperature > 9.52
+Brown Rustic,9.313752492,9.672334852,1,75th centile temperature > 9.52
+Triple-spotted Clay,9.379609036,9.672815094,1,75th centile temperature > 9.52
+Lesser Swallow Prominent,9.330376574,9.673938198,1,75th centile temperature > 9.52
+Streak,9.31934583,9.674103294,1,75th centile temperature > 9.52
+Grass Rivulet,9.222601646,9.675958167,1,75th centile temperature > 9.52
+Orange Sallow,9.372444938,9.67601425,1,75th centile temperature > 9.52
+Scarce Vapourer,9.603821558,9.67601425,1,75th centile temperature > 9.52
+Green Carpet,9.204370479,9.676855276,1,75th centile temperature > 9.52
+December Moth,9.372444938,9.677358243,1,75th centile temperature > 9.52
+Barred Straw,9.29906131,9.677382757,1,75th centile temperature > 9.52
+Pale Eggar,9.359130412,9.677390929,1,75th centile temperature > 9.52
+Six-striped Rustic,9.324873366,9.679278989,1,75th centile temperature > 9.52
+Broom Moth,9.292969213,9.681023569,1,75th centile temperature > 9.52
+Pale Brindled Beauty,9.347506854,9.681982596,1,75th centile temperature > 9.52
+Dotted Rustic,9.435712212,9.682798143,1,75th centile temperature > 9.52
+Suspected,9.419641498,9.68361369,1,75th centile temperature > 9.52
+Triple-spotted Pug,9.361647429,9.684429237,1,75th centile temperature > 9.52
+Scarce Pug,9.57909823,9.686796442,1,75th centile temperature > 9.52
+Lyme Grass,9.255336918,9.687973283,1,75th centile temperature > 9.52
+Middle-barred Minor,9.317123935,9.688622238,1,75th centile temperature > 9.52
+Rush Wainscot,9.66439452,9.690394525,1,75th centile temperature > 9.52
+Small Dotted Footman,9.689030798,9.691331578,1,75th centile temperature > 9.52
+Ingrailed Clay,9.29332343,9.69186514,1,75th centile temperature > 9.52
+Sallow,9.359886173,9.693190553,1,75th centile temperature > 9.52
+Minor Shoulder-knot,9.337106131,9.693632358,1,75th centile temperature > 9.52
+Marsh Carpet,9.629422192,9.693632358,1,75th centile temperature > 9.52
+White-marked,9.45289614,9.694580721,1,75th centile temperature > 9.52
+Rustic Shoulder-knot,9.387818746,9.696111049,1,75th centile temperature > 9.52
+Concolorous,9.586863802,9.69653727,1,75th centile temperature > 9.52
+Satellite,9.409148678,9.698231003,1,75th centile temperature > 9.52
+Coxcomb Prominent,9.373636424,9.698782374,1,75th centile temperature > 9.52
+Light Emerald,9.326750511,9.698821194,1,75th centile temperature > 9.52
+Large Emerald,9.359351397,9.698821194,1,75th centile temperature > 9.52
+July Highflyer,9.303565287,9.698937654,1,75th centile temperature > 9.52
+Orange Upperwing,9.589920546,9.700617371,1,75th centile temperature > 9.52
+Dew Footman,8.631583772,9.701380096,1,75th centile temperature > 9.52
+Small Rivulet,9.359130412,9.70195812,1,75th centile temperature > 9.52
+Barred Yellow,9.372444938,9.702727465,1,75th centile temperature > 9.52
+Dusky Brocade,9.360199966,9.703166183,1,75th centile temperature > 9.52
+Orange Underwing,9.380924033,9.703935529,1,75th centile temperature > 9.52
+Pine Carpet,9.167005141,9.70453956,1,75th centile temperature > 9.52
+Pink-barred Sallow,9.339349832,9.70453956,1,75th centile temperature > 9.52
+Beautiful Yellow Underwing,8.702685337,9.705143592,1,75th centile temperature > 9.52
+Ochreous Pug,9.359130412,9.705143592,1,75th centile temperature > 9.52
+Sprawler,9.443022394,9.705143592,1,75th centile temperature > 9.52
+Figure of Eight,9.444433004,9.705143592,1,75th centile temperature > 9.52
+Stout Dart,9.48911684,9.706128826,1,75th centile temperature > 9.52
+Common White Wave,9.344764551,9.706621443,1,75th centile temperature > 9.52
+Small Clouded Brindle,9.457893133,9.707564311,1,75th centile temperature > 9.52
+Plain Golden Y,9.394539032,9.708093904,1,75th centile temperature > 9.52
+Grey Pug,9.361647429,9.708173244,1,75th centile temperature > 9.52
+Dwarf Pug,9.373040681,9.710761853,1,75th centile temperature > 9.52
+Broken-barred Carpet,9.360337107,9.711336581,1,75th centile temperature > 9.52
+Purple Bar,9.303565287,9.711571829,1,75th centile temperature > 9.52
+Gothic,9.400355865,9.712381468,1,75th centile temperature > 9.52
+Dark Arches,9.308894451,9.712651348,1,75th centile temperature > 9.52
+Shaded Broad-bar,9.362481734,9.712651348,1,75th centile temperature > 9.52
+Lead-coloured Drab,9.513271753,9.712651348,1,75th centile temperature > 9.52
+Alder Kitten,9.46534802,9.713129546,1,75th centile temperature > 9.52
+Small Phoenix,9.380219701,9.713131382,1,75th centile temperature > 9.52
+Small Angle Shades,9.383462261,9.714571485,1,75th centile temperature > 9.52
+Rivulet,9.321263352,9.716187091,1,75th centile temperature > 9.52
+Clouded Border,9.358232807,9.716187091,1,75th centile temperature > 9.52
+Plain Wave,9.379233109,9.716994894,1,75th centile temperature > 9.52
+Early Moth,9.456339533,9.717802698,1,75th centile temperature > 9.52
+Silver Cloud,9.603942515,9.717802698,1,75th centile temperature > 9.52
+Grey Pine Carpet,9.355844065,9.718218285,1,75th centile temperature > 9.52
+Hebrew Character,9.362481734,9.718633873,1,75th centile temperature > 9.52
+Clouded Drab,9.401832506,9.719465048,1,75th centile temperature > 9.52
+Winter Moth,9.352376498,9.719675973,1,75th centile temperature > 9.52
+Common Quaker,9.409148678,9.721362452,1,75th centile temperature > 9.52
+Currant Pug,9.42187432,9.722876912,1,75th centile temperature > 9.52
+Early Tooth-striped,9.326750511,9.723501121,1,75th centile temperature > 9.52
+Brown-line Bright-eye,9.422502414,9.724741672,1,75th centile temperature > 9.52
+Yellow Shell,9.347506854,9.725829608,1,75th centile temperature > 9.52
+Purple-bordered Gold,9.498164366,9.726260344,1,75th centile temperature > 9.52
+July Belle,8.962006292,9.727077753,1,75th centile temperature > 9.52
+Green-brindled Crescent,9.397700311,9.72722013,1,75th centile temperature > 9.52
+Lead Belle,9.11321245,9.727702742,1,75th centile temperature > 9.52
+Pinion-spotted Pug,9.498470258,9.727951127,1,75th centile temperature > 9.52
+Fox Moth,8.708977973,9.729836765,1,75th centile temperature > 9.52
+May Highflyer,9.378907194,9.733694787,1,75th centile temperature > 9.52
+White Ermine,9.359665189,9.734390942,1,75th centile temperature > 9.52
+Shoulder Stripe,9.439835688,9.73446465,1,75th centile temperature > 9.52
+Large Yellow Underwing,9.3187358,9.734791335,1,75th centile temperature > 9.52
+Burnished Brass,9.37303243,9.734882263,1,75th centile temperature > 9.52
+Dotted Border,9.421022513,9.735609341,1,75th centile temperature > 9.52
+Brown Silver-line,9.361101833,9.73564378,1,75th centile temperature > 9.52
+Lunar Yellow Underwing,9.545805296,9.73564378,1,75th centile temperature > 9.52
+Mottled Beauty,9.373875395,9.736412293,1,75th centile temperature > 9.52
+Snout,9.361405963,9.736774147,1,75th centile temperature > 9.52
+Common Carpet,9.358232807,9.736957546,1,75th centile temperature > 9.52
+Common Pug,9.378099399,9.736957546,1,75th centile temperature > 9.52
+Dotted Footman,9.671748709,9.736957546,1,75th centile temperature > 9.52
+Reed Leopard,9.693632358,9.736957546,1,75th centile temperature > 9.52
+Ghost Moth,9.360337107,9.737624809,1,75th centile temperature > 9.52
+November Moth,9.450715107,9.739626596,1,75th centile temperature > 9.52
+Streamer,9.416798853,9.740273459,1,75th centile temperature > 9.52
+Large Twin-spot Carpet,9.541266912,9.740273459,1,75th centile temperature > 9.52
+Spring Usher,9.437075841,9.740920321,1,75th centile temperature > 9.52
+Dark Tussock,7.979842565,9.741023872,1,75th centile temperature > 9.52
+Pebble Hook-tip,9.436394026,9.741567183,1,75th centile temperature > 9.52
+Tissue,9.433452243,9.742114627,1,75th centile temperature > 9.52
+Brimstone Moth,9.360632435,9.742166314,1,75th centile temperature > 9.52
+Chestnut,9.422502414,9.742618948,1,75th centile temperature > 9.52
+Shears,9.299127857,9.74302385,1,75th centile temperature > 9.52
+Rufous Minor,9.450715107,9.74302385,1,75th centile temperature > 9.52
+Grey Birch,9.481923795,9.74302385,1,75th centile temperature > 9.52
+Common Lutestring,9.343809198,9.743833655,1,75th centile temperature > 9.52
+Beautiful Carpet,9.380924033,9.743833655,1,75th centile temperature > 9.52
+Foxglove Pug,9.360116122,9.744321105,1,75th centile temperature > 9.52
+Fletcher's Pug,9.567314992,9.74460187,1,75th centile temperature > 9.52
+Merveille du Jour,9.439749642,9.744808555,1,75th centile temperature > 9.52
+Scarce Tissue,9.524882558,9.744808555,1,75th centile temperature > 9.52
+Common Fan-foot,9.63346704,9.744975288,1,75th centile temperature > 9.52
+Silvery Arches,9.368049369,9.745215701,1,75th centile temperature > 9.52
+Scalloped Hazel,9.396182983,9.745357639,1,75th centile temperature > 9.52
+Brick,9.412575192,9.745783455,1,75th centile temperature > 9.52
+Shoulder-striped Wainscot,9.439921733,9.745783455,1,75th centile temperature > 9.52
+Clouded Buff,9.002142725,9.746105328,1,75th centile temperature > 9.52
+Brindled Green,9.466222439,9.746673272,1,75th centile temperature > 9.52
+Poplar Hawk-moth,9.384280618,9.746789329,1,75th centile temperature > 9.52
+Twin-spotted Quaker,9.461280986,9.746789329,1,75th centile temperature > 9.52
+Scalloped Hook-tip,9.472387922,9.746789329,1,75th centile temperature > 9.52
+Common Marbled Carpet,9.359886173,9.74712462,1,75th centile temperature > 9.52
+Feathered Thorn,9.431192274,9.74712462,1,75th centile temperature > 9.52
+Centre-barred Sallow,9.450715107,9.748026522,1,75th centile temperature > 9.52
+Crescent,9.394358637,9.748774211,1,75th centile temperature > 9.52
+Slender Pug,9.443022394,9.748887315,1,75th centile temperature > 9.52
+Rosy Rustic,9.373628174,9.748916339,1,75th centile temperature > 9.52
+Scarce Prominent,9.450083927,9.748916339,1,75th centile temperature > 9.52
+Mere Wainscot,9.582815679,9.748987713,1,75th centile temperature > 9.52
+Spinach,9.470659234,9.74924316,1,75th centile temperature > 9.52
+Smoky Wainscot,9.361064905,9.749342723,1,75th centile temperature > 9.52
+Tawny-barred Angle,9.398351754,9.749342723,1,75th centile temperature > 9.52
+Dingy Shell,9.509837489,9.749669544,1,75th centile temperature > 9.52
+Treble-bar,9.450715107,9.750176478,1,75th centile temperature > 9.52
+Lunar Double-stripe,9.72588638,9.75026176,1,75th centile temperature > 9.52
+Oblique Carpet,9.282454527,9.750598973,1,75th centile temperature > 9.52
+Brindled Pug,9.443022394,9.750650009,1,75th centile temperature > 9.52
+March Moth,9.450715107,9.750650009,1,75th centile temperature > 9.52
+Fenn's Wainscot,9.693381474,9.750840598,1,75th centile temperature > 9.52
+Double-square Spot,9.424347157,9.750968893,1,75th centile temperature > 9.52
+Garden Carpet,9.380072581,9.751273819,1,75th centile temperature > 9.52
+Square-spot Rustic,9.382526933,9.751426282,1,75th centile temperature > 9.52
+Flame Shoulder,9.369634956,9.751578745,1,75th centile temperature > 9.52
+Barred Umber,9.405722164,9.751578745,1,75th centile temperature > 9.52
+Yellow-line Quaker,9.412575192,9.751578745,1,75th centile temperature > 9.52
+Ling Pug,9.397700311,9.751766252,1,75th centile temperature > 9.52
+Sloe Pug,9.454622416,9.751889736,1,75th centile temperature > 9.52
+Little Emerald,9.50675203,9.751953759,1,75th centile temperature > 9.52
+Satin Beauty,9.468138419,9.752134133,1,75th centile temperature > 9.52
+Tawny Speckled Pug,9.439835688,9.752778377,1,75th centile temperature > 9.52
+Pine Beauty,9.481923795,9.752928245,1,75th centile temperature > 9.52
+Canary-shouldered Thorn,9.440427506,9.753146258,1,75th centile temperature > 9.52
+Garden Tiger,9.387818746,9.753364272,1,75th centile temperature > 9.52
+Common Wave,9.398879225,9.753364272,1,75th centile temperature > 9.52
+Mottled Pug,9.48872965,9.753501943,1,75th centile temperature > 9.52
+Small Quaker,9.455277245,9.753582286,1,75th centile temperature > 9.52
+Small Square-spot,9.402339224,9.753800299,1,75th centile temperature > 9.52
+Lilac Beauty,9.504800809,9.753800299,1,75th centile temperature > 9.52
+Silver Y,9.381591606,9.756215772,1,75th centile temperature > 9.52
+Peppered Moth,9.437730927,9.756767398,1,75th centile temperature > 9.52
+Grey Dagger,9.485030118,9.757248441,1,75th centile temperature > 9.52
+Dark Spectacle,9.439921733,9.758322381,1,75th centile temperature > 9.52
+Riband Wave,9.419690048,9.758605355,1,75th centile temperature > 9.52
+Mouse Moth,9.430919432,9.75888833,1,75th centile temperature > 9.52
+Oak Beauty,9.490227893,9.759045043,1,75th centile temperature > 9.52
+Lesser Yellow Underwing,9.37908599,9.760456708,1,75th centile temperature > 9.52
+Pimpinel Pug,9.528884952,9.761756048,1,75th centile temperature > 9.52
+Heart & Dart,9.422502414,9.765099623,1,75th centile temperature > 9.52
+Pebble Prominent,9.473511776,9.765161841,1,75th centile temperature > 9.52
+Sandy Carpet,9.450715107,9.765178198,1,75th centile temperature > 9.52
+Golden Plusia,9.50675203,9.765178198,1,75th centile temperature > 9.52
+Engrailed,9.46187243,9.765186376,1,75th centile temperature > 9.52
+Small Fan-foot,9.472840269,9.765186376,1,75th centile temperature > 9.52
+Beautiful Brocade,9.526454044,9.765655547,1,75th centile temperature > 9.52
+Blomer's Rivulet,9.347607409,9.766638961,1,75th centile temperature > 9.52
+Lesser Broad-bordered Yellow Underwing,9.418357583,9.767062942,1,75th centile temperature > 9.52
+Dun-bar,9.442479345,9.767062942,1,75th centile temperature > 9.52
+Early Thorn,9.431623239,9.767067268,1,75th centile temperature > 9.52
+Iron Prominent,9.456492776,9.76707592,1,75th centile temperature > 9.52
+Feathered Gothic,9.482074871,9.76707592,1,75th centile temperature > 9.52
+White-spotted Pug,9.497341668,9.76727511,1,75th centile temperature > 9.52
+Peach Blossom,9.468040365,9.767517313,1,75th centile temperature > 9.52
+Nut-tree Tussock,9.476149549,9.767712182,1,75th centile temperature > 9.52
+Dark Umber,9.525094021,9.767859704,1,75th centile temperature > 9.52
+Red-line Quaker,9.456339533,9.767898807,1,75th centile temperature > 9.52
+Olive,9.495502561,9.768535386,1,75th centile temperature > 9.52
+Green Silver-lines,9.498750445,9.769014987,1,75th centile temperature > 9.52
+Bright-line Brown-eye,9.424258125,9.769219627,1,75th centile temperature > 9.52
+Bedstraw Hawk-moth,9.38036682,9.769291435,1,75th centile temperature > 9.52
+Striped Lychnis,9.568584543,9.769605299,1,75th centile temperature > 9.52
+Old Lady,9.463958885,9.769659901,1,75th centile temperature > 9.52
+September Thorn,9.485030118,9.769659901,1,75th centile temperature > 9.52
+Powdered Quaker,9.487157842,9.769659901,1,75th centile temperature > 9.52
+Grey Arches,9.470659234,9.769759693,1,75th centile temperature > 9.52
+Flounced Chestnut,9.471264068,9.769859485,1,75th centile temperature > 9.52
+Small Yellow Underwing,9.482639596,9.769959277,1,75th centile temperature > 9.52
+Blue-bordered Carpet,9.405722164,9.770154226,1,75th centile temperature > 9.52
+Small Fan-footed Wave,9.444433004,9.77020644,1,75th centile temperature > 9.52
+Spectacle,9.429564198,9.770501181,1,75th centile temperature > 9.52
+Silver Hook,9.457184263,9.770648552,1,75th centile temperature > 9.52
+Least Black Arches,9.476630382,9.771272349,1,75th centile temperature > 9.52
+Lead-coloured Pug,9.631844573,9.771627867,1,75th centile temperature > 9.52
+Campion,9.480062312,9.773213063,1,75th centile temperature > 9.52
+Garden Dart,9.482790672,9.773725057,1,75th centile temperature > 9.52
+Puss Moth,9.483355396,9.773890441,1,75th centile temperature > 9.52
+Slender Brindle,9.495502561,9.775487995,1,75th centile temperature > 9.52
+Svensson's Copper Underwing,9.481923795,9.776027682,1,75th centile temperature > 9.52
+Light Arches,9.469858292,9.776400029,1,75th centile temperature > 9.52
+Herald,9.465851727,9.777008086,1,75th centile temperature > 9.52
+Swallow-tailed Moth,9.47763243,9.778911623,1,75th centile temperature > 9.52
+Short-cloaked Moth,9.511676835,9.780164462,1,75th centile temperature > 9.52
+Barberry Carpet,9.701188774,9.781079197,1,75th centile temperature > 9.52
+Dark-barred Twin-spot Carpet,9.477647094,9.781735327,1,75th centile temperature > 9.52
+Scalloped Oak,9.435712212,9.782520759,1,75th centile temperature > 9.52
+Drab Looper,9.64947263,9.78484097,1,75th centile temperature > 9.52
+Sallow Kitten,9.472840269,9.786025119,1,75th centile temperature > 9.52
+Lunar Marbled Brown,9.536726793,9.787504964,1,75th centile temperature > 9.52
+Poplar Kitten,9.545285021,9.787954087,1,75th centile temperature > 9.52
+Buff-tip,9.482225947,9.788644824,1,75th centile temperature > 9.52
+Hornet Moth,9.645394097,9.790162389,1,75th centile temperature > 9.52
+Clay,9.442479345,9.791427209,1,75th centile temperature > 9.52
+Cream Wave,9.497341668,9.792131556,1,75th centile temperature > 9.52
+Double-line,9.357730172,9.794065351,1,75th centile temperature > 9.52
+White-mantled Wainscot,9.760734507,9.794411023,1,75th centile temperature > 9.52
+Light Orange Underwing,9.64683394,9.794619011,1,75th centile temperature > 9.52
+Clouded Silver,9.511254713,9.795204313,1,75th centile temperature > 9.52
+Brindled Beauty,9.52498829,9.795204313,1,75th centile temperature > 9.52
+Bordered Pug,9.50675203,9.795349454,1,75th centile temperature > 9.52
+Elephant Hawk-moth,9.479270469,9.795646641,1,75th centile temperature > 9.52
+Double Lobed,9.498421801,9.795761229,1,75th centile temperature > 9.52
+Brown Scallop,9.537469586,9.795761229,1,75th centile temperature > 9.52
+Frosted Orange,9.487782548,9.796996552,1,75th centile temperature > 9.52
+Pale Shining Brown,9.614068435,9.796996552,1,75th centile temperature > 9.52
+Marbled Clover,9.684429237,9.796996552,1,75th centile temperature > 9.52
+Mottled Rustic,9.476612559,9.797300282,1,75th centile temperature > 9.52
+Alder Moth,9.501764869,9.797300282,1,75th centile temperature > 9.52
+Common Swift,9.487830456,9.797604012,1,75th centile temperature > 9.52
+Phoenix,9.428004196,9.797907743,1,75th centile temperature > 9.52
+Swallow Prominent,9.507783687,9.797907743,1,75th centile temperature > 9.52
+Scarce Hook-tip,9.798211473,9.798211473,1,75th centile temperature > 9.52
+Large Nutmeg,9.61129868,9.798410745,1,75th centile temperature > 9.52
+Maple Prominent,9.646773484,9.798410745,1,75th centile temperature > 9.52
+Buff Ermine,9.484192757,9.800158428,1,75th centile temperature > 9.52
+Lunar Hornet Moth,9.482639596,9.800572568,1,75th centile temperature > 9.52
+Burnet Companion,9.533358862,9.801087482,1,75th centile temperature > 9.52
+Flounced Rustic,9.457538698,9.801542862,1,75th centile temperature > 9.52
+Angle Shades,9.466222439,9.802653325,1,75th centile temperature > 9.52
+Northern Drab,9.509036281,9.803548566,1,75th centile temperature > 9.52
+Poplar Lutestring,9.538571792,9.803963491,1,75th centile temperature > 9.52
+Green Pug,9.48872965,9.80398275,1,75th centile temperature > 9.52
+Seraphim,9.514960673,9.805227408,1,75th centile temperature > 9.52
+White-line Dart,9.437075841,9.805351081,1,75th centile temperature > 9.52
+White Satin Moth,9.536025209,9.805531138,1,75th centile temperature > 9.52
+Large Red-belted Clearwing,9.520897172,9.805978855,1,75th centile temperature > 9.52
+Magpie Moth,9.471264068,9.808009932,1,75th centile temperature > 9.52
+Chinese Character,9.487832511,9.808029385,1,75th centile temperature > 9.52
+Drinker,9.48872965,9.808048837,1,75th centile temperature > 9.52
+Clouded Brindle,9.525339138,9.808407147,1,75th centile temperature > 9.52
+Dark Dagger,9.554349103,9.808407147,1,75th centile temperature > 9.52
+Small Purple-barred,9.439921733,9.808843268,1,75th centile temperature > 9.52
+Six-spot Burnet,9.4700544,9.808882174,1,75th centile temperature > 9.52
+Broom-tip,9.450715107,9.80971551,1,75th centile temperature > 9.52
+Bordered Beauty,9.50675203,9.80971551,1,75th centile temperature > 9.52
+Yellow-tail,9.513681848,9.80971551,1,75th centile temperature > 9.52
+Marbled Minor,9.525339138,9.80971551,1,75th centile temperature > 9.52
+Mother Shipton,9.467783535,9.810289203,1,75th centile temperature > 9.52
+Scorched Wing,9.523677471,9.810750082,1,75th centile temperature > 9.52
+Common Wainscot,9.482074871,9.810806488,1,75th centile temperature > 9.52
+Figure of Eighty,9.550856921,9.811132543,1,75th centile temperature > 9.52
+Varied Coronet,9.616295666,9.812088251,1,75th centile temperature > 9.52
+Yellow-legged Clearwing,9.625643537,9.812310201,1,75th centile temperature > 9.52
+Marbled Brown,9.550856921,9.812391848,1,75th centile temperature > 9.52
+Shark,9.450715107,9.812422359,1,75th centile temperature > 9.52
+Pale Tussock,9.55039763,9.813060066,1,75th centile temperature > 9.52
+Purple Thorn,9.535845502,9.813314798,1,75th centile temperature > 9.52
+Ruby Tiger,9.494128922,9.813697772,1,75th centile temperature > 9.52
+Flame,9.50577642,9.815227917,1,75th centile temperature > 9.52
+Toadflax Pug,9.513627952,9.816526886,1,75th centile temperature > 9.52
+Miller,9.494564688,9.81849605,1,75th centile temperature > 9.52
+Blossom Underwing,9.601352224,9.819832335,1,75th centile temperature > 9.52
+Straw Dot,9.514091943,9.820268505,1,75th centile temperature > 9.52
+Four-dotted Footman,9.583773062,9.820268505,1,75th centile temperature > 9.52
+Broad-bordered Yellow Underwing,9.511254713,9.820335357,1,75th centile temperature > 9.52
+Orange Swift,9.473511776,9.82040221,1,75th centile temperature > 9.52
+Willow Beauty,9.48609398,9.820469063,1,75th centile temperature > 9.52
+Pale Prominent,9.504800809,9.820535916,1,75th centile temperature > 9.52
+Setaceous Hebrew Character,9.48872965,9.821079738,1,75th centile temperature > 9.52
+Dark Chestnut,9.488923245,9.821203089,1,75th centile temperature > 9.52
+Oak Lutestring,9.587582065,9.821736557,1,75th centile temperature > 9.52
+Rosy Minor,9.439749642,9.821870263,1,75th centile temperature > 9.52
+Death's-head Hawk-moth,9.494939037,9.821938112,1,75th centile temperature > 9.52
+Early Grey,9.504794828,9.822537436,1,75th centile temperature > 9.52
+Grass Emerald,9.480340108,9.825880389,1,75th centile temperature > 9.52
+Spruce Carpet,9.497050288,9.827010237,1,75th centile temperature > 9.52
+Uncertain,9.515234254,9.827386853,1,75th centile temperature > 9.52
+Small Yellow Wave,9.552518982,9.827386853,1,75th centile temperature > 9.52
+Single-dotted Wave,9.514091943,9.827737196,1,75th centile temperature > 9.52
+Vapourer,9.498470258,9.82808754,1,75th centile temperature > 9.52
+Heart Moth,9.745499578,9.829133246,1,75th centile temperature > 9.52
+Lychnis,9.491655718,9.829595356,1,75th centile temperature > 9.52
+Marsh Oblique-barred,9.52981908,9.829642881,1,75th centile temperature > 9.52
+Frosted Green,9.61335616,9.8308817,1,75th centile temperature > 9.52
+Netted Pug,9.523142541,9.831390257,1,75th centile temperature > 9.52
+Cinnabar,9.508815344,9.832265093,1,75th centile temperature > 9.52
+Cabbage Moth,9.487157842,9.834118806,1,75th centile temperature > 9.52
+Poplar Grey,9.5473904,9.838768582,1,75th centile temperature > 9.52
+Fan-foot,9.530925751,9.841366243,1,75th centile temperature > 9.52
+Grass Wave,9.582815679,9.84153825,1,75th centile temperature > 9.52
+Bleached Pug,9.64478943,9.841896673,1,75th centile temperature > 9.52
+White-barred Clearwing,9.684429237,9.842519355,1,75th centile temperature > 9.52
+Tawny Pinion,9.603959515,9.842519423,1,75th centile temperature > 9.52
+Small Dusty Wave,9.523677471,9.845161969,1,75th centile temperature > 9.52
+Pale Mottled Willow,9.489672367,9.846661396,1,75th centile temperature > 9.52
+Lesser Treble-bar,9.498728928,9.848957695,1,75th centile temperature > 9.52
+Bird's Wing,9.619629375,9.848957695,1,75th centile temperature > 9.52
+Oak Hook-tip,9.557878569,9.849312826,1,75th centile temperature > 9.52
+Knot Grass,9.466222439,9.849427117,1,75th centile temperature > 9.52
+Bulrush Wainscot,9.53227043,9.849490392,1,75th centile temperature > 9.52
+Small Scallop,9.615122383,9.849667957,1,75th centile temperature > 9.52
+V-pug,9.524882558,9.85025167,1,75th centile temperature > 9.52
+Maple Pug,9.578261521,9.850365961,1,75th centile temperature > 9.52
+Blotched Emerald,9.627467746,9.850365961,1,75th centile temperature > 9.52
+Flame Wainscot,9.67601425,9.850835384,1,75th centile temperature > 9.52
+Scarce Brindle,9.645161154,9.852288981,1,75th centile temperature > 9.52
+Marbled Coronet,9.438498787,9.855066295,1,75th centile temperature > 9.52
+Balsam Carpet,9.59984586,9.858393765,1,75th centile temperature > 9.52
+Scarce Black Arches,9.230905501,9.861127885,1,75th centile temperature > 9.52
+Satin Lutestring,9.701765468,9.868728591,1,75th centile temperature > 9.52
+Cistus Forester,9.42396089,9.870549532,1,75th centile temperature > 9.52
+Muslin Moth,9.547939562,9.873451953,1,75th centile temperature > 9.52
+Marbled Beauty,9.489672367,9.873919764,1,75th centile temperature > 9.52
+Common Footman,9.538038105,9.873919764,1,75th centile temperature > 9.52
+Oak Eggar,9.317123935,9.874855387,1,75th centile temperature > 9.52
+Buff Arches,9.5473904,9.874855387,1,75th centile temperature > 9.52
+Hedge Rustic,9.496213078,9.875323199,1,75th centile temperature > 9.52
+Straw Underwing,9.554722335,9.875323199,1,75th centile temperature > 9.52
+Festoon,9.749342723,9.875323199,1,75th centile temperature > 9.52
+Dark Spinach,9.55255132,9.878790012,1,75th centile temperature > 9.52
+Waved Umber,9.553653543,9.87913103,1,75th centile temperature > 9.52
+Lunar Underwing,9.511703877,9.880002169,1,75th centile temperature > 9.52
+Red Underwing,9.572387114,9.880030446,1,75th centile temperature > 9.52
+Beaded Chestnut,9.535323624,9.880058722,1,75th centile temperature > 9.52
+Dot Moth,9.547939562,9.880058722,1,75th centile temperature > 9.52
+White-pinion Spotted,9.587582065,9.880058722,1,75th centile temperature > 9.52
+Rustic,9.525233407,9.880106006,1,75th centile temperature > 9.52
+Red Twin-spot Carpet,9.516649593,9.880121767,1,75th centile temperature > 9.52
+Dusky Thorn,9.549398241,9.880866095,1,75th centile temperature > 9.52
+Deep-brown Dart,9.616494168,9.881522348,1,75th centile temperature > 9.52
+Dotted Fan-foot,9.693506916,9.881661736,1,75th centile temperature > 9.52
+Common Rustic,9.552518982,9.883099081,1,75th centile temperature > 9.52
+Scarce Silver-lines,9.586229754,9.883099081,1,75th centile temperature > 9.52
+Small Brindled Beauty,9.615122383,9.883099081,1,75th centile temperature > 9.52
+Lunar-spotted Pinion,9.644074338,9.883099081,1,75th centile temperature > 9.52
+Orange-tailed Clearwing,9.666807829,9.883099081,1,75th centile temperature > 9.52
+Dingy Shears,9.578347679,9.884278331,1,75th centile temperature > 9.52
+Barred Sallow,9.59300576,9.884278331,1,75th centile temperature > 9.52
+Eupithecia intricata,9.54697159,9.885457581,1,75th centile temperature > 9.52
+Lesser Common Rustic,9.613289893,9.885457581,1,75th centile temperature > 9.52
+Chamomile Shark,9.514176735,9.886471969,1,75th centile temperature > 9.52
+Blood-vein,9.569371359,9.886471969,1,75th centile temperature > 9.52
+Grey Shoulder-knot,9.625345159,9.886471969,1,75th centile temperature > 9.52
+Dusky Sallow,9.613422427,9.886810098,1,75th centile temperature > 9.52
+Barred Tooth-striped,9.572124993,9.887885258,1,75th centile temperature > 9.52
+Ear Moth,9.578734234,9.8884404,1,75th centile temperature > 9.52
+Blackneck,9.614859047,9.889048223,1,75th centile temperature > 9.52
+Black Rustic,9.44893331,9.890070702,1,75th centile temperature > 9.52
+Turnip Moth,9.538571792,9.890070702,1,75th centile temperature > 9.52
+Great Prominent,9.61587124,9.890070702,1,75th centile temperature > 9.52
+Dark Sword-grass,9.514253003,9.890092454,1,75th centile temperature > 9.52
+Scorched Carpet,9.642664535,9.890135957,1,75th centile temperature > 9.52
+Round-winged Muslin,9.651033118,9.890157709,1,75th centile temperature > 9.52
+Chocolate-tip,9.657340867,9.891363491,1,75th centile temperature > 9.52
+Tawny Marbled Minor,9.587582065,9.892743482,1,75th centile temperature > 9.52
+Broad-barred White,9.5473904,9.89394907,1,75th centile temperature > 9.52
+Least Yellow Underwing,9.554447399,9.89399267,1,75th centile temperature > 9.52
+Lappet,9.63921779,9.894021783,1,75th centile temperature > 9.52
+Beautiful Hook-tip,9.659113449,9.895241859,1,75th centile temperature > 9.52
+White-spotted Pinion,9.660852664,9.897972863,1,75th centile temperature > 9.52
+Large Wainscot,9.538571792,9.898581432,1,75th centile temperature > 9.52
+Humming-bird Hawk-moth,9.504563965,9.898885717,1,75th centile temperature > 9.52
+Double-striped Pug,9.53636738,9.900046496,1,75th centile temperature > 9.52
+Barred Rivulet,9.50675203,9.900108327,1,75th centile temperature > 9.52
+Eyed Hawk-moth,9.562410707,9.901083312,1,75th centile temperature > 9.52
+Bordered Gothic,9.682565091,9.901322604,1,75th centile temperature > 9.52
+Pale Oak Beauty,9.671748709,9.90224379,1,75th centile temperature > 9.52
+Small Elephant Hawk-moth,9.543962031,9.903145898,1,75th centile temperature > 9.52
+Lime Hawk-moth,9.589243582,9.904063719,1,75th centile temperature > 9.52
+Oak-tree Pug,9.523677471,9.904110859,1,75th centile temperature > 9.52
+Great Oak Beauty,9.736957546,9.904110859,1,75th centile temperature > 9.52
+Lesser Cream Wave,9.616295666,9.904295299,1,75th centile temperature > 9.52
+August Thorn,9.598382421,9.904525799,1,75th centile temperature > 9.52
+Small Chocolate-tip,9.688446151,9.905231394,1,75th centile temperature > 9.52
+Ringed Carpet,9.569281521,9.906108094,1,75th centile temperature > 9.52
+Sycamore,9.684429237,9.906346807,1,75th centile temperature > 9.52
+Birch Mocha,9.630907748,9.908022085,1,75th centile temperature > 9.52
+Small Black Arches,9.752410575,9.9085581,1,75th centile temperature > 9.52
+Scarce Burnished Brass,9.802483789,9.909089817,1,75th centile temperature > 9.52
+Speckled Yellow,9.547939562,9.909464849,1,75th centile temperature > 9.52
+Mallow,9.608555726,9.910550367,1,75th centile temperature > 9.52
+Eupithecia denotata,9.743833655,9.911371826,1,75th centile temperature > 9.52
+Oak Yellow Underwing,9.430845777,9.9130739,1,75th centile temperature > 9.52
+Small White Wave,9.619050617,9.914319131,1,75th centile temperature > 9.52
+Waved Black,9.747278833,9.914319131,1,75th centile temperature > 9.52
+Dusky Peacock,9.701188774,9.916750711,1,75th centile temperature > 9.52
+Clay Triple-lines,9.644074338,9.919375138,1,75th centile temperature > 9.52
+Maiden's Blush,9.659056726,9.920213742,1,75th centile temperature > 9.52
+Photedes morrisii,9.923370017,9.923370017,1,75th centile temperature > 9.52
+Leopard Moth,9.640687765,9.925726865,1,75th centile temperature > 9.52
+Pine Hawk-moth,9.719742409,9.929355805,1,75th centile temperature > 9.52
+Copper Underwing,9.578916232,9.931256481,1,75th centile temperature > 9.52
+Archer's Dart,9.514906777,9.938266617,1,75th centile temperature > 9.52
+Waved Carpet,9.635512945,9.939743168,1,75th centile temperature > 9.52
+Mullein,9.581349227,9.940054234,1,75th centile temperature > 9.52
+Light Feathered Rustic,9.629598361,9.945894715,1,75th centile temperature > 9.52
+Common Emerald,9.612564411,9.947025103,1,75th centile temperature > 9.52
+Sharp-angled Carpet,9.676702589,9.948081767,1,75th centile temperature > 9.52
+Scarce Forester,9.923161047,9.948506823,1,75th centile temperature > 9.52
+Lime-speck Pug,9.58301046,9.948850969,1,75th centile temperature > 9.52
+Lobster Moth,9.672701679,9.951159597,1,75th centile temperature > 9.52
+Oak Nycteoline,9.602845899,9.954043476,1,75th centile temperature > 9.52
+Lesser-spotted Pinion,9.659000003,9.955383059,1,75th centile temperature > 9.52
+Scallop Shell,9.578734234,9.955659597,1,75th centile temperature > 9.52
+Scarce Footman,9.647203435,9.956014201,1,75th centile temperature > 9.52
+Peacock Moth,9.671748709,9.956368805,1,75th centile temperature > 9.52
+Lace Border,9.757721678,9.958958918,1,75th centile temperature > 9.52
+Marbled White Spot,9.70195812,9.959315861,1,75th centile temperature > 9.52
+Tawny Wave,9.653527393,9.95947613,1,75th centile temperature > 9.52
+Light Brocade,9.671748709,9.959658314,1,75th centile temperature > 9.52
+Six-belted Clearwing,9.536547086,9.962040135,1,75th centile temperature > 9.52
+Shuttle-shaped Dart,9.620642325,9.9641019,1,75th centile temperature > 9.52
+Cloaked Minor,9.587582065,9.965825456,1,75th centile temperature > 9.52
+Yellow-barred Brindle,9.625025536,9.965825456,1,75th centile temperature > 9.52
+Striped Wainscot,9.673881479,9.967250412,1,75th centile temperature > 9.52
+Small Blood-vein,9.625664781,9.97061959,1,75th centile temperature > 9.52
+Nutmeg,9.627543486,9.970748602,1,75th centile temperature > 9.52
+False Mocha,9.703935529,9.970856626,1,75th centile temperature > 9.52
+Beautiful Snout,9.601701218,9.972633352,1,75th centile temperature > 9.52
+Tawny Shears,9.579490502,9.975125097,1,75th centile temperature > 9.52
+Pale Pinion,9.644768223,9.975400586,1,75th centile temperature > 9.52
+Vestal,9.55039763,9.976618433,1,75th centile temperature > 9.52
+Pretty Chalk Carpet,9.666807829,9.977623279,1,75th centile temperature > 9.52
+Rosy Marbled,9.772700882,9.977699635,1,75th centile temperature > 9.52
+Treble Lines,9.645462108,9.977787726,1,75th centile temperature > 9.52
+Shaded Fan-foot,9.879945616,9.977952172,1,75th centile temperature > 9.52
+Pinion-streaked Snout,9.621655275,9.979054128,1,75th centile temperature > 9.52
+Small Seraphim,9.736957546,9.981409894,1,75th centile temperature > 9.52
+Sloe Carpet,9.81646006,9.982259657,1,75th centile temperature > 9.52
+Red-necked Footman,9.516649593,9.982834915,1,75th centile temperature > 9.52
+Buff Footman,9.697446711,9.983907148,1,75th centile temperature > 9.52
+Currant Clearwing,9.578347679,9.985122144,1,75th centile temperature > 9.52
+Reddish Light Arches,9.665263824,9.985951276,1,75th centile temperature > 9.52
+Barred Hook-tip,9.672701679,9.986062316,1,75th centile temperature > 9.52
+Small Waved Umber,9.714571485,9.987156321,1,75th centile temperature > 9.52
+Wood Carpet,9.644074338,9.987462469,1,75th centile temperature > 9.52
+Brindled White-spot,9.745215701,9.988862622,1,75th centile temperature > 9.52
+Portland Moth,9.351528078,9.990013734,1,75th centile temperature > 9.52
+Reed Dagger,9.736727804,9.9936417,1,75th centile temperature > 9.52
+Small Emerald,9.665965621,9.994108743,1,75th centile temperature > 9.52
+Jubilee Fan-foot,9.996061549,9.996061549,1,75th centile temperature > 9.52
+Dentated Pug,9.834118806,10.01377921,1,75th centile temperature > 9.52
+Broad-bordered Bee Hawk-moth,9.767062942,10.01558661,1,75th centile temperature > 9.52
+Heart & Club,9.692623307,10.01769885,1,75th centile temperature > 9.52
+Sallow Clearwing,9.875323199,10.01829117,1,75th centile temperature > 9.52
+Double Kidney,9.717802698,10.02573602,1,75th centile temperature > 9.52
+Large Thorn,9.707564311,10.0261028,1,75th centile temperature > 9.52
+Straw Belle,9.89683917,10.02672432,1,75th centile temperature > 9.52
+Gem,9.586229754,10.02754342,1,75th centile temperature > 9.52
+Haworth's Pug,9.677358243,10.02754342,1,75th centile temperature > 9.52
+Orange Moth,9.749996366,10.02754342,1,75th centile temperature > 9.52
+Devon Carpet,9.625274518,10.02838811,1,75th centile temperature > 9.52
+Four-spotted,9.58483974,10.02933417,1,75th centile temperature > 9.52
+Pale-lemon Sallow,9.704381199,10.0318706,1,75th centile temperature > 9.52
+Large Dark Prominent,10.03295255,10.03295255,1,75th centile temperature > 9.52
+Black Arches,9.727951127,10.03382949,1,75th centile temperature > 9.52
+Brussels Lace,9.627830715,10.03428678,1,75th centile temperature > 9.52
+Lackey,9.673938198,10.03428678,1,75th centile temperature > 9.52
+Small Eggar,9.659000003,10.03470643,1,75th centile temperature > 9.52
+Fisher's Estuarine Moth,10.01738664,10.04064115,1,75th centile temperature > 9.52
+Shaded Pug,9.64947263,10.0406485,1,75th centile temperature > 9.52
+Dwarf Cream Wave,9.711101333,10.04088402,1,75th centile temperature > 9.52
+Coronet,9.645462108,10.04125322,1,75th centile temperature > 9.52
+Five-spot Burnet,9.678684252,10.04125322,1,75th centile temperature > 9.52
+Marbled Pug,9.698937654,10.04125322,1,75th centile temperature > 9.52
+Blair's Shoulder-knot,9.708014563,10.04125322,1,75th centile temperature > 9.52
+Clay Fan-foot,9.875323199,10.04348011,1,75th centile temperature > 9.52
+Chalk Carpet,9.603236054,10.04449648,1,75th centile temperature > 9.52
+Dingy Footman,9.723985448,10.04565081,1,75th centile temperature > 9.52
+Privet Hawk-moth,9.708331926,10.04834446,1,75th centile temperature > 9.52
+Passenger,10.04834446,10.04834446,1,75th centile temperature > 9.52
+Fern,9.744808555,10.05030803,1,75th centile temperature > 9.52
+Pearly Underwing,9.616295666,10.05488654,1,75th centile temperature > 9.52
+Fen Wainscot,9.714571485,10.05619872,1,75th centile temperature > 9.52
+Willowherb Hawk-moth,10.05619872,10.05619872,1,75th centile temperature > 9.52
+Small Rufous,9.7496192,10.05625472,1,75th centile temperature > 9.52
+Convolvulus Hawk-moth,9.607202573,10.05633264,1,75th centile temperature > 9.52
+Scarlet Tiger,9.736352808,10.05635861,1,75th centile temperature > 9.52
+Cream-bordered Green Pea,9.726489133,10.05712316,1,75th centile temperature > 9.52
+Bordered Sallow,9.661359911,10.05865226,1,75th centile temperature > 9.52
+Treble Brown Spot,9.745783455,10.05941681,1,75th centile temperature > 9.52
+Olive Crescent,9.890070702,10.05941681,1,75th centile temperature > 9.52
+Obscure Wainscot,9.731780234,10.06053652,1,75th centile temperature > 9.52
+Square Spot,9.751578745,10.06203184,1,75th centile temperature > 9.52
+White-banded Carpet,9.890671859,10.0628544,1,75th centile temperature > 9.52
+Brown-veined Wainscot,9.690088958,10.06389566,1,75th centile temperature > 9.52
+Red-belted Clearwing,9.784083122,10.06472587,1,75th centile temperature > 9.52
+Oleander Hawk-moth,9.846106908,10.07068052,1,75th centile temperature > 9.52
+Cudweed,10.07282169,10.07282169,1,75th centile temperature > 9.52
+Triangle,9.955659597,10.07992803,1,75th centile temperature > 9.52
+Oblique Striped,9.644059771,10.07997324,1,75th centile temperature > 9.52
+Silver-striped Hawk-moth,9.369122187,10.08085368,1,75th centile temperature > 9.52
+Large Ranunculus,9.727951127,10.08097306,1,75th centile temperature > 9.52
+Cloaked Carpet,9.705143592,10.08555877,1,75th centile temperature > 9.52
+Bright Wave,9.977952172,10.09734823,1,75th centile temperature > 9.52
+Orache Moth,9.988250326,10.09968136,1,75th centile temperature > 9.52
+Purple Cloud,10.09968136,10.09968136,1,75th centile temperature > 9.52
+Pretty Marbled,10.07282169,10.10043838,1,75th centile temperature > 9.52
+Wormwood,9.628881734,10.10989712,1,75th centile temperature > 9.52
+Golden Twin-spot,9.841366243,10.115997,1,75th centile temperature > 9.52
+Silver Barred,9.970877614,10.115997,1,75th centile temperature > 9.52
+Bilberry Pug,9.6412693,10.11842096,1,75th centile temperature > 9.52
+Red-tipped Clearwing,9.820268505,10.1312444,1,75th centile temperature > 9.52
+Rosy Footman,9.80536346,10.13231265,1,75th centile temperature > 9.52
+Little Thorn,9.750650009,10.13447556,1,75th centile temperature > 9.52
+White Colon,9.6672786,10.13675703,1,75th centile temperature > 9.52
+Sub-angled Wave,10.06656751,10.13782094,1,75th centile temperature > 9.52
+Ground Lackey,10.05941681,10.13848029,1,75th centile temperature > 9.52
+Southern Wainscot,9.770059069,10.14120142,1,75th centile temperature > 9.52
+Satin Wave,9.717802698,10.14219958,1,75th centile temperature > 9.52
+Eilema pygmaeola,9.82808754,10.14274229,1,75th centile temperature > 9.52
+Goat Moth,9.750176478,10.14760017,1,75th centile temperature > 9.52
+Dog's Tooth,9.818678942,10.15354135,1,75th centile temperature > 9.52
+Feathered Beauty,10.09968136,10.15437787,1,75th centile temperature > 9.52
+Scarce Merveille du Jour,9.955659597,10.15481855,1,75th centile temperature > 9.52
+Essex Y,10.15481855,10.15481855,1,75th centile temperature > 9.52
+Sandhill Rustic,9.930734231,10.15498913,1,75th centile temperature > 9.52
+Dusky Fan-foot,10.16457486,10.16457486,1,75th centile temperature > 9.52
+Bordered Grey,9.748774211,10.17947577,1,75th centile temperature > 9.52
+Dorset Cream Wave,10.17947577,10.17947577,1,75th centile temperature > 9.52
+Scar Bank Gem,10.00607457,10.17961185,1,75th centile temperature > 9.52
+Galium Carpet,9.582815679,10.18088157,1,75th centile temperature > 9.52
+Orange Footman,9.890070702,10.18088157,1,75th centile temperature > 9.52
+Bordered Straw,9.747278833,10.18105763,1,75th centile temperature > 9.52
+Feathered Ranunculus,9.886810098,10.18228737,1,75th centile temperature > 9.52
+Silky Wainscot,9.745783455,10.1826395,1,75th centile temperature > 9.52
+Black-veined Moth,10.18184569,10.18382446,1,75th centile temperature > 9.52
+Lydd Beauty,10.18580323,10.18580323,1,75th centile temperature > 9.52
+Scarce Chocolate-tip,10.06408006,10.19209568,1,75th centile temperature > 9.52
+Clifden Nonpareil,9.59771309,10.19614173,1,75th centile temperature > 9.52
+Dotted Chestnut,9.834118806,10.19633246,1,75th centile temperature > 9.52
+Royal Mantle,9.807971026,10.19684725,1,75th centile temperature > 9.52
+Dotted Border Wave,9.784521358,10.19725773,1,75th centile temperature > 9.52
+White-line Snout,9.856681159,10.19942963,1,75th centile temperature > 9.52
+Mocha,9.797604012,10.20047799,1,75th centile temperature > 9.52
+Scarce Bordered Straw,9.710396823,10.20438344,1,75th centile temperature > 9.52
+Annulet,9.653464153,10.20649291,1,75th centile temperature > 9.52
+Horse Chestnut Moth,9.821736557,10.21445944,1,75th centile temperature > 9.52
+Brown-tail,9.904048005,10.22015368,1,75th centile temperature > 9.52
+Sharp-angled Peacock,9.911371826,10.22846491,1,75th centile temperature > 9.52
+Square-spot Dart,9.727702742,10.23409607,1,75th centile temperature > 9.52
+Vine's Rustic,9.8884404,10.24349989,1,75th centile temperature > 9.52
+Blair's Wainscot,10.18580323,10.25295726,1,75th centile temperature > 9.52
+Twin-spotted Wainscot,9.896607361,10.25388711,1,75th centile temperature > 9.52
+Plain Pug,9.770154226,10.25419536,1,75th centile temperature > 9.52
+Small Grass Emerald,9.939476499,10.26311876,1,75th centile temperature > 9.52
+Small Mottled Willow,9.80129182,10.26646498,1,75th centile temperature > 9.52
+Water Ermine,10.00960269,10.27058926,1,75th centile temperature > 9.52
+Dewick's Plusia,9.693632358,10.27080616,1,75th centile temperature > 9.52
+Marsh Mallow Moth,10.27422626,10.27422626,1,75th centile temperature > 9.52
+Buttoned Snout,9.877634407,10.28338324,1,75th centile temperature > 9.52
+Ruddy Carpet,9.944986264,10.2857956,1,75th centile temperature > 9.52
+Marbled Grey,10.25295726,10.28653428,1,75th centile temperature > 9.52
+Crescent Striped,9.970877614,10.31474146,1,75th centile temperature > 9.52
+Sussex Emerald,10.32011129,10.32011129,1,75th centile temperature > 9.52
+Mediterranean Brocade,9.972318805,10.32245356,1,75th centile temperature > 9.52
+Ni Moth,9.646773484,10.32748924,1,75th centile temperature > 9.52
+Radford's Flame Shoulder,10.28192482,10.32937594,1,75th centile temperature > 9.52
+Saltern Ear,9.82320461,10.3359877,1,75th centile temperature > 9.52
+Great Dart,10.28675379,10.33722907,1,75th centile temperature > 9.52
+Star-wort,9.970877614,10.34511206,1,75th centile temperature > 9.52
+Tunbridge Wells Gem,10.35314914,10.35314914,1,75th centile temperature > 9.52
+Toadflax Brocade,10.30937163,10.35390782,1,75th centile temperature > 9.52
+Essex Emerald,10.27579181,10.35433805,1,75th centile temperature > 9.52
+Four-spotted Footman,9.926074619,10.35777284,1,75th centile temperature > 9.52
+White-point,10.08312443,10.36106359,1,75th centile temperature > 9.52
+Rest Harrow,10.28340396,10.3610784,1,75th centile temperature > 9.52
+Reddish Buff,10.35314914,10.36163098,1,75th centile temperature > 9.52
+Shore Wainscot,9.968157031,10.3704096,1,75th centile temperature > 9.52
+Dingy Mocha,10.21670452,10.372168,1,75th centile temperature > 9.52
+Sand Dart,9.693506916,10.37239058,1,75th centile temperature > 9.52
+Webb's Wainscot,10.15223451,10.37239058,1,75th centile temperature > 9.52
+Shoulder-striped Clover,10.17947577,10.37422558,1,75th centile temperature > 9.52
+Cypress Carpet,10.17947577,10.37682707,1,75th centile temperature > 9.52
+Cypress Pug,10.16811085,10.37720368,1,75th centile temperature > 9.52
+Mullein Wave,10.06389566,10.37795691,1,75th centile temperature > 9.52
+Kent Black Arches,10.09968136,10.37833352,1,75th centile temperature > 9.52
+Spanish Carpet,10.37833352,10.37833352,1,75th centile temperature > 9.52
+Cream-spot Tiger,10.07193445,10.37860355,1,75th centile temperature > 9.52
+Striped Hawk-moth,9.988862622,10.37941364,1,75th centile temperature > 9.52
+Purple Marbled,10.28031044,10.38067623,1,75th centile temperature > 9.52
+Flame Brocade,10.37758029,10.38536164,1,75th centile temperature > 9.52
+Silky Wave,10.35459637,10.38546933,1,75th centile temperature > 9.52
+Rosy Wave,10.1435656,10.38554564,1,75th centile temperature > 9.52
+White-speck,10.06299216,10.38563167,1,75th centile temperature > 9.52
+Portland Ribbon Wave,10.26463105,10.38770435,1,75th centile temperature > 9.52
+Beautiful Gothic,10.37682707,10.38770435,1,75th centile temperature > 9.52
+Least Carpet,9.977623279,10.38823824,1,75th centile temperature > 9.52
+Feathered Brindle,10.19488517,10.38952781,1,75th centile temperature > 9.52
+Cosmopolitan,10.26771825,10.38952781,1,75th centile temperature > 9.52
+Yellow Belle,10.14980046,10.39135128,1,75th centile temperature > 9.52
+Crimson Speckled,10.24987241,10.39254044,1,75th centile temperature > 9.52
+Delicate,10.15896909,10.39530202,1,75th centile temperature > 9.52
+Crescent Dart,10.16457486,10.39766547,1,75th centile temperature > 9.52
+Oak Processionary,10.25695946,10.4036755,1,75th centile temperature > 9.52
+Slender Burnished Brass,10.37011282,10.40566724,1,75th centile temperature > 9.52
+Marbled Green,10.17202532,10.4091828,1,75th centile temperature > 9.52
+Light Crimson Underwing,10.16714716,10.41733761,1,75th centile temperature > 9.52
+White Spot,10.32011129,10.41899472,1,75th centile temperature > 9.52
+Mathew's Wainscot,10.23876979,10.4192466,1,75th centile temperature > 9.52
+Small Marbled,10.38770435,10.42835823,1,75th centile temperature > 9.52
+L-album Wainscot,10.33020661,10.42998843,1,75th centile temperature > 9.52
+Blair's Mocha,10.31748013,10.46827307,1,75th centile temperature > 9.52
+Yarrow Pug,10.14549993,10.48344438,1,75th centile temperature > 9.52
+Dusky Hook-tip,10.48344438,10.48344438,1,75th centile temperature > 9.52
+Jersey Tiger,10.31661089,10.48441038,1,75th centile temperature > 9.52
+Speckled Footman,10.25393328,10.49135027,1,75th centile temperature > 9.52
+Devonshire Wainscot,10.37491162,10.50307916,1,75th centile temperature > 9.52
+Thrift Clearwing,10.18228737,10.50350825,1,75th centile temperature > 9.52
+Grass Eggar,10.44007005,10.53976747,1,75th centile temperature > 9.52
+Gypsy Moth,10.51107125,10.55039153,1,75th centile temperature > 9.52
+Levant Blackneck,10.55039153,10.55039153,1,75th centile temperature > 9.52
+Black-banded,10.42792445,10.55240754,1,75th centile temperature > 9.52
+Barrett's Marbled Coronet,10.24987241,10.55262531,1,75th centile temperature > 9.52
+Hoary Footman,10.36310935,10.5537422,1,75th centile temperature > 9.52
+Dark Mottled Willow,10.50915156,10.56987516,1,75th centile temperature > 9.52
+Dumeril's Rustic,10.63059877,10.63059877,1,75th centile temperature > 9.52
+Porter's Rustic,10.63059877,10.63059877,1,75th centile temperature > 9.52
+Bloxworth Snout,10.62013835,10.66593123,1,75th centile temperature > 9.52
+Dark Crimson Underwing,10.39150318,10.69280036,1,75th centile temperature > 9.52
+Tree-lichen Beauty,10.65151886,10.72174266,1,75th centile temperature > 9.52
+Red-headed Chestnut,10.8423906,10.8423906,1,75th centile temperature > 9.52
