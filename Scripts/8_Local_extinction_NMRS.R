@@ -29,8 +29,15 @@ options(scipen=999)
 # tot_records <- read.csv("Data (all)/lhordley_export.csv", header=TRUE)
 # # Calculate recording effort to put in future models
 # # This is calculated as the total number of records in T1 and T2 (summed together)
-# recording_effort <- tot_records %>% group_by(Hectad) %>% summarise(n_recs=n())
+# recording_effort <- tot_records %>% group_by(Hectad) %>% summarise(n_recs=sum(nRecords))
 # write.csv(recording_effort, file="Data/Recording_effort.csv", row.names=FALSE)
+# 
+# # Number of records in T1 and T2 for response to reviewers (based on well recorded hectads only)
+# well_recs <- unique(nmrsdata_well$Hectad)
+# tot_records_well <- tot_records[which(tot_records$Hectad %in% well_recs), ]
+# recording_effort2 <- tot_records %>% group_by(Year) %>% summarise(n_recs=sum(nRecords))
+# recording_effort2$TP <- ifelse(recording_effort2$Year<=1991, "TP1", "TP2")
+# recording_effort3 <- recording_effort2 %>% group_by(TP) %>% summarise(mean=mean(n_recs))
 
 ## Read in data
 # NMRS data for cool-adapted moths with elevation and temperature data at a 10km scale
@@ -113,18 +120,17 @@ well_extir_hecs
 # add recording effort in
 nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, recording_effort, by="Hectad", all.x=TRUE)
 ## add in climate data to each data frame
-temp <- unique(nmrsdata_well[,c("Hectad", "Time_period", "temperature")])
-precip <- unique(nmrsdata_well[,c("Hectad", "Time_period", "total_precip")])
-# change each from long to wide
-temp_wide <- reshape(temp, idvar = "Hectad", timevar = "Time_period", direction = "wide")
-colnames(temp_wide)[2:3] <- c("temperature.TP2", "temperature.TP1")
-temp_wide$temp_diff <- temp_wide$temperature.TP2 - temp_wide$temperature.TP1
-precip_wide <- reshape(precip, idvar = "Hectad", timevar = "Time_period", direction = "wide")
-colnames(precip_wide)[2:3] <- c("total_precip.TP2", "total_precip.TP1")
-precip_wide$precip_diff <- precip_wide$total_precip.TP2 - precip_wide$total_precip.TP1
+nmrs_climate <- readRDS("Data/NMRS_hectad_elevation_climate.rds")
+climate_hecs <- unique(nmrs_climate[,c(1,2,16,17)]) # 2719 rows
+# change from long to wide
+climate_wide <- reshape(climate_hecs, idvar = "Hectad", timevar = "Time_period", direction = "wide")
+well_recs <- unique(nmrsdata_well$Hectad)
+climate_wide2 <- climate_wide[which(climate_wide$Hectad %in% well_recs), ]
+colnames(climate_wide2)[2:5] <- c("temperature.TP1", "total_precip.TP1", "temperature.TP2", "total_precip.TP2")
+climate_wide2$temp_diff <- climate_wide2$temperature.TP2 - climate_wide2$temperature.TP1
+climate_wide2$precip_diff <- climate_wide2$total_precip.TP2 - climate_wide2$total_precip.TP1
 ## merge in with nmrs data
-nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, temp_wide, by="Hectad", all.x=TRUE)
-nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, precip_wide, by="Hectad", all.x=TRUE)
+nmrsdata_well_expand2 <- merge(nmrsdata_well_expand2, climate_wide2, by="Hectad", all.x=TRUE)
 
 ## Step 1e. Remove colonisations - only interested in extinctions and persistence 
 nmrsdata_well_expand2<-nmrsdata_well_expand2[!(nmrsdata_well_expand2$Hectad_category=="Colonisation"),] ## remove colonisations
@@ -247,18 +253,17 @@ ggsave("Outputs/Maps/Extir_maps.png", extir_maps, height=6, width=10)
 # add recording effort in
 nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, recording_effort, by="Hectad", all.x=TRUE)
 ## add in climate data to each data frame
-temp <- unique(nmrsdata_heavy[,c("Hectad", "Time_period", "temperature")])
-precip <- unique(nmrsdata_heavy[,c("Hectad", "Time_period", "total_precip")])
-# change each from long to wide
-temp_wide <- reshape(temp, idvar = "Hectad", timevar = "Time_period", direction = "wide")
-colnames(temp_wide)[2:3] <- c("temperature.TP2", "temperature.TP1")
-temp_wide$temp_diff <- temp_wide$temperature.TP2 - temp_wide$temperature.TP1
-precip_wide <- reshape(precip, idvar = "Hectad", timevar = "Time_period", direction = "wide")
-colnames(precip_wide)[2:3] <- c("total_precip.TP2", "total_precip.TP1")
-precip_wide$precip_diff <- precip_wide$total_precip.TP2 - precip_wide$total_precip.TP1
+nmrs_climate <- readRDS("Data/NMRS_hectad_elevation_climate.rds")
+climate_hecs <- unique(nmrs_climate[,c(1,2,16,17)]) # 2719 rows
+# change from long to wide
+climate_wide <- reshape(climate_hecs, idvar = "Hectad", timevar = "Time_period", direction = "wide")
+heavy_recs <- unique(nmrsdata_heavy$Hectad)
+climate_wide2 <- climate_wide[which(climate_wide$Hectad %in% heavy_recs), ]
+colnames(climate_wide2)[2:5] <- c("temperature.TP1", "total_precip.TP1", "temperature.TP2", "total_precip.TP2")
+climate_wide2$temp_diff <- climate_wide2$temperature.TP2 - climate_wide2$temperature.TP1
+climate_wide2$precip_diff <- climate_wide2$total_precip.TP2 - climate_wide2$total_precip.TP1
 ## merge in with nmrs data
-nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, temp_wide, by="Hectad", all.x=TRUE)
-nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, precip_wide, by="Hectad", all.x=TRUE)
+nmrsdata_heavy_expand2 <- merge(nmrsdata_heavy_expand2, climate_wide2, by="Hectad", all.x=TRUE)
 
 ## Step 1e. Remove colonisations - only interested in extinctions and persistence 
 nmrsdata_heavy_expand2<-nmrsdata_heavy_expand2[!(nmrsdata_heavy_expand2$Hectad_category=="Colonisation"),] ## remove colonisations
@@ -303,8 +308,7 @@ model_tp1 <- glmer(extinct ~ scale(temperature.TP1)*scale(total_precip.TP1) + sc
                  na.action = "na.fail")
 AIC(model_tp1)
 summary(model_tp1) # n_records highly significant (negative)
-## temperature*temp_diff is significant
-r.squaredGLMM(model_tp1) ## 11.5% fixed effects, 23.1% fixed and random effects
+r.squaredGLMM(model_tp1) 
 car::vif(model_tp1) ## all < 3
 
 ## check model assumptions - only use this to check for outliers, binomial GLMM don't require normal residuals or homogeneity of variance
@@ -543,10 +547,6 @@ row.names(importance_tp2) <- 1:nrow(importance_tp2)
 tp2_summary <- merge(tp2_summary, importance_tp2, by.x="coefficient", by.y="parameters", all=TRUE)
 write.csv(tp2_summary, file="Outputs/Results/Average_model_summary_TP2_well_receffort.csv", row.names=FALSE)
 
-temp_precip <- unique(nmrs_glmm[,c("temperature.TP2", "total_precip.TP2")])
-temp_precip$temp_scaled <- scale(temp_precip$temperature.TP2)
-temp_precip$precip_scaled <- scale(temp_precip$total_precip.TP2)
-
 ## Heatmap plots ##
 # Interaction between annual temperature & total precipitation
 # First for each species and plot heatmaps to see if mean population trend is similar across all species
@@ -619,39 +619,29 @@ precip_temp_TP2 <- ggplot(pred.dat_tp2_pop, aes(total_precip.TP2, temperature.TP
 precip_temp_TP2
 ggsave(precip_temp_TP2, file="Outputs/Graphs/Temp_precip_TP2_heatmap_well.png", height=5, width=7)
 
-## put the 2 interaction plots together with a shared legend
- 
-legend <- cowplot::get_legend(precip_temp_TP1 + theme(legend.position = "bottom"))
-library(gridExtra)
-library(grid)
-library(ggpubr)
-lay <- rbind(c(1,2), c(3,3))
-th <- sum(legend$heights)
-figure3 <- ggpubr::ggarrange(forest_plot_well_tp2, precip_temp_TP2, labels=c("(a)", "(b)"),
-                     nrow=1, ncol=2)
-figure3
-ggsave("Outputs/Graphs/Figure3_well_tp2_receffort.png", figure3, height=6, width=14)
-
 ## calculate some extinction probabilities for paper
 
 temp95 <- quantile(nmrs_glmm$temperature.TP2, 0.95)
-temp05 <- quantile(nmrs_glmm$temperature.TP2, 0.05)
+mean_temp <- mean(nmrs_glmm$temperature.TP2)
 precip95 <- quantile(nmrs_glmm$total_precip.TP2, 0.95)
 precip05 <- quantile(nmrs_glmm$total_precip.TP2, 0.05)
+
+pred.dat = expand.grid(temp_diff = median(nmrs_glmm$temp_diff), precip_diff = median(nmrs_glmm$precip_diff), 
+                               temperature.TP2 = c(mean_temp,mean_temp, temp95,temp95),
+                               total_precip.TP2 = c(precip05, precip95,precip05, precip95),
+                               Common_name=nmrs_glmm$Common_name[1], n_recs=median(nmrs_glmm$n_recs))
+pred.dat <- unique(pred.dat)
+pred.dat$extinction <-predict(avgmod_tp2, newdata = pred.dat, type="response", re.form=NA)
 
 tp1_pop <- pred.dat_tp1_pop[(pred.dat_tp1_pop$temperature.TP1 >= temp05 & pred.dat_tp1_pop$temperature.TP1 <= temp95), ]
 tp1_pop <- tp1_pop[(tp1_pop$total_precip.TP1 >= precip05 & tp1_pop$total_precip.TP1 <= precip95), ]
 
-## Forest plots for main effects
-tp1_summary <- read.csv("Outputs/Results/Average_model_summary_TP1_well.csv", header=TRUE)
+## Forest plots for main effects (TP2 only)
 tp2_summary <- read.csv("Outputs/Results/Average_model_summary_TP2_well_receffort.csv", header=TRUE)
 
-tp1_summary <- tp1_summary[-1,]
-tp1_summary <- tp1_summary[,c(1:2,7:8)]
 tp2_summary <- tp2_summary[-1,]
 tp2_summary <- tp2_summary[,c(1:2,7:8)]
 
-#summary <- rbind(tp1_summary, tp2_summary)
 lookup <- c("scale(precip_diff)"="\U0394 Precipitation", "scale(temp_diff)"="\U0394 Temperature",
             "scale(temperature.TP1)"="Temperature T1","scale(total_precip.TP1)"="Precipitation T1",
             "scale(temperature.TP2)"="Temperature T2", "scale(total_precip.TP2)"="Precipitation T2",
@@ -668,55 +658,22 @@ lookup <- c("scale(precip_diff)"="\U0394 Precipitation", "scale(temp_diff)"="\U0
             "scale(temperature.TP2):scale(total_precip.TP2)"="Temperature T2 x Precipitation T2",
             "scale(n_recs)"="Number of records")
             
-tp1_summary <- tp1_summary %>% mutate(coefficient=as.list(lookup[as.character(coefficient)]))
 tp2_summary <- tp2_summary %>% mutate(coefficient=as.list(lookup[as.character(coefficient)]))
 
-# reorder rows
-row.names(tp1_summary) <- 1:nrow(tp1_summary)
 row.names(tp2_summary) <- 1:nrow(tp2_summary)
-
-tp1_summary <- tp1_summary[c(8,10,1,5,9,2,3,4,6,7),]
 tp2_summary <- tp2_summary[c(9,11,2,6,10,3,4,5,7,8,1),]
-
-tp1_summary$coefficient <- as.character(tp1_summary$coefficient)
 tp2_summary$coefficient <- as.character(tp2_summary$coefficient)
-
-tp1_summary$coefficient <- factor(tp1_summary$coefficient, levels=c("\U0394 Temperature x Precipitation T1", "\U0394 Temperature x Temperature T1",
-                                                            "\U0394 Precipitation x Precipitation T1", "\U0394 Precipitation x Temperature T1",
-                                                            "\U0394 Precipitation x \U0394 Temperature", "Temperature T1 x Precipitation T1", 
-                                                            "\U0394 Temperature", "\U0394 Precipitation", "Precipitation T1", "Temperature T1"))
-
 tp2_summary$coefficient <- factor(tp2_summary$coefficient, levels=c("Number of records", "\U0394 Temperature x Precipitation T2", "\U0394 Temperature x Temperature T2",
                                                             "\U0394 Precipitation x Precipitation T2", "\U0394 Precipitation x Temperature T2",
                                                             "\U0394 Precipitation x \U0394 Temperature", "Temperature T2 x Precipitation T2",
                                                            "\U0394 Temperature", "\U0394 Precipitation", "Precipitation T2", "Temperature T2"))
 
 
-tp1_summary <- tp1_summary %>% mutate(colour = case_when(
-  CI.min < 0 & CI.max < 0 ~ "yes",
-  CI.min > 0 & CI.max > 0 ~ "yes",
-  TRUE ~ "no"
-))
-
 tp2_summary <- tp2_summary %>% mutate(colour = case_when(
   CI.min < 0 & CI.max < 0 ~ "yes",
   CI.min > 0 & CI.max > 0 ~ "yes",
   TRUE ~ "no"
 ))
-
-forest_plot_well_tp1 <- ggplot(data=tp1_summary, aes(x=coefficient, y=Estimate, colour=colour))+ #excluding intercept because estimates so much larger
-  geom_point(size=4)+ #points for coefficient estimates
-  theme_classic(base_size = 12)+ #clean graph
-  geom_errorbar(aes(ymin=CI.min, ymax=CI.max, colour=colour), # CIs
-                width=.4,lwd=0.6) +
-  geom_hline(yintercept=0, linetype='dotted', col = 'black')+
-  labs(y="Scaled model-averaged parameter estimates", x=" ") +
-  theme(axis.text=element_text(color="black"), axis.text.y = element_text(size = 12)) +
-  scale_colour_manual(values = c("yes" = "black", "no" = "lightgrey")) +
-  theme(legend.position="none") +
-  coord_flip()
-forest_plot_well_tp1
-ggsave(forest_plot_well_tp1, file="Outputs/Graphs/Forest_plot_well_tp1.png", height=6, width=7)
 
 forest_plot_well_tp2 <- ggplot(data=tp2_summary, aes(x=coefficient, y=Estimate, colour=colour))+ #excluding intercept because estimates so much larger
   geom_point(size=4)+ #points for coefficient estimates
@@ -731,6 +688,18 @@ forest_plot_well_tp2 <- ggplot(data=tp2_summary, aes(x=coefficient, y=Estimate, 
   coord_flip()
 forest_plot_well_tp2
 ggsave(forest_plot_well_tp2, file="Outputs/Graphs/Forest_plot_well_tp2.png", height=6, width=7)
+
+## put the heatmap plot and forest plot for TP2 together as Figure 3
+legend <- cowplot::get_legend(precip_temp_TP2 + theme(legend.position = "bottom"))
+library(gridExtra)
+library(grid)
+library(ggpubr)
+lay <- rbind(c(1,2), c(3,3))
+th <- sum(legend$heights)
+figure3 <- ggpubr::ggarrange(forest_plot_well_tp2, precip_temp_TP2, labels=c("(a)", "(b)"),
+                             nrow=1, ncol=2)
+figure3
+ggsave("Outputs/Graphs/Figure3_well_tp2_receffort.png", figure3, height=6, width=14)
 
 
 #######################################################
