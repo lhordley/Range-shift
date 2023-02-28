@@ -1,4 +1,4 @@
-https://sandbox.zenodo.org/badge/424910381.svg
+[![DOI](https://sandbox.zenodo.org/badge/424910381.svg)](https://sandbox.zenodo.org/badge/latestdoi/424910381)
 
 # Range-shift
 Scripts for range-shift analysis using NMRS data
