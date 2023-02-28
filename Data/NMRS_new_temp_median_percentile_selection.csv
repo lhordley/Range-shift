@@ -1,93 +1,93 @@
 Common_name,median_temperature,percentile_75th,Exclude,Reason
-Scotch Burnet,4.580244119,4.925349246,,
-Black Mountain Moth,4.550575053,5.446143932,,
-Rannoch Brindled Beauty,5.566355831,5.753158925,,
-Rannoch Sprawler,5.857042231,5.973811655,,
-Cousin German,5.920597711,6.261439784,,
-Small Dark Yellow Underwing,5.845582921,6.280530572,,
-Rannoch Looper,6.25189439,6.593048425,,
-Netted Mountain Moth,6.161910133,6.679667098,,
-Broad-bordered White Underwing,5.999893981,6.819281799,,
-Northern Dart,5.472272449,6.980911862,,
-Kentish Glory,6.350235126,7.104306735,,
-Slender-striped Rufous,6.794006302,7.509137316,,
-Great Brocade,6.477571201,7.530114398,,
-Welsh Clearwing,7.198756078,7.565576197,,
+Scotch Burnet,4.580244119,4.925349246,0,NA
+Black Mountain Moth,4.550575053,5.446143932,0,NA
+Rannoch Brindled Beauty,5.566355831,5.753158925,0,NA
+Rannoch Sprawler,5.857042231,5.973811655,0,NA
+Cousin German,5.920597711,6.261439784,0,NA
+Small Dark Yellow Underwing,5.845582921,6.280530572,0,NA
+Rannoch Looper,6.25189439,6.593048425,0,NA
+Netted Mountain Moth,6.161910133,6.679667098,0,NA
+Broad-bordered White Underwing,5.999893981,6.819281799,0,NA
+Northern Dart,5.472272449,6.980911862,0,NA
+Kentish Glory,6.350235126,7.104306735,0,NA
+Slender-striped Rufous,6.794006302,7.509137316,0,NA
+Great Brocade,6.477571201,7.530114398,0,NA
+Welsh Clearwing,7.198756078,7.565576197,0,NA
 Bedrule Brocade,7.604679727,7.604679727,1,migrant
-Sweet Gale Moth,6.620709428,7.60786549,,
-Heath Rivulet,6.908387889,7.712212227,,
-Saxon,7.23660598,7.766288784,,
+Sweet Gale Moth,6.620709428,7.60786549,0,NA
+Heath Rivulet,6.908387889,7.712212227,0,NA
+Saxon,7.23660598,7.766288784,0,NA
 Bilberry Marble,7.781052959,7.802139979,1,micro-moth - shouldn't be in any of the analyses and would be worth letting Les know that this came through in his export
-Red Carpet,7.3566943,7.835356213,,
-Northern Arches or Exile,7.379549635,7.894557383,,
-Grey Mountain Carpet,7.441331663,8.048508514,,
-Pretty Pinion,7.49713155,8.134600778,,
-Slender Scotch Burnet,8.036737211,8.195477617,,
-Netted Carpet,7.981733192,8.249713136,,
-Manchester Treble-bar,7.421819005,8.251952679,,
-Scarce Silver Y,7.522197542,8.285419321,,
-Striped Twin-spot Carpet,7.815024922,8.289315999,,
-Yellow-ringed Carpet,7.346384256,8.297602093,,
-Plain Clay,7.547860713,8.345911095,,
-Crinan Ear,7.753297809,8.356471351,,
-Scotch Annulet,7.838807988,8.366169116,,
-Small Argent & Sable,7.860917495,8.409225096,,
-Smoky Wave,8.007388428,8.434677277,,
-Barred Carpet,7.801403214,8.45458318,,
-Chestnut-coloured Carpet,7.456047302,8.485457831,,
-Transparent Burnet,8.235724988,8.489512089,,
-Small Autumnal Moth,7.893739882,8.497460568,,
-Golden-rod Brindle,7.896662941,8.509909075,,
-Welsh Wave,8.006057445,8.51194555,,
-Ashworth's Rustic,8.060195858,8.544152088,,
-Light Knot Grass,7.937943191,8.548511692,,
-Northern Deep-brown Dart,7.977358985,8.569291641,,
-Brindled Ochre,7.88517126,8.571647182,,
-Haworth's Minor,7.825000885,8.61901225,,
-Grey,8.615755607,8.659345785,,
-Least Minor,8.648462125,8.772078009,,
+Red Carpet,7.3566943,7.835356213,0,NA
+Northern Arches or Exile,7.379549635,7.894557383,0,NA
+Grey Mountain Carpet,7.441331663,8.048508514,0,NA
+Pretty Pinion,7.49713155,8.134600778,0,NA
+Slender Scotch Burnet,8.036737211,8.195477617,0,NA
+Netted Carpet,7.981733192,8.249713136,0,NA
+Manchester Treble-bar,7.421819005,8.251952679,0,NA
+Scarce Silver Y,7.522197542,8.285419321,0,NA
+Striped Twin-spot Carpet,7.815024922,8.289315999,0,NA
+Yellow-ringed Carpet,7.346384256,8.297602093,0,NA
+Plain Clay,7.547860713,8.345911095,0,NA
+Crinan Ear,7.753297809,8.356471351,0,NA
+Scotch Annulet,7.838807988,8.366169116,0,NA
+Small Argent & Sable,7.860917495,8.409225096,0,NA
+Smoky Wave,8.007388428,8.434677277,0,NA
+Barred Carpet,7.801403214,8.45458318,0,NA
+Chestnut-coloured Carpet,7.456047302,8.485457831,0,NA
+Transparent Burnet,8.235724988,8.489512089,0,NA
+Small Autumnal Moth,7.893739882,8.497460568,0,NA
+Golden-rod Brindle,7.896662941,8.509909075,0,NA
+Welsh Wave,8.006057445,8.51194555,0,NA
+Ashworth's Rustic,8.060195858,8.544152088,0,NA
+Light Knot Grass,7.937943191,8.548511692,0,NA
+Northern Deep-brown Dart,7.977358985,8.569291641,0,NA
+Brindled Ochre,7.88517126,8.571647182,0,NA
+Haworth's Minor,7.825000885,8.61901225,0,NA
+Grey,8.615755607,8.659345785,0,NA
+Least Minor,8.648462125,8.772078009,0,NA
 Eversmann's Rustic,8.375990028,8.772445625,1,migrant
-Rosy Marsh Moth,8.466389532,8.789800991,,
-Confused,8.150160098,8.815310116,,
-Grey Scalloped Bar,8.128218996,8.83039432,,
-Large Ear,7.971415823,8.835747349,,
-Glaucous Shears,8.173496611,8.84706263,,
-Lempke's Gold Spot,8.398372547,8.870307969,,
-Silurian,8.872000482,8.872000482,,
-Wood Tiger,8.130533258,8.872000482,,
-Belted Beauty,8.541002676,8.948066447,,
-Barred Chestnut,8.179878831,8.949152359,,
-Dark Bordered Beauty,7.907359897,8.960320269,,
-Autumn Green Carpet,8.187272562,9.017459171,,
-Northern Spinach,8.296323934,9.022978263,,
-Gold Spangle,8.322294871,9.025701763,,
-Anomalous,8.305219951,9.111725504,,
-Beech-green Carpet,7.864213492,9.118387967,,
-Northern Rustic,8.345612393,9.174734776,,
-Map-winged Swift,8.401307426,9.182850455,,
-Chimney Sweeper,8.512618406,9.217368681,,
-Angle-striped Sallow,8.999550613,9.262671341,,
-Red Sword-grass,8.354892008,9.280746889,,
-Dotted Carpet,8.304580872,9.283398529,,
-Grey Chi,8.68172383,9.291686012,,
+Rosy Marsh Moth,8.466389532,8.789800991,0,NA
+Confused,8.150160098,8.815310116,0,NA
+Grey Scalloped Bar,8.128218996,8.83039432,0,NA
+Large Ear,7.971415823,8.835747349,0,NA
+Glaucous Shears,8.173496611,8.84706263,0,NA
+Lempke's Gold Spot,8.398372547,8.870307969,0,NA
+Silurian,8.872000482,8.872000482,0,NA
+Wood Tiger,8.130533258,8.872000482,0,NA
+Belted Beauty,8.541002676,8.948066447,0,NA
+Barred Chestnut,8.179878831,8.949152359,0,NA
+Dark Bordered Beauty,7.907359897,8.960320269,0,NA
+Autumn Green Carpet,8.187272562,9.017459171,0,NA
+Northern Spinach,8.296323934,9.022978263,0,NA
+Gold Spangle,8.322294871,9.025701763,0,NA
+Anomalous,8.305219951,9.111725504,0,NA
+Beech-green Carpet,7.864213492,9.118387967,0,NA
+Northern Rustic,8.345612393,9.174734776,0,NA
+Map-winged Swift,8.401307426,9.182850455,0,NA
+Chimney Sweeper,8.512618406,9.217368681,0,NA
+Angle-striped Sallow,8.999550613,9.262671341,0,NA
+Red Sword-grass,8.354892008,9.280746889,0,NA
+Dotted Carpet,8.304580872,9.283398529,0,NA
+Grey Chi,8.68172383,9.291686012,0,NA
 Marsh Moth,9.306780679,9.320286851,1,exclude on expert opinion
 Channel Islands Pug,9.401832506,9.401832506,1,migrant
-Mottled Grey,8.480771477,9.409148678,,
-Golden-rod Pug,9.012369654,9.4100162,,
-Weaver's Wave,8.812858812,9.412575192,,
+Mottled Grey,8.480771477,9.409148678,0,NA
+Golden-rod Pug,9.012369654,9.4100162,0,NA
+Weaver's Wave,8.812858812,9.412575192,0,NA
 Cameo,9.429564198,9.429564198,1,migrant
 Twin-spot Carpet,8.659552486,9.431192274,1,exclude on expert opinion
-Sword-grass,8.404242305,9.439749642,,
+Sword-grass,8.404242305,9.439749642,0,NA
 Cloaked Pug,9.00730543,9.443213659,1,alien hostplants
-Butterbur,8.828983913,9.448791928,,
+Butterbur,8.828983913,9.448791928,0,NA
 Satyr Pug,8.212432841,9.448791928,1,exclude on expert opinion
 Thyme Pug,9.003937475,9.460321278,1,exclude on expert opinion
-Marsh Pug,9.085009008,9.473511776,,
-Dark Brocade,8.703215598,9.484192757,,
+Marsh Pug,9.085009008,9.473511776,0,NA
+Dark Brocade,8.703215598,9.484192757,0,NA
 Muslin Footman,8.637203377,9.485877745,1,exclude on expert opinion
 Northern Winter Moth,8.835713627,9.510859634,1,exclude on expert opinion
 Antler Moth,8.89275558,9.515588088,1,exclude on expert opinion
-Ruddy Highflyer,8.869165631,9.516649593,,
+Ruddy Highflyer,8.869165631,9.516649593,0,NA
 Heath Rustic,8.725979167,9.52007478,1,exclude on expert opinion
 Forester,9.230047113,9.530350344,1,75th centile temperature > 9.52
 Dotted Clay,8.961182433,9.530494195,1,75th centile temperature > 9.52
@@ -106,7 +106,7 @@ Coast Dart,8.588833535,9.600451543,1,75th centile temperature > 9.52
 Grey Carpet,9.43398485,9.606221775,1,75th centile temperature > 9.52
 Spurge Hawk-moth,9.613422427,9.613422427,1,75th centile temperature > 9.52
 Gold Spot,9.060778129,9.614068435,1,75th centile temperature > 9.52
-Lunar Thorn,8.944254047,9.615994912,,
+Lunar Thorn,8.944254047,9.615994912,0,NA
 Scarce Umber,9.23515631,9.617584438,1,75th centile temperature > 9.52
 Water Carpet,9.231154819,9.622426899,1,75th centile temperature > 9.52
 Small Dotted Buff,9.220740259,9.625185348,1,75th centile temperature > 9.52
