@@ -1,9 +1,11 @@
 
 # Precipitation buffers temperature-driven local extinctions of moths at warm range margins
 
-**L.A. Hordley, R. Fox, A.J. Suggitt, N.A.D. Bourn**
+### L.A. Hordley, R. Fox, A.J. Suggitt, N.A.D. Bourn
 
-To reference the data or methods here, please cite the published paper here. Contact Lisbeth Hordley with any questions at lhordley@butterfly-conservation.org. Data repository DOI is below
+To reference the data or methods here, please cite the published paper here. Contact Lisbeth Hordley with any questions at lhordley@butterfly-conservation.org. 
+
+Data repository DOI
 [![DOI](https://zenodo.org/badge/424910381.svg)](https://zenodo.org/badge/latestdoi/424910381)
 
 ## Overview
