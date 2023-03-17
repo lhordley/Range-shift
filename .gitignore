@@ -7,13 +7,13 @@
 *.7z
 *.xlsx
 *.png
+*.pdf
 *.RDataTmp*
 .Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
 *.docx
-*.rds
 *.tif
 *.nc
 *.pptx
