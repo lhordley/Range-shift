@@ -3,7 +3,7 @@
 
 ### L.A. Hordley, R. Fox, A.J. Suggitt, N.A.D. Bourn
 
-To reference the data or methods here, please cite the published paper here. Contact Lisbeth Hordley with any questions at lhordley@butterfly-conservation.org. 
+To reference the data or methods here, please cite the published paper [here](https://doi.org/10.1111/ele.14195). Contact Lisbeth Hordley with any questions at lhordley@butterfly-conservation.org. 
 
 Data repository DOI
 
